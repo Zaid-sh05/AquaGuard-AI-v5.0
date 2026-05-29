@@ -3828,6 +3828,107 @@ function ActionLogPanel({ actionLog }) {
   );
 }
 
+
+function AlertLogPanel({ allAlerts = [], selectedOrWorst, setSelectedSeg, typeColors }) {
+  return (
+    <SectionCard
+      title="سجل الإنذارات اللحظية"
+      icon={<Bell size={16} color="#ef4444" />}
+      right={<SmallPill color="#ef4444">{allAlerts.length} مسجلة</SmallPill>}
+    >
+      <div
+        style={{
+          display: 'grid',
+          gap: 7,
+          maxHeight: 330,
+          overflowY: 'auto',
+        }}
+      >
+        {allAlerts.length === 0 && (
+          <div
+            style={{
+              color: '#475569',
+              fontSize: 12,
+              textAlign: 'center',
+              padding: 20,
+            }}
+          >
+            لا توجد إنذارات بعد. ابدأ عرض التحكيم أو اختر تسرب / انفجار / سرقة.
+          </div>
+        )}
+        {allAlerts.slice(0, 25).map((a, i) => {
+          const tc = typeColors?.[a.predType] || '#22c55e';
+          return (
+            <div
+              key={`${a.id}-${i}`}
+              onClick={() => setSelectedSeg(a)}
+              style={{
+                background:
+                  selectedOrWorst?.id === a.id ? `${tc}16` : 'rgba(2,6,23,.25)',
+                borderRadius: 10,
+                padding: '9px 10px',
+                borderRight: `3px solid ${tc}`,
+                border: `1px solid ${
+                  selectedOrWorst?.id === a.id ? `${tc}44` : 'rgba(148,163,184,.08)'
+                }`,
+                cursor: 'pointer',
+                animation: 'slideIn .22s ease',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: 8,
+                  marginBottom: 4,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 900,
+                    color: '#e2e8f0',
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  {a.branch} · D{a.depth}
+                </span>
+                <span
+                  style={{
+                    fontSize: 9,
+                    color: '#64748b',
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  {a.ts}
+                </span>
+              </div>
+              <div style={{ fontSize: 10, color: '#94a3b8' }}>
+                {a.from} → {a.to}
+              </div>
+              <div style={{ fontSize: 10, color: '#64748b', marginTop: 2 }}>
+                فقد التدفق {a.flowLoss?.toFixed?.(1)}% · انحراف الضغط{' '}
+                {a.dpDev?.toFixed?.(3)}
+              </div>
+              <div
+                style={{
+                  fontSize: 10,
+                  color: tc,
+                  fontWeight: 900,
+                  marginTop: 4,
+                  fontFamily: 'monospace',
+                }}
+              >
+                {getTypeLabelAr(a.predType)} · {(a.confidence * 100).toFixed(0)}%
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </SectionCard>
+  );
+}
+
 function TechnicalPanel({ selectedSeg, activeModels = 4 }) {
   const models = selectedSeg?.models || { lgb: 0, xgb: 0, nn: 0, lstm: 0 };
   const rows = [
@@ -4605,7 +4706,7 @@ export default function AquaGuardDashboard() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(0,1.65fr) minmax(410px,.85fr)',
+            gridTemplateColumns: 'minmax(0,1.85fr) minmax(340px,.65fr)',
             gap: 16,
           }}
           className="aq-main-grid"
@@ -5106,6 +5207,32 @@ export default function AquaGuardDashboard() {
               )}
             </SectionCard>
 
+            <div style={{ display: 'grid', gap: 16 }}>
+              <SuggestedActionsPanel
+                seg={selectedOrWorst}
+                gov={gov}
+                actionLog={actionLog}
+                onApproveAction={approveAction}
+              />
+
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
+                  gap: 16,
+                }}
+                className="aq-grid-2"
+              >
+                <ActionLogPanel actionLog={actionLog} />
+                <AlertLogPanel
+                  allAlerts={allAlerts}
+                  selectedOrWorst={selectedOrWorst}
+                  setSelectedSeg={setSelectedSeg}
+                  typeColors={TYPE_DOT}
+                />
+              </div>
+            </div>
+
             <SectionCard
               title="نظرة عامة على شبكة الأردن"
               icon={<Database size={16} color="#22d3ee" />}
@@ -5273,121 +5400,6 @@ export default function AquaGuardDashboard() {
 
             <IncidentTimeline demoStep={demoStep} activeType={worstType} />
 
-            <SuggestedActionsPanel
-              seg={selectedOrWorst}
-              gov={gov}
-              actionLog={actionLog}
-              onApproveAction={approveAction}
-              compact
-            />
-
-            <ActionLogPanel actionLog={actionLog} />
-
-            <SectionCard
-              title="سجل الإنذارات اللحظية"
-              icon={<Bell size={16} color="#ef4444" />}
-              right={
-                <SmallPill color="#ef4444">{allAlerts.length} مسجلة</SmallPill>
-              }
-            >
-              <div
-                style={{
-                  display: 'grid',
-                  gap: 7,
-                  maxHeight: 330,
-                  overflowY: 'auto',
-                }}
-              >
-                {allAlerts.length === 0 && (
-                  <div
-                    style={{
-                      color: '#475569',
-                      fontSize: 12,
-                      textAlign: 'center',
-                      padding: 20,
-                    }}
-                  >
-                    لا توجد إنذارات بعد. ابدأ عرض التحكيم أو اختر تسرب / انفجار
-                    / سرقة.
-                  </div>
-                )}
-                {allAlerts.slice(0, 25).map((a, i) => {
-                  const tc = TYPE_DOT[a.predType] || '#22c55e';
-                  return (
-                    <div
-                      key={`${a.id}-${i}`}
-                      onClick={() => setSelectedSeg(a)}
-                      style={{
-                        background:
-                          selectedOrWorst?.id === a.id
-                            ? `${tc}16`
-                            : 'rgba(2,6,23,.25)',
-                        borderRadius: 10,
-                        padding: '9px 10px',
-                        borderRight: `3px solid ${tc}`,
-                        border: `1px solid ${
-                          selectedOrWorst?.id === a.id
-                            ? `${tc}44`
-                            : 'rgba(148,163,184,.08)'
-                        }`,
-                        cursor: 'pointer',
-                        animation: 'slideIn .22s ease',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          gap: 8,
-                          marginBottom: 4,
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 900,
-                            color: '#e2e8f0',
-                            fontFamily: 'monospace',
-                          }}
-                        >
-                          {a.branch} · D{a.depth}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: 9,
-                            color: '#64748b',
-                            fontFamily: 'monospace',
-                          }}
-                        >
-                          {a.ts}
-                        </span>
-                      </div>
-                      <div style={{ fontSize: 10, color: '#94a3b8' }}>
-                        {a.from} → {a.to}
-                      </div>
-                      <div
-                        style={{ fontSize: 10, color: '#64748b', marginTop: 2 }}
-                      >
-                        فقد التدفق {a.flowLoss?.toFixed?.(1)}% · انحراف الضغط{' '}
-                        {a.dpDev?.toFixed?.(3)}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 10,
-                          color: tc,
-                          fontWeight: 900,
-                          marginTop: 4,
-                          fontFamily: 'monospace',
-                        }}
-                      >
-                        {getTypeLabelAr(a.predType)} ·{' '}
-                        {(a.confidence * 100).toFixed(0)}%
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </SectionCard>
           </div>
         </div>
       </div>
