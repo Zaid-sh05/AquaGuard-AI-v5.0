@@ -2891,7 +2891,7 @@ function HeroLanding({ onLaunch, onDemo }) {
                   marginBottom: 10,
                 }}
               >
-                ما الذي سيراه الحكّام؟
+                مخرجات لوحة تحكم نظام AquaGuard-AI
               </div>
               {[
                 ['1', 'التحقق بين الطلب المتوقع والضخ والكمية الواصلة'],
