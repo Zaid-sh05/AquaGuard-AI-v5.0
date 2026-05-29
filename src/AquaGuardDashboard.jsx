@@ -1279,15 +1279,15 @@ function NationalCarrierMap({
         fill="url(#ncGrid)"
       />
 
-      <text x="48" y="58" fill="#e2e8f0" fontSize="18" fontWeight="800">
+      <text x="400" y="25" fill="#e2e8f0" fontSize="18" fontWeight="800">
         مشروع الناقل الوطني الأردني
       </text>
-      <text x="48" y="80" fill="#38bdf8" fontSize="11" fontWeight="700">
+      <text x="400" y="50" fill="#38bdf8" fontSize="11" fontWeight="700">
         البحر الأحمر → العقبة → معان → عمّان → AL MUNTAZAH / ABU ALANDA
       </text>
 
       <text
-        x={W - 48}
+        x={W - 125}
         y="58"
         textAnchor="end"
         fill="#f8fafc"
@@ -1303,7 +1303,7 @@ function NationalCarrierMap({
       </text>
 
       <text
-        x={W - 48}
+        x={W - 128}
         y="78"
         textAnchor="end"
         fill="#86efac"
@@ -1420,9 +1420,7 @@ function NationalCarrierMap({
           fill="rgba(226,232,240,.85)"
           fontSize="10"
           textAnchor="middle"
-        >
-          حصة الأردن من البحر الأحمر ---
-        </text>
+        ></text>
         <text
           x="532"
           y="92"
@@ -1590,7 +1588,7 @@ function NationalCarrierMap({
 
       <g transform="translate(688 104)">
         <rect
-          x="0"
+          x="1"
           y="0"
           width="266"
           height="150"
@@ -1598,8 +1596,8 @@ function NationalCarrierMap({
           fill="rgba(10,22,40,.86)"
           stroke="rgba(56,189,248,.16)"
         />
-        <text x="80" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
-          ملخص الناقل الوطني
+        <text x="260" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
+          ملخص الناقل الوطني :
         </text>
 
         {[
@@ -1616,11 +1614,11 @@ function NationalCarrierMap({
           ['طول المسار', `${'450'} km`, '#fbbf24'],
         ].map(([l, v, c], i) => (
           <g key={l} transform={`translate(18 ${50 + i * 16})`}>
-            <text x="0" y="0" fill="#64748b" fontSize="10">
+            <text x="230" y="0" fill="#64748b" fontSize="10">
               {l}
             </text>
             <text
-              x="108"
+              x="120"
               y="0"
               fill={c}
               fontSize="10.6"
@@ -1643,10 +1641,10 @@ function NationalCarrierMap({
           fill="rgba(8,18,34,.82)"
           stroke="rgba(56,189,248,.14)"
         />
-        <text x="130" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
-          المسار التشغيلي
+        <text x="300" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
+          المسار التشغيلي :
         </text>
-        <text x="80" y="44" fill="#64748b" fontSize="10">
+        <text x="300" y="44" fill="#FFFF" fontSize="10">
           البحر الأحمر → العقبة → معان → عمّان
         </text>
 
@@ -1660,7 +1658,7 @@ function NationalCarrierMap({
         ].map((line, i) => (
           <text
             key={i}
-            x="18"
+            x="290"
             y={68 + i * 18}
             fill={i < 5 ? '#cbd5e1' : '#22d3ee'}
             fontSize="10.2"
