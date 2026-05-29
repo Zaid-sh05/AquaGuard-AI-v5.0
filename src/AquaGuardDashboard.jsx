@@ -1279,15 +1279,15 @@ function NationalCarrierMap({
         fill="url(#ncGrid)"
       />
 
-      <text x="400" y="25" fill="#e2e8f0" fontSize="18" fontWeight="800">
+      <text x="48" y="58" fill="#e2e8f0" fontSize="18" fontWeight="800">
         مشروع الناقل الوطني الأردني
       </text>
-      <text x="400" y="50" fill="#38bdf8" fontSize="11" fontWeight="700">
-        البحر الأحمر -> العقبة -> معان -> عمّان -> AL MUNTAZAH / ABU ALANDA
+      <text x="48" y="80" fill="#38bdf8" fontSize="11" fontWeight="700">
+        البحر الأحمر → العقبة → معان → عمّان → AL MUNTAZAH / ABU ALANDA
       </text>
 
       <text
-        x={W - 125}
+        x={W - 48}
         y="58"
         textAnchor="end"
         fill="#f8fafc"
@@ -1303,7 +1303,7 @@ function NationalCarrierMap({
       </text>
 
       <text
-        x={W - 128}
+        x={W - 48}
         y="78"
         textAnchor="end"
         fill="#86efac"
@@ -1420,7 +1420,9 @@ function NationalCarrierMap({
           fill="rgba(226,232,240,.85)"
           fontSize="10"
           textAnchor="middle"
-        ></text>
+        >
+          حصة الأردن من البحر الأحمر ---
+        </text>
         <text
           x="532"
           y="92"
@@ -1588,7 +1590,7 @@ function NationalCarrierMap({
 
       <g transform="translate(688 104)">
         <rect
-          x="1"
+          x="0"
           y="0"
           width="266"
           height="150"
@@ -1596,8 +1598,8 @@ function NationalCarrierMap({
           fill="rgba(10,22,40,.86)"
           stroke="rgba(56,189,248,.16)"
         />
-        <text x="260" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
-          ملخص الناقل الوطني :
+        <text x="80" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
+          ملخص الناقل الوطني
         </text>
 
         {[
@@ -1614,11 +1616,11 @@ function NationalCarrierMap({
           ['طول المسار', `${'450'} km`, '#fbbf24'],
         ].map(([l, v, c], i) => (
           <g key={l} transform={`translate(18 ${50 + i * 16})`}>
-            <text x="230" y="0" fill="#64748b" fontSize="10">
+            <text x="0" y="0" fill="#64748b" fontSize="10">
               {l}
             </text>
             <text
-              x="120"
+              x="108"
               y="0"
               fill={c}
               fontSize="10.6"
@@ -1641,10 +1643,10 @@ function NationalCarrierMap({
           fill="rgba(8,18,34,.82)"
           stroke="rgba(56,189,248,.14)"
         />
-        <text x="300" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
-          المسار التشغيلي :
+        <text x="130" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
+          المسار التشغيلي
         </text>
-        <text x="300" y="44" fill="#FFFF" fontSize="10">
+        <text x="80" y="44" fill="#64748b" fontSize="10">
           البحر الأحمر → العقبة → معان → عمّان
         </text>
 
@@ -1658,7 +1660,7 @@ function NationalCarrierMap({
         ].map((line, i) => (
           <text
             key={i}
-            x="290"
+            x="18"
             y={68 + i * 18}
             fill={i < 5 ? '#cbd5e1' : '#22d3ee'}
             fontSize="10.2"
@@ -2412,8 +2414,7 @@ const ACTION_SUGGESTIONS = {
   normal: [
     {
       title: 'استمرار المراقبة التشغيلية',
-      detail:
-        'لا يوجد خلل نشط؛ يتم الاكتفاء بتحديث القراءات ومراقبة الانحرافات القادمة.',
+      detail: 'لا يوجد خلل نشط؛ يتم الاكتفاء بتحديث القراءات ومراقبة الانحرافات القادمة.',
       priority: 'منخفضة',
     },
     {
@@ -2425,20 +2426,17 @@ const ACTION_SUGGESTIONS = {
   leak: [
     {
       title: 'إرسال فريق صيانة للفحص الميداني',
-      detail:
-        'توجيه الفريق إلى المقطع المحدد مع أولوية متوسطة قبل تحول التسرب إلى عطل أكبر.',
+      detail: 'توجيه الفريق إلى المقطع المحدد مع أولوية متوسطة قبل تحول التسرب إلى عطل أكبر.',
       priority: 'متوسطة',
     },
     {
       title: 'تخفيض الضغط بنسبة 10–15% مؤقتاً',
-      detail:
-        'تقليل الفاقد لحين وصول الفريق مع التأكد من عدم التأثير على التزويد الأساسي.',
+      detail: 'تقليل الفاقد لحين وصول الفريق مع التأكد من عدم التأثير على التزويد الأساسي.',
       priority: 'متوسطة',
     },
     {
       title: 'تشغيل فحص صوتي موضعي',
-      detail:
-        'استخدام حساس التسرب الصوتي لتأكيد النقطة الأدق قبل الحفر أو الإغلاق.',
+      detail: 'استخدام حساس التسرب الصوتي لتأكيد النقطة الأدق قبل الحفر أو الإغلاق.',
       priority: 'متوسطة',
     },
   ],
@@ -2450,34 +2448,29 @@ const ACTION_SUGGESTIONS = {
     },
     {
       title: 'فتح بلاغ صيانة طارئ',
-      detail:
-        'إرسال فريق إصلاح مع إحداثيات المقطع وقراءات التدفق والضغط الداعمة للقرار.',
+      detail: 'إرسال فريق إصلاح مع إحداثيات المقطع وقراءات التدفق والضغط الداعمة للقرار.',
       priority: 'حرجة',
     },
     {
       title: 'إعادة توزيع التزويد مؤقتاً',
-      detail:
-        'تحويل جزء من التدفق إلى مسار بديل لتقليل أثر الانقطاع على المشتركين.',
+      detail: 'تحويل جزء من التدفق إلى مسار بديل لتقليل أثر الانقطاع على المشتركين.',
       priority: 'مرتفعة',
     },
   ],
   theft: [
     {
       title: 'فتح مهمة تحقق ميداني',
-      detail:
-        'فحص الوصلات غير المشروعة حول المقطع المحدد دون قطع الخدمة مباشرة.',
+      detail: 'فحص الوصلات غير المشروعة حول المقطع المحدد دون قطع الخدمة مباشرة.',
       priority: 'تحقق',
     },
     {
       title: 'مقارنة آخر 72 ساعة مع سجلات العدادات',
-      detail:
-        'ربط نمط الفاقد مع قراءات الاستهلاك للتأكد من وجود استخدام غير مشروع.',
+      detail: 'ربط نمط الفاقد مع قراءات الاستهلاك للتأكد من وجود استخدام غير مشروع.',
       priority: 'تحقق',
     },
     {
       title: 'توثيق الحالة كاشتباه سرقة',
-      detail:
-        'حفظ القراءات والموقع والوقت كمرجع للجهة المختصة قبل الإجراء القانوني.',
+      detail: 'حفظ القراءات والموقع والوقت كمرجع للجهة المختصة قبل الإجراء القانوني.',
       priority: 'تحقق',
     },
   ],
@@ -3332,21 +3325,9 @@ function DemandVerificationCard({
 function IncidentTimeline({ demoStep, activeType }) {
   const steps = [
     ['00s', 'توقع الطلب', 'تقدير احتياج المنطقة قبل الضخ.'],
-    [
-      '03s',
-      'اكتشاف فرق في نقاط القياس',
-      'النظام يلاحظ فرقاً غير طبيعي بين التدفق والضغط المتوقع والمقاس.',
-    ],
-    [
-      '07s',
-      'تصنيف الذكاء الاصطناعي',
-      `النظام يصنف الحالة التشغيلية كـ ${getTypeLabelAr(activeType)}.`,
-    ],
-    [
-      '11s',
-      'تحديد موقع الخلل',
-      'تمييز المقطع الأكثر احتمالاً على خريطة الشبكة.',
-    ],
+    ['03s', 'اكتشاف فرق في نقاط القياس', 'النظام يلاحظ فرقاً غير طبيعي بين التدفق والضغط المتوقع والمقاس.'],
+    ['07s', 'تصنيف الذكاء الاصطناعي', `النظام يصنف الحالة التشغيلية كـ ${getTypeLabelAr(activeType)}.`],
+    ['11s', 'تحديد موقع الخلل', 'تمييز المقطع الأكثر احتمالاً على خريطة الشبكة.'],
     ['15s', 'قرار المشغّل', 'عرض الإجراءات المقترحة واعتماد القرار المناسب.'],
   ];
   return (
@@ -3621,9 +3602,9 @@ function PilotPlanPanel() {
                 marginTop: 9,
               }}
             >
-              نبدأ بنقطة قياس دخول واحدة ونقطتي قياس بعدية مع مسار استخدام واضح
-              للمشغّل. هذا يحافظ على التكلفة الواقعية ويثبت الكشف وتحديد الموقع
-              والاستجابة.
+              نبدأ بنقطة قياس دخول واحدة ونقطتي قياس بعدية مع مسار استخدام
+              واضح للمشغّل. هذا يحافظ على التكلفة الواقعية ويثبت الكشف وتحديد
+              الموقع والاستجابة.
             </div>
           </div>
           <div
@@ -3747,167 +3728,103 @@ function PilotPlanPanel() {
   );
 }
 
-function SuggestedActionsPanel({ seg, gov, actionLog, onApproveAction }) {
+function SuggestedActionsPanel({ seg, gov, actionLog = [], onApproveAction, compact = false }) {
   const type = seg?.predType || 'normal';
   const color = getTypeColor(type);
   const suggestions = ACTION_SUGGESTIONS[type] || ACTION_SUGGESTIONS.normal;
+  const gridColumns = compact ? '1fr' : 'repeat(3,1fr)';
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <SectionCard
-        title="الإجراءات المقترحة واعتماد القرار"
-        icon={<Shield size={16} color={color} />}
-        right={
-          <SmallPill color={color} filled>
-            {getTypeLabelAr(type)}
-          </SmallPill>
-        }
+    <SectionCard
+      title="الإجراءات المقترحة"
+      icon={<Shield size={16} color={color} />}
+      right={<SmallPill color={color} filled>{getTypeLabelAr(type)}</SmallPill>}
+    >
+      <div
+        style={{
+          color: '#94a3b8',
+          fontSize: compact ? 11 : 13,
+          lineHeight: 1.7,
+          marginBottom: 12,
+        }}
       >
-        <div
-          style={{
-            color: '#94a3b8',
-            fontSize: 13,
-            lineHeight: 1.75,
-            marginBottom: 14,
-          }}
-        >
-          يعرض النظام أكثر من إجراء ممكن حتى لا يكون القرار آلياً بالكامل؛
-          المدير يختار الإجراء الأنسب، ثم يتم حفظه في سجل مرجعي قابل للمراجعة من
-          الجهة المختصة.
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3,1fr)',
-            gap: 12,
-          }}
-          className="aq-grid-3"
-        >
-          {suggestions.map((action, i) => (
-            <div
-              key={action.title}
-              style={{
-                border: `1px solid ${color}33`,
-                background: `${color}10`,
-                borderRadius: 14,
-                padding: 14,
-                display: 'grid',
-                gap: 10,
-                minHeight: 176,
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: 8,
-                }}
-              >
-                <SmallPill color={color}>اقتراح {i + 1}</SmallPill>
-                <span
-                  style={{
-                    color,
-                    fontSize: 10,
-                    fontFamily: 'monospace',
-                    fontWeight: 900,
-                  }}
-                >
-                  {action.priority}
-                </span>
-              </div>
-              <div
-                style={{
-                  color: '#f8fafc',
-                  fontSize: 14,
-                  fontWeight: 950,
-                  lineHeight: 1.45,
-                }}
-              >
-                {action.title}
-              </div>
-              <div style={{ color: '#cbd5e1', fontSize: 12, lineHeight: 1.7 }}>
-                {action.detail}
-              </div>
-              <button
-                onClick={() => onApproveAction(action)}
-                style={{
-                  ...primaryButton(color),
-                  justifyContent: 'center',
-                  padding: '9px 11px',
-                  marginTop: 'auto',
-                }}
-              >
-                <Zap size={14} /> اعتماد الإجراء
-              </button>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
+        اختر الإجراء الأنسب للحالة الحالية؛ بعد الاعتماد يتم حفظ القرار تلقائياً في سجل الإجراءات المعتمدة.
+      </div>
 
-      <SectionCard
-        title="سجل الإجراءات المعتمدة"
-        icon={<Bell size={16} color="#22c55e" />}
-        right={<SmallPill color="#22c55e">{actionLog.length} إجراء</SmallPill>}
+      <div
+        style={{ display: 'grid', gridTemplateColumns: gridColumns, gap: compact ? 9 : 12 }}
+        className={compact ? undefined : 'aq-grid-3'}
       >
-        <div
-          style={{ display: 'grid', gap: 8, maxHeight: 280, overflowY: 'auto' }}
-        >
-          {actionLog.length === 0 && (
-            <div
-              style={{
-                color: '#64748b',
-                fontSize: 12,
-                textAlign: 'center',
-                padding: 18,
-              }}
-            >
-              لم يتم اعتماد أي إجراء بعد. اختر أحد الإجراءات المقترحة ليظهر هنا
-              كمرجع تشغيلي.
+        {suggestions.map((action, i) => (
+          <div
+            key={action.title}
+            style={{
+              border: `1px solid ${color}33`,
+              background: `${color}10`,
+              borderRadius: 14,
+              padding: compact ? 12 : 14,
+              display: 'grid',
+              gap: compact ? 8 : 10,
+              minHeight: compact ? 0 : 176,
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+              <SmallPill color={color}>اقتراح {i + 1}</SmallPill>
+              <span style={{ color, fontSize: 10, fontFamily: 'monospace', fontWeight: 900 }}>{action.priority}</span>
             </div>
-          )}
-          {actionLog.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                border: '1px solid rgba(34,197,94,.20)',
-                background: 'rgba(34,197,94,.08)',
-                borderRadius: 12,
-                padding: 12,
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: 10,
-                  alignItems: 'center',
-                }}
-              >
-                <div
-                  style={{ color: '#f8fafc', fontWeight: 950, fontSize: 13 }}
-                >
-                  {item.action}
-                </div>
-                <SmallPill color="#22c55e" filled>
-                  {item.status}
-                </SmallPill>
-              </div>
-              <div
-                style={{
-                  color: '#94a3b8',
-                  fontSize: 11,
-                  lineHeight: 1.6,
-                  marginTop: 6,
-                }}
-              >
-                {item.gov} · {item.segment} · {item.type} · {item.time}
-              </div>
+            <div style={{ color: '#f8fafc', fontSize: compact ? 12.5 : 14, fontWeight: 950, lineHeight: 1.45 }}>
+              {action.title}
             </div>
-          ))}
-        </div>
-      </SectionCard>
-    </div>
+            <div style={{ color: '#cbd5e1', fontSize: compact ? 11 : 12, lineHeight: 1.65 }}>
+              {action.detail}
+            </div>
+            <button
+              onClick={() => onApproveAction(action)}
+              style={{ ...primaryButton(color), justifyContent: 'center', padding: compact ? '8px 10px' : '9px 11px', marginTop: 'auto', width: '100%' }}
+            >
+              <Zap size={14} /> اعتماد الإجراء
+            </button>
+          </div>
+        ))}
+      </div>
+    </SectionCard>
+  );
+}
+
+function ActionLogPanel({ actionLog }) {
+  return (
+    <SectionCard
+      title="سجل الإجراءات المعتمدة"
+      icon={<Bell size={16} color="#22c55e" />}
+      right={<SmallPill color="#22c55e">{actionLog.length} إجراء</SmallPill>}
+    >
+      <div style={{ display: 'grid', gap: 8, maxHeight: 260, overflowY: 'auto' }}>
+        {actionLog.length === 0 && (
+          <div style={{ color: '#64748b', fontSize: 12, textAlign: 'center', padding: 18 }}>
+            لم يتم اعتماد أي إجراء بعد. عند اختيار المدير لأحد المقترحات سيظهر القرار هنا كمرجع تشغيلي للجهة المختصة.
+          </div>
+        )}
+        {actionLog.map((item) => (
+          <div
+            key={item.id}
+            style={{
+              border: '1px solid rgba(34,197,94,.20)',
+              background: 'rgba(34,197,94,.08)',
+              borderRadius: 12,
+              padding: 12,
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'center' }}>
+              <div style={{ color: '#f8fafc', fontWeight: 950, fontSize: 12.5, lineHeight: 1.5 }}>{item.action}</div>
+              <SmallPill color="#22c55e" filled>{item.status}</SmallPill>
+            </div>
+            <div style={{ color: '#94a3b8', fontSize: 11, lineHeight: 1.6, marginTop: 6 }}>
+              {item.gov} · {item.segment} · {item.type} · {item.time}
+            </div>
+          </div>
+        ))}
+      </div>
+    </SectionCard>
   );
 }
 
@@ -3936,10 +3853,7 @@ function TechnicalPanel({ selectedSeg, activeModels = 4 }) {
             marginBottom: 14,
           }}
         >
-          تشرح هذه الواجهة التقنية النموذج بلغة مناسبة للحكّام: النظام لا يعتمد
-          على إشارة واحدة فقط، بل يدمج الخصائص الجدولية، وفيزياء الضغط والتدفق،
-          وسلوك التسلسل الزمني، والتجميع بين النماذج، والمعايرة، وتحديد موقع
-          الخلل.
+          تشرح هذه الواجهة التقنية النموذج بلغة مناسبة للحكّام: النظام لا يعتمد على إشارة واحدة فقط، بل يدمج الخصائص الجدولية، وفيزياء الضغط والتدفق، وسلوك التسلسل الزمني، والتجميع بين النماذج، والمعايرة، وتحديد موقع الخلل.
         </div>
         <div style={{ display: 'grid', gap: 10 }}>
           {rows.map(([name, val, desc]) => (
@@ -4305,9 +4219,7 @@ export default function AquaGuardDashboard() {
       time: new Date().toLocaleTimeString('ar-JO'),
       gov: gov.label,
       segment: selectedOrWorst
-        ? `${selectedOrWorst.branch || 'الشبكة'} · ${
-            selectedOrWorst.from || 'نقطة'
-          } → ${selectedOrWorst.to || 'نقطة'}`
+        ? `${selectedOrWorst.branch || 'الشبكة'} · ${selectedOrWorst.from || 'نقطة'} → ${selectedOrWorst.to || 'نقطة'}`
         : 'الشبكة العامة',
       type: getTypeLabelAr(type),
       action: action.title,
@@ -4382,7 +4294,6 @@ export default function AquaGuardDashboard() {
     ['map', 'الخريطة الحية'],
     ['scatter', 'بصمة الخلل'],
     ['telemetry', 'القياسات الحية'],
-    ['actions', 'الإجراءات المقترحة'],
     ['users', 'بحث المستخدمين'],
     ['pilot', 'خطة التطبيق'],
     ['technical', 'شرح الذكاء الاصطناعي'],
@@ -4543,8 +4454,7 @@ export default function AquaGuardDashboard() {
             zIndex: 120,
             minWidth: 280,
             maxWidth: 420,
-            background:
-              'linear-gradient(135deg,rgba(34,197,94,.20),rgba(15,23,42,.96))',
+            background: 'linear-gradient(135deg,rgba(34,197,94,.20),rgba(15,23,42,.96))',
             border: '1px solid rgba(34,197,94,.45)',
             color: '#f8fafc',
             borderRadius: 14,
@@ -4553,19 +4463,8 @@ export default function AquaGuardDashboard() {
             animation: 'slideIn .22s ease',
           }}
         >
-          <div style={{ color: '#22c55e', fontWeight: 950, fontSize: 13 }}>
-            تم اتخاذ الإجراء بنجاح
-          </div>
-          <div
-            style={{
-              color: '#cbd5e1',
-              fontSize: 12,
-              lineHeight: 1.55,
-              marginTop: 4,
-            }}
-          >
-            {actionToast.action}
-          </div>
+          <div style={{ color: '#22c55e', fontWeight: 950, fontSize: 13 }}>تم اتخاذ الإجراء بنجاح</div>
+          <div style={{ color: '#cbd5e1', fontSize: 12, lineHeight: 1.55, marginTop: 4 }}>{actionToast.action}</div>
         </div>
       )}
 
@@ -4623,9 +4522,7 @@ export default function AquaGuardDashboard() {
                 maxWidth: 900,
               }}
             >
-              تم ترتيب لوحة التحكم بما يناسب حكّام شركات التقنية: رحلة مستخدم
-              واضحة، تصور حي للشبكة، شرح مبسط للذكاء الاصطناعي، بحث مستخدمين،
-              وخطة تطبيق واقعية.
+              تم ترتيب لوحة التحكم بما يناسب حكّام شركات التقنية: رحلة مستخدم واضحة، تصور حي للشبكة، شرح مبسط للذكاء الاصطناعي، بحث مستخدمين، وخطة تطبيق واقعية.
             </div>
           </div>
           <div
@@ -4708,7 +4605,7 @@ export default function AquaGuardDashboard() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(0,1.8fr) minmax(330px,.72fr)',
+            gridTemplateColumns: 'minmax(0,1.65fr) minmax(410px,.85fr)',
             gap: 16,
           }}
           className="aq-main-grid"
@@ -4933,13 +4830,7 @@ export default function AquaGuardDashboard() {
                         name="نسبة فقد التدفق %"
                         stroke="#64748b"
                         tick={{ fontSize: 11, fill: '#94a3b8' }}
-                        label={{
-                          value: 'محور X: نسبة فقد التدفق (%)',
-                          position: 'insideBottom',
-                          offset: -10,
-                          fill: '#94a3b8',
-                          fontSize: 11,
-                        }}
+                        label={{ value: 'محور X: نسبة فقد التدفق (%)', position: 'insideBottom', offset: -10, fill: '#94a3b8', fontSize: 11 }}
                       />
                       <YAxis
                         type="number"
@@ -4947,13 +4838,7 @@ export default function AquaGuardDashboard() {
                         name="انحراف الضغط"
                         stroke="#64748b"
                         tick={{ fontSize: 11, fill: '#94a3b8' }}
-                        label={{
-                          value: 'محور Y: انحراف الضغط',
-                          angle: -90,
-                          position: 'insideLeft',
-                          fill: '#94a3b8',
-                          fontSize: 11,
-                        }}
+                        label={{ value: 'محور Y: انحراف الضغط', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
                       />
                       <RTooltip
                         cursor={{ strokeDasharray: '3 3' }}
@@ -5013,10 +4898,7 @@ export default function AquaGuardDashboard() {
                       سجل التدفق
                     </div>
                     <ResponsiveContainer width="100%" height="88%">
-                      <AreaChart
-                        data={flowHistData}
-                        margin={{ top: 10, right: 14, bottom: 30, left: 24 }}
-                      >
+                      <AreaChart data={flowHistData} margin={{ top: 10, right: 14, bottom: 30, left: 24 }}>
                         <defs>
                           <linearGradient
                             id="flowGrad"
@@ -5042,24 +4924,12 @@ export default function AquaGuardDashboard() {
                           dataKey="i"
                           stroke="#64748b"
                           tick={{ fontSize: 10, fill: '#94a3b8' }}
-                          label={{
-                            value: 'محور X: آخر القراءات الزمنية',
-                            position: 'insideBottom',
-                            offset: -18,
-                            fill: '#94a3b8',
-                            fontSize: 10,
-                          }}
+                          label={{ value: 'محور X: آخر القراءات الزمنية', position: 'insideBottom', offset: -18, fill: '#94a3b8', fontSize: 10 }}
                         />
                         <YAxis
                           stroke="#64748b"
                           tick={{ fontSize: 10, fill: '#94a3b8' }}
-                          label={{
-                            value: 'محور Y: التدفق (L/min)',
-                            angle: -90,
-                            position: 'insideLeft',
-                            fill: '#94a3b8',
-                            fontSize: 10,
-                          }}
+                          label={{ value: 'محور Y: التدفق (L/min)', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 10 }}
                         />
                         <RTooltip
                           contentStyle={{
@@ -5101,10 +4971,7 @@ export default function AquaGuardDashboard() {
                       سجل الضغط
                     </div>
                     <ResponsiveContainer width="100%" height="88%">
-                      <AreaChart
-                        data={pressHistData}
-                        margin={{ top: 10, right: 14, bottom: 30, left: 24 }}
-                      >
+                      <AreaChart data={pressHistData} margin={{ top: 10, right: 14, bottom: 30, left: 24 }}>
                         <defs>
                           <linearGradient
                             id="pressGrad"
@@ -5130,24 +4997,12 @@ export default function AquaGuardDashboard() {
                           dataKey="i"
                           stroke="#64748b"
                           tick={{ fontSize: 10, fill: '#94a3b8' }}
-                          label={{
-                            value: 'محور X: آخر القراءات الزمنية',
-                            position: 'insideBottom',
-                            offset: -18,
-                            fill: '#94a3b8',
-                            fontSize: 10,
-                          }}
+                          label={{ value: 'محور X: آخر القراءات الزمنية', position: 'insideBottom', offset: -18, fill: '#94a3b8', fontSize: 10 }}
                         />
                         <YAxis
                           stroke="#64748b"
                           tick={{ fontSize: 10, fill: '#94a3b8' }}
-                          label={{
-                            value: 'محور Y: الضغط (PSI)',
-                            angle: -90,
-                            position: 'insideLeft',
-                            fill: '#94a3b8',
-                            fontSize: 10,
-                          }}
+                          label={{ value: 'محور Y: الضغط (PSI)', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 10 }}
                         />
                         <RTooltip
                           contentStyle={{
@@ -5244,14 +5099,6 @@ export default function AquaGuardDashboard() {
                 </div>
               )}
 
-              {activeTab === 'actions' && (
-                <SuggestedActionsPanel
-                  seg={selectedOrWorst}
-                  gov={gov}
-                  actionLog={actionLog}
-                  onApproveAction={approveAction}
-                />
-              )}
               {activeTab === 'users' && <UserResearchPanel />}
               {activeTab === 'pilot' && <PilotPlanPanel />}
               {activeTab === 'technical' && (
@@ -5426,8 +5273,18 @@ export default function AquaGuardDashboard() {
 
             <IncidentTimeline demoStep={demoStep} activeType={worstType} />
 
+            <SuggestedActionsPanel
+              seg={selectedOrWorst}
+              gov={gov}
+              actionLog={actionLog}
+              onApproveAction={approveAction}
+              compact
+            />
+
+            <ActionLogPanel actionLog={actionLog} />
+
             <SectionCard
-              title="سجل الإنذارات"
+              title="سجل الإنذارات اللحظية"
               icon={<Bell size={16} color="#ef4444" />}
               right={
                 <SmallPill color="#ef4444">{allAlerts.length} مسجلة</SmallPill>
