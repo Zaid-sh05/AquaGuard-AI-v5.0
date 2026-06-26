@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -13,7 +13,7 @@ import {
   RadialBar,
   AreaChart,
   Area,
-} from "recharts";
+} from 'recharts';
 import {
   Activity,
   AlertTriangle,
@@ -38,21 +38,21 @@ import {
   Gauge,
   Sliders,
   Database,
-} from "lucide-react";
+} from 'lucide-react';
 
 // ══════════════════════════════════════════════════════════════════════════════
 // API CONFIGURATION — paste your ngrok URL here when running Colab backend
 // ══════════════════════════════════════════════════════════════════════════════
-const API_URL = "https://abc123.ngrok.io"; // ← paste ngrok URL here
+const API_URL = 'https://abc123.ngrok.io'; // ← paste ngrok URL here
 
 async function apiPost(path, body) {
   if (!API_URL) return null;
   try {
     const r = await fetch(API_URL + path, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      mode: "cors",
+      mode: 'cors',
     });
     return r.ok ? r.json() : null;
   } catch {
@@ -63,7 +63,7 @@ async function apiPost(path, body) {
 async function apiGet(path) {
   if (!API_URL) return null;
   try {
-    const r = await fetch(API_URL + path, { mode: "cors" });
+    const r = await fetch(API_URL + path, { mode: 'cors' });
     return r.ok ? r.json() : null;
   } catch {
     return null;
@@ -1279,16 +1279,16 @@ function NationalCarrierMap({
         fill="url(#ncGrid)"
       />
 
-      <text x="400" y="25" fill="#e2e8f0" fontSize="18" fontWeight="800">
+      <text x="750" y="25" fill="#e2e8f0" fontSize="18" fontWeight="800">
         مشروع الناقل الوطني الأردني
       </text>
-      <text x="400" y="50" fill="#38bdf8" fontSize="11" fontWeight="700">
+      <text x="590" y="50" fill="#38bdf8" fontSize="11" fontWeight="700">
         البحر الأحمر → العقبة → معان → عمّان → AL MUNTAZAH / ABU ALANDA
       </text>
 
       <text
-        x={W - 125}
-        y="58"
+        x={W - 30}
+        y="100"
         textAnchor="end"
         fill="#f8fafc"
         fontSize="11"
@@ -1303,7 +1303,7 @@ function NationalCarrierMap({
       </text>
 
       <text
-        x={W - 128}
+        x={W - 30}
         y="78"
         textAnchor="end"
         fill="#86efac"
@@ -1595,8 +1595,8 @@ function NationalCarrierMap({
           fill="rgba(10,22,40,.86)"
           stroke="rgba(56,189,248,.16)"
         />
-        <text x="260" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
-          ملخص الناقل الوطني :
+        <text x="150" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
+          : ملخص الناقل الوطني
         </text>
 
         {[
@@ -1613,11 +1613,11 @@ function NationalCarrierMap({
           ['طول المسار', `${'450'} km`, '#fbbf24'],
         ].map(([l, v, c], i) => (
           <g key={l} transform={`translate(18 ${50 + i * 16})`}>
-            <text x="230" y="0" fill="#64748b" fontSize="10">
+            <text x="150" y="0" fill="#64748b" fontSize="10">
               {l}
             </text>
             <text
-              x="120"
+              x="8"
               y="0"
               fill={c}
               fontSize="10.6"
@@ -1640,11 +1640,11 @@ function NationalCarrierMap({
           fill="rgba(8,18,34,.82)"
           stroke="rgba(56,189,248,.14)"
         />
-        <text x="300" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
-          المسار التشغيلي :
+        <text x="220" y="24" fill="#e2e8f0" fontSize="13" fontWeight="800">
+          : المسار التشغيلي
         </text>
-        <text x="300" y="44" fill="#FFFF" fontSize="10">
-          البحر الأحمر → العقبة → معان → عمّان
+        <text x="130" y="44" fill="#FFFF" fontSize="10">
+          البحر الأحمر -> العقبة -> معان -> عمّان
         </text>
 
         {[
@@ -1657,7 +1657,7 @@ function NationalCarrierMap({
         ].map((line, i) => (
           <text
             key={i}
-            x="290"
+            x="5"
             y={68 + i * 18}
             fill={i < 5 ? '#cbd5e1' : '#22d3ee'}
             fontSize="10.2"
@@ -2304,22 +2304,22 @@ function NRWGauge({ nrw, target }) {
   const tgt = Math.round(target * 100);
   const data = [
     {
-      name: "NRW",
+      name: 'NRW',
       value: pct,
-      fill: nrw > 0.5 ? "#ef4444" : nrw > 0.4 ? "#f59e0b" : "#22c55e",
+      fill: nrw > 0.5 ? '#ef4444' : nrw > 0.4 ? '#f59e0b' : '#22c55e',
     },
-    { name: "Gap", value: 100 - pct, fill: "#1e293b" },
+    { name: 'Gap', value: 100 - pct, fill: '#1e293b' },
   ];
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         gap: 2,
       }}
     >
-      <div style={{ position: "relative", width: 130, height: 74 }}>
+      <div style={{ position: 'relative', width: 130, height: 74 }}>
         <ResponsiveContainer width={130} height={74}>
           <RadialBarChart
             cx={65}
@@ -2332,40 +2332,39 @@ function NRWGauge({ nrw, target }) {
           >
             <RadialBar
               dataKey="value"
-              background={{ fill: "#1e293b" }}
+              background={{ fill: '#1e293b' }}
               cornerRadius={4}
             />
           </RadialBarChart>
         </ResponsiveContainer>
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            textAlign: "center",
+            textAlign: 'center',
           }}
         >
           <div
             style={{
               fontSize: 20,
               fontWeight: 700,
-              fontFamily: "monospace",
-              color: pct > 50 ? "#ef4444" : pct > 40 ? "#f59e0b" : "#22c55e",
+              fontFamily: 'monospace',
+              color: pct > 50 ? '#ef4444' : pct > 40 ? '#f59e0b' : '#22c55e',
             }}
           >
             {pct}%
           </div>
         </div>
       </div>
-      <div style={{ fontSize: 10, color: "#64748b" }}>
-        Target:{" "}
-        <span style={{ color: "#22c55e", fontWeight: 600 }}>{tgt}%</span>
+      <div style={{ fontSize: 10, color: '#64748b' }}>
+        Target:{' '}
+        <span style={{ color: '#22c55e', fontWeight: 600 }}>{tgt}%</span>
       </div>
     </div>
   );
 }
-
 
 // ══════════════════════════════════════════════════════════════════════════════
 // OPERATOR TAB PANELS — Arabic internal tabs, approved actions, UX research, AI explanation
@@ -2373,104 +2372,113 @@ function NRWGauge({ nrw, target }) {
 const ACTION_SUGGESTIONS = {
   normal: [
     {
-      title: "استمرار المراقبة التشغيلية",
-      detail: "لا يوجد خلل نشط؛ يتم الاكتفاء بتحديث القراءات ومراقبة الانحرافات القادمة.",
-      priority: "منخفضة",
+      title: 'استمرار المراقبة التشغيلية',
+      detail:
+        'لا يوجد خلل نشط؛ يتم الاكتفاء بتحديث القراءات ومراقبة الانحرافات القادمة.',
+      priority: 'منخفضة',
     },
     {
-      title: "توثيق دورة القياس الحالية",
-      detail: "حفظ حالة الشبكة الطبيعية كمرجع للمقارنة مع أي تغير لاحق.",
-      priority: "منخفضة",
+      title: 'توثيق دورة القياس الحالية',
+      detail: 'حفظ حالة الشبكة الطبيعية كمرجع للمقارنة مع أي تغير لاحق.',
+      priority: 'منخفضة',
     },
   ],
   leak: [
     {
-      title: "إرسال فريق صيانة للفحص الميداني",
-      detail: "توجيه الفريق إلى المقطع المحدد مع أولوية متوسطة قبل تحول التسرب إلى عطل أكبر.",
-      priority: "متوسطة",
+      title: 'إرسال فريق صيانة للفحص الميداني',
+      detail:
+        'توجيه الفريق إلى المقطع المحدد مع أولوية متوسطة قبل تحول التسرب إلى عطل أكبر.',
+      priority: 'متوسطة',
     },
     {
-      title: "تخفيض الضغط بنسبة 10–15% مؤقتاً",
-      detail: "تقليل الفاقد لحين وصول الفريق مع التأكد من عدم التأثير على التزويد الأساسي.",
-      priority: "متوسطة",
+      title: 'تخفيض الضغط بنسبة 10–15% مؤقتاً',
+      detail:
+        'تقليل الفاقد لحين وصول الفريق مع التأكد من عدم التأثير على التزويد الأساسي.',
+      priority: 'متوسطة',
     },
     {
-      title: "تشغيل فحص صوتي موضعي",
-      detail: "استخدام حساس التسرب الصوتي لتأكيد النقطة الأدق قبل الحفر أو الإغلاق.",
-      priority: "متوسطة",
+      title: 'تشغيل فحص صوتي موضعي',
+      detail:
+        'استخدام حساس التسرب الصوتي لتأكيد النقطة الأدق قبل الحفر أو الإغلاق.',
+      priority: 'متوسطة',
     },
   ],
   burst: [
     {
-      title: "عزل المقطع المتأثر فوراً",
-      detail: "إغلاق الصمام الذكي أو المحبس الأقرب لتقليل الفاقد وحصر الضرر.",
-      priority: "حرجة",
+      title: 'عزل المقطع المتأثر فوراً',
+      detail: 'إغلاق الصمام الذكي أو المحبس الأقرب لتقليل الفاقد وحصر الضرر.',
+      priority: 'حرجة',
     },
     {
-      title: "فتح بلاغ صيانة طارئ",
-      detail: "إرسال فريق إصلاح مع إحداثيات المقطع وقراءات التدفق والضغط الداعمة للقرار.",
-      priority: "حرجة",
+      title: 'فتح بلاغ صيانة طارئ',
+      detail:
+        'إرسال فريق إصلاح مع إحداثيات المقطع وقراءات التدفق والضغط الداعمة للقرار.',
+      priority: 'حرجة',
     },
     {
-      title: "إعادة توزيع التزويد مؤقتاً",
-      detail: "تحويل جزء من التدفق إلى مسار بديل لتقليل أثر الانقطاع على المشتركين.",
-      priority: "مرتفعة",
+      title: 'إعادة توزيع التزويد مؤقتاً',
+      detail:
+        'تحويل جزء من التدفق إلى مسار بديل لتقليل أثر الانقطاع على المشتركين.',
+      priority: 'مرتفعة',
     },
   ],
   theft: [
     {
-      title: "فتح مهمة تحقق ميداني",
-      detail: "فحص الوصلات غير المشروعة حول المقطع المحدد دون قطع الخدمة مباشرة.",
-      priority: "تحقق",
+      title: 'فتح مهمة تحقق ميداني',
+      detail:
+        'فحص الوصلات غير المشروعة حول المقطع المحدد دون قطع الخدمة مباشرة.',
+      priority: 'تحقق',
     },
     {
-      title: "مقارنة آخر 72 ساعة مع سجلات العدادات",
-      detail: "ربط نمط الفاقد مع قراءات الاستهلاك للتأكد من وجود استخدام غير مشروع.",
-      priority: "تحقق",
+      title: 'مقارنة آخر 72 ساعة مع سجلات العدادات',
+      detail:
+        'ربط نمط الفاقد مع قراءات الاستهلاك للتأكد من وجود استخدام غير مشروع.',
+      priority: 'تحقق',
     },
     {
-      title: "توثيق الحالة كاشتباه سرقة",
-      detail: "حفظ القراءات والموقع والوقت كمرجع للجهة المختصة قبل الإجراء القانوني.",
-      priority: "تحقق",
+      title: 'توثيق الحالة كاشتباه سرقة',
+      detail:
+        'حفظ القراءات والموقع والوقت كمرجع للجهة المختصة قبل الإجراء القانوني.',
+      priority: 'تحقق',
     },
   ],
 };
 
 function getTypeColor(type) {
-  return TYPE_CONFIG[type]?.color || "#22c55e";
+  return TYPE_CONFIG[type]?.color || '#22c55e';
 }
 
 function getRiskLabel(type) {
-  if (type === "burst") return "حرج";
-  if (type === "leak") return "مرتفع";
-  if (type === "theft") return "تحقق";
-  return "طبيعي";
+  if (type === 'burst') return 'حرج';
+  if (type === 'leak') return 'مرتفع';
+  if (type === 'theft') return 'تحقق';
+  return 'طبيعي';
 }
 
 function getTypeLabelAr(type) {
-  if (type === "burst") return "انفجار";
-  if (type === "leak") return "تسرب";
-  if (type === "theft") return "سرقة";
-  return "طبيعي";
+  if (type === 'burst') return 'انفجار';
+  if (type === 'leak') return 'تسرب';
+  if (type === 'theft') return 'سرقة';
+  return 'طبيعي';
 }
 
-function SmallPill({ children, color = "#38bdf8", filled = false }) {
+function SmallPill({ children, color = '#38bdf8', filled = false }) {
   return (
     <span
       style={{
-        display: "inline-flex",
-        alignItems: "center",
+        display: 'inline-flex',
+        alignItems: 'center',
         gap: 6,
-        padding: "5px 9px",
+        padding: '5px 9px',
         borderRadius: 999,
         border: `1px solid ${color}66`,
-        background: filled ? `${color}22` : "rgba(2,6,23,.28)",
+        background: filled ? `${color}22` : 'rgba(2,6,23,.28)',
         color,
         fontSize: 10,
         fontWeight: 800,
         letterSpacing: 0.35,
-        fontFamily: "monospace",
-        whiteSpace: "nowrap",
+        fontFamily: 'monospace',
+        whiteSpace: 'nowrap',
       }}
     >
       {children}
@@ -2482,28 +2490,29 @@ function SectionCard({ children, title, icon, right, style = {} }) {
   return (
     <div
       style={{
-        background: "linear-gradient(180deg,rgba(15,23,42,.92),rgba(8,15,30,.94))",
-        border: "1px solid rgba(56,189,248,.12)",
+        background:
+          'linear-gradient(180deg,rgba(15,23,42,.92),rgba(8,15,30,.94))',
+        border: '1px solid rgba(56,189,248,.12)',
         borderRadius: 16,
-        boxShadow: "0 18px 44px rgba(0,0,0,.18)",
-        overflow: "hidden",
+        boxShadow: '0 18px 44px rgba(0,0,0,.18)',
+        overflow: 'hidden',
         ...style,
       }}
     >
       {title && (
         <div
           style={{
-            padding: "14px 16px",
-            borderBottom: "1px solid rgba(56,189,248,.08)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            padding: '14px 16px',
+            borderBottom: '1px solid rgba(56,189,248,.08)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
             gap: 12,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
             {icon}
-            <div style={{ fontSize: 13, fontWeight: 900, color: "#f8fafc" }}>
+            <div style={{ fontSize: 13, fontWeight: 900, color: '#f8fafc' }}>
               {title}
             </div>
           </div>
@@ -2515,21 +2524,21 @@ function SectionCard({ children, title, icon, right, style = {} }) {
   );
 }
 
-function MiniMetric({ label, value, color = "#e2e8f0", sub }) {
+function MiniMetric({ label, value, color = '#e2e8f0', sub }) {
   return (
     <div
       style={{
-        border: "1px solid rgba(148,163,184,.13)",
-        background: "rgba(2,6,23,.28)",
+        border: '1px solid rgba(148,163,184,.13)',
+        background: 'rgba(2,6,23,.28)',
         borderRadius: 12,
-        padding: "12px 13px",
+        padding: '12px 13px',
       }}
     >
       <div
         style={{
-          color: "#64748b",
+          color: '#64748b',
           fontSize: 10,
-          fontFamily: "monospace",
+          fontFamily: 'monospace',
           fontWeight: 800,
           letterSpacing: 0.5,
         }}
@@ -2540,75 +2549,106 @@ function MiniMetric({ label, value, color = "#e2e8f0", sub }) {
         style={{
           color,
           fontSize: 19,
-          fontFamily: "monospace",
+          fontFamily: 'monospace',
           fontWeight: 950,
           marginTop: 5,
         }}
       >
         {value}
       </div>
-      {sub && <div style={{ color: "#64748b", fontSize: 10, marginTop: 4 }}>{sub}</div>}
+      {sub && (
+        <div style={{ color: '#64748b', fontSize: 10, marginTop: 4 }}>
+          {sub}
+        </div>
+      )}
     </div>
   );
 }
 
-function ProgressBar({ value, color = "#38bdf8", height = 8 }) {
+function ProgressBar({ value, color = '#38bdf8', height = 8 }) {
   const pct = Math.max(0, Math.min(100, Number(value || 0)));
   return (
     <div
       style={{
         height,
         borderRadius: 999,
-        background: "rgba(51,65,85,.7)",
-        overflow: "hidden",
+        background: 'rgba(51,65,85,.7)',
+        overflow: 'hidden',
       }}
     >
       <div
         style={{
           width: `${pct}%`,
-          height: "100%",
+          height: '100%',
           borderRadius: 999,
           background: color,
-          transition: "width .35s ease",
+          transition: 'width .35s ease',
         }}
       />
     </div>
   );
 }
 
-function actionButtonStyle(color = "#38bdf8") {
+function actionButtonStyle(color = '#38bdf8') {
   return {
     border: `1px solid ${color}80`,
     background: `linear-gradient(135deg,${color}33,rgba(15,23,42,.9))`,
-    color: "#f8fafc",
+    color: '#f8fafc',
     borderRadius: 12,
-    padding: "9px 12px",
+    padding: '9px 12px',
     fontWeight: 900,
-    cursor: "pointer",
-    display: "inline-flex",
-    alignItems: "center",
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
     gap: 8,
-    justifyContent: "center",
+    justifyContent: 'center',
     boxShadow: `0 12px 36px ${color}16`,
   };
 }
 
-function SuggestedActionsPanel({ seg, gov, actionLog, onApproveAction, onSelectActionLog }) {
-  const type = seg?.predType || "normal";
+function SuggestedActionsPanel({
+  seg,
+  gov,
+  actionLog,
+  onApproveAction,
+  onSelectActionLog,
+}) {
+  const type = seg?.predType || 'normal';
   const color = getTypeColor(type);
   const suggestions = ACTION_SUGGESTIONS[type] || ACTION_SUGGESTIONS.normal;
 
   return (
-    <div style={{ display: "grid", gap: 16, direction: "rtl", textAlign: "right" }}>
+    <div
+      style={{ display: 'grid', gap: 16, direction: 'rtl', textAlign: 'right' }}
+    >
       <SectionCard
         title="الإجراء المعتمد"
         icon={<Shield size={16} color={color} />}
-        right={<SmallPill color={color} filled>{getTypeLabelAr(type)}</SmallPill>}
+        right={
+          <SmallPill color={color} filled>
+            {getTypeLabelAr(type)}
+          </SmallPill>
+        }
       >
-        <div style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.75, marginBottom: 14 }}>
-          يعرض النظام أكثر من إجراء ممكن حتى يبقى القرار بيد المشغّل. عند اعتماد أي إجراء يتم حفظه في سجل تاريخي قابل للمراجعة والضغط عليه للرجوع إلى المقطع المرتبط به.
+        <div
+          style={{
+            color: '#94a3b8',
+            fontSize: 13,
+            lineHeight: 1.75,
+            marginBottom: 14,
+          }}
+        >
+          يعرض النظام أكثر من إجراء ممكن حتى يبقى القرار بيد المشغّل. عند اعتماد
+          أي إجراء يتم حفظه في سجل تاريخي قابل للمراجعة والضغط عليه للرجوع إلى
+          المقطع المرتبط به.
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3,1fr)',
+            gap: 12,
+          }}
+        >
           {suggestions.map((action, i) => (
             <div
               key={action.title}
@@ -2617,20 +2657,48 @@ function SuggestedActionsPanel({ seg, gov, actionLog, onApproveAction, onSelectA
                 background: `${color}10`,
                 borderRadius: 14,
                 padding: 14,
-                display: "grid",
+                display: 'grid',
                 gap: 10,
                 minHeight: 176,
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
                 <SmallPill color={color}>اقتراح {i + 1}</SmallPill>
-                <span style={{ color, fontSize: 10, fontFamily: "monospace", fontWeight: 900 }}>{action.priority}</span>
+                <span
+                  style={{
+                    color,
+                    fontSize: 10,
+                    fontFamily: 'monospace',
+                    fontWeight: 900,
+                  }}
+                >
+                  {action.priority}
+                </span>
               </div>
-              <div style={{ color: "#f8fafc", fontSize: 14, fontWeight: 950, lineHeight: 1.45 }}>
+              <div
+                style={{
+                  color: '#f8fafc',
+                  fontSize: 14,
+                  fontWeight: 950,
+                  lineHeight: 1.45,
+                }}
+              >
                 {action.title}
               </div>
-              <div style={{ color: "#cbd5e1", fontSize: 12, lineHeight: 1.7 }}>{action.detail}</div>
-              <button onClick={() => onApproveAction(action)} style={{ ...actionButtonStyle(color), marginTop: "auto" }}>
+              <div style={{ color: '#cbd5e1', fontSize: 12, lineHeight: 1.7 }}>
+                {action.detail}
+              </div>
+              <button
+                onClick={() => onApproveAction(action)}
+                style={{ ...actionButtonStyle(color), marginTop: 'auto' }}
+              >
                 <Zap size={14} /> اعتماد الإجراء
               </button>
             </div>
@@ -2643,32 +2711,71 @@ function SuggestedActionsPanel({ seg, gov, actionLog, onApproveAction, onSelectA
         icon={<Bell size={16} color="#22c55e" />}
         right={<SmallPill color="#22c55e">{actionLog.length} إجراء</SmallPill>}
       >
-        <div style={{ display: "grid", gap: 8, maxHeight: 280, overflowY: "auto" }}>
+        <div
+          style={{ display: 'grid', gap: 8, maxHeight: 280, overflowY: 'auto' }}
+        >
           {actionLog.length === 0 && (
-            <div style={{ color: "#64748b", fontSize: 12, textAlign: "center", padding: 18 }}>
-              لم يتم اعتماد أي إجراء بعد. اختر أحد الإجراءات المقترحة ليظهر هنا كمرجع تشغيلي.
+            <div
+              style={{
+                color: '#64748b',
+                fontSize: 12,
+                textAlign: 'center',
+                padding: 18,
+              }}
+            >
+              لم يتم اعتماد أي إجراء بعد. اختر أحد الإجراءات المقترحة ليظهر هنا
+              كمرجع تشغيلي.
             </div>
           )}
           {actionLog.map((item) => (
             <div
               key={item.id}
-              onClick={() => item.segSnapshot && onSelectActionLog(item.segSnapshot)}
+              onClick={() =>
+                item.segSnapshot && onSelectActionLog(item.segSnapshot)
+              }
               style={{
-                border: "1px solid rgba(34,197,94,.20)",
-                background: "rgba(34,197,94,.08)",
+                border: '1px solid rgba(34,197,94,.20)',
+                background: 'rgba(34,197,94,.08)',
                 borderRadius: 12,
                 padding: 12,
-                cursor: item.segSnapshot ? "pointer" : "default",
+                cursor: item.segSnapshot ? 'pointer' : 'default',
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center" }}>
-                <div style={{ color: "#f8fafc", fontWeight: 950, fontSize: 13 }}>{item.action}</div>
-                <SmallPill color="#22c55e" filled>{item.status}</SmallPill>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: 10,
+                  alignItems: 'center',
+                }}
+              >
+                <div
+                  style={{ color: '#f8fafc', fontWeight: 950, fontSize: 13 }}
+                >
+                  {item.action}
+                </div>
+                <SmallPill color="#22c55e" filled>
+                  {item.status}
+                </SmallPill>
               </div>
-              <div style={{ color: "#94a3b8", fontSize: 11, lineHeight: 1.6, marginTop: 6 }}>
+              <div
+                style={{
+                  color: '#94a3b8',
+                  fontSize: 11,
+                  lineHeight: 1.6,
+                  marginTop: 6,
+                }}
+              >
                 {item.gov} · {item.segment} · {item.type} · {item.time}
               </div>
-              <div style={{ color: "#64748b", fontSize: 11, lineHeight: 1.6, marginTop: 4 }}>
+              <div
+                style={{
+                  color: '#64748b',
+                  fontSize: 11,
+                  lineHeight: 1.6,
+                  marginTop: 4,
+                }}
+              >
                 {item.detail}
               </div>
             </div>
@@ -2681,40 +2788,128 @@ function SuggestedActionsPanel({ seg, gov, actionLog, onApproveAction, onSelectA
 
 function UserResearchPanel() {
   const personas = [
-    ["مشغّل غرفة التحكم", "يريد معرفة الحالة والموقع والإجراء بسرعة دون تحليل جداول طويلة.", "يحتاج: أولوية الإنذار، موقع الخريطة، نسبة الثقة، والإجراء."],
-    ["قائد فريق الصيانة", "يريد نقطة واضحة للذهاب إليها ونوع الخلل قبل النزول للميدان.", "يحتاج: الفرع، المقطع، درجة الخطورة، وتوجيهات العزل."],
-    ["صاحب القرار", "يريد مؤشرات الفاقد والمناطق الأخطر وأثر الحل على NRW.", "يحتاج: اتجاهات الفاقد، الأثر المالي، وقابلية التوسع."],
+    [
+      'مشغّل غرفة التحكم',
+      'يريد معرفة الحالة والموقع والإجراء بسرعة دون تحليل جداول طويلة.',
+      'يحتاج: أولوية الإنذار، موقع الخريطة، نسبة الثقة، والإجراء.',
+    ],
+    [
+      'قائد فريق الصيانة',
+      'يريد نقطة واضحة للذهاب إليها ونوع الخلل قبل النزول للميدان.',
+      'يحتاج: الفرع، المقطع، درجة الخطورة، وتوجيهات العزل.',
+    ],
+    [
+      'صاحب القرار',
+      'يريد مؤشرات الفاقد والمناطق الأخطر وأثر الحل على NRW.',
+      'يحتاج: اتجاهات الفاقد، الأثر المالي، وقابلية التوسع.',
+    ],
   ];
   const pains = [
-    "تأخر اكتشاف التسربات والانفجارات",
-    "بحث ميداني طويل عن موقع الخلل",
-    "صعوبة التمييز بين التسرب والانفجار والسرقة",
-    "تشتت البيانات بين الحساسات والفرق وصنّاع القرار",
+    'تأخر اكتشاف التسربات والانفجارات',
+    'بحث ميداني طويل عن موقع الخلل',
+    'صعوبة التمييز بين التسرب والانفجار والسرقة',
+    'تشتت البيانات بين الحساسات والفرق وصنّاع القرار',
   ];
 
   return (
-    <div style={{ display: "grid", gap: 16, direction: "rtl", textAlign: "right" }}>
-      <SectionCard title="بحث المستخدمين" icon={<Eye size={16} color="#a855f7" />}>
-        <div style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.75, marginBottom: 14 }}>
-          هذا القسم يوضح أن الواجهة مصممة حول المستخدم التشغيلي: المشغّل، فريق الصيانة، وصاحب القرار، وليس حول عرض أرقام النموذج فقط.
+    <div
+      style={{ display: 'grid', gap: 16, direction: 'rtl', textAlign: 'right' }}
+    >
+      <SectionCard
+        title="بحث المستخدمين"
+        icon={<Eye size={16} color="#a855f7" />}
+      >
+        <div
+          style={{
+            color: '#94a3b8',
+            fontSize: 13,
+            lineHeight: 1.75,
+            marginBottom: 14,
+          }}
+        >
+          هذا القسم يوضح أن الواجهة مصممة حول المستخدم التشغيلي: المشغّل، فريق
+          الصيانة، وصاحب القرار، وليس حول عرض أرقام النموذج فقط.
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3,1fr)',
+            gap: 12,
+          }}
+        >
           {personas.map(([title, ar, need]) => (
-            <div key={title} style={{ border: "1px solid rgba(168,85,247,.18)", background: "rgba(88,28,135,.12)", borderRadius: 14, padding: 14 }}>
-              <div style={{ color: "#f8fafc", fontWeight: 950, fontSize: 14 }}>{title}</div>
-              <div style={{ color: "#cbd5e1", fontSize: 12, lineHeight: 1.7, marginTop: 8 }}>{ar}</div>
-              <div style={{ color: "#a78bfa", fontSize: 11, lineHeight: 1.6, marginTop: 8, fontFamily: "monospace" }}>{need}</div>
+            <div
+              key={title}
+              style={{
+                border: '1px solid rgba(168,85,247,.18)',
+                background: 'rgba(88,28,135,.12)',
+                borderRadius: 14,
+                padding: 14,
+              }}
+            >
+              <div style={{ color: '#f8fafc', fontWeight: 950, fontSize: 14 }}>
+                {title}
+              </div>
+              <div
+                style={{
+                  color: '#cbd5e1',
+                  fontSize: 12,
+                  lineHeight: 1.7,
+                  marginTop: 8,
+                }}
+              >
+                {ar}
+              </div>
+              <div
+                style={{
+                  color: '#a78bfa',
+                  fontSize: 11,
+                  lineHeight: 1.6,
+                  marginTop: 8,
+                  fontFamily: 'monospace',
+                }}
+              >
+                {need}
+              </div>
             </div>
           ))}
         </div>
       </SectionCard>
 
-      <SectionCard title="نقاط الألم التي يعالجها النظام" icon={<AlertTriangle size={16} color="#f59e0b" />}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10 }}>
+      <SectionCard
+        title="نقاط الألم التي يعالجها النظام"
+        icon={<AlertTriangle size={16} color="#f59e0b" />}
+      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4,1fr)',
+            gap: 10,
+          }}
+        >
           {pains.map((p, i) => (
-            <div key={p} style={{ padding: 13, borderRadius: 12, background: "rgba(245,158,11,.10)", border: "1px solid rgba(245,158,11,.18)" }}>
-              <div style={{ color: "#f59e0b", fontWeight: 950, fontFamily: "monospace", marginBottom: 6 }}>0{i + 1}</div>
-              <div style={{ color: "#e2e8f0", fontSize: 12, lineHeight: 1.6 }}>{p}</div>
+            <div
+              key={p}
+              style={{
+                padding: 13,
+                borderRadius: 12,
+                background: 'rgba(245,158,11,.10)',
+                border: '1px solid rgba(245,158,11,.18)',
+              }}
+            >
+              <div
+                style={{
+                  color: '#f59e0b',
+                  fontWeight: 950,
+                  fontFamily: 'monospace',
+                  marginBottom: 6,
+                }}
+              >
+                0{i + 1}
+              </div>
+              <div style={{ color: '#e2e8f0', fontSize: 12, lineHeight: 1.6 }}>
+                {p}
+              </div>
             </div>
           ))}
         </div>
@@ -2726,43 +2921,105 @@ function UserResearchPanel() {
 function TechnicalPanel({ selectedSeg, activeModels = 4 }) {
   const models = selectedSeg?.models || { lgb: 0, xgb: 0, nn: 0, lstm: 0 };
   const rows = [
-    ["LightGBM", models.lgb || 0, "خصائص جدولية من الضغط والتدفق"],
-    ["XGBoost", models.xgb || 0, "تحقق متقاطع للأنماط غير الخطية"],
-    ["ResNet-MLP", models.nn || 0, "نمذجة العلاقات المعقدة بين الخصائص"],
-    ["BiLSTM", models.lstm || 0, "فهم تسلسل المقاطع داخل الفرع"],
+    ['LightGBM', models.lgb || 0, 'خصائص جدولية من الضغط والتدفق'],
+    ['XGBoost', models.xgb || 0, 'تحقق متقاطع للأنماط غير الخطية'],
+    ['ResNet-MLP', models.nn || 0, 'نمذجة العلاقات المعقدة بين الخصائص'],
+    ['BiLSTM', models.lstm || 0, 'فهم تسلسل المقاطع داخل الفرع'],
   ];
-  const color = getTypeColor(selectedSeg?.predType || "normal");
+  const color = getTypeColor(selectedSeg?.predType || 'normal');
 
   return (
-    <div style={{ display: "grid", gap: 16, direction: "rtl", textAlign: "right" }}>
+    <div
+      style={{ display: 'grid', gap: 16, direction: 'rtl', textAlign: 'right' }}
+    >
       <SectionCard
         title="شرح الذكاء الاصطناعي"
         icon={<Cpu size={16} color="#38bdf8" />}
-        right={<SmallPill color="#22c55e">{activeModels} نماذج فعالة</SmallPill>}
+        right={
+          <SmallPill color="#22c55e">{activeModels} نماذج فعالة</SmallPill>
+        }
       >
-        <div style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.75, marginBottom: 14 }}>
-          النظام لا يعتمد على إشارة واحدة فقط؛ بل يدمج خصائص الضغط والتدفق، ميزان الكتلة، نماذج التعلم الآلي، النموذج التسلسلي، ثم يخرج قراراً موحداً مع نسبة ثقة قابلة للتفسير.
+        <div
+          style={{
+            color: '#94a3b8',
+            fontSize: 13,
+            lineHeight: 1.75,
+            marginBottom: 14,
+          }}
+        >
+          النظام لا يعتمد على إشارة واحدة فقط؛ بل يدمج خصائص الضغط والتدفق،
+          ميزان الكتلة، نماذج التعلم الآلي، النموذج التسلسلي، ثم يخرج قراراً
+          موحداً مع نسبة ثقة قابلة للتفسير.
         </div>
-        <div style={{ display: "grid", gap: 10 }}>
+        <div style={{ display: 'grid', gap: 10 }}>
           {rows.map(([name, val, desc]) => (
-            <div key={name} style={{ display: "grid", gridTemplateColumns: "110px 1fr 56px", gap: 12, alignItems: "center" }}>
-              <div style={{ color: "#e2e8f0", fontSize: 12, fontWeight: 900 }}>{name}</div>
-              <ProgressBar value={val} color={val > 70 ? color : val > 35 ? "#f59e0b" : "#38bdf8"} />
-              <div style={{ color: "#94a3b8", fontFamily: "monospace", fontWeight: 900, fontSize: 11 }}>{Number(val).toFixed(1)}%</div>
+            <div
+              key={name}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '110px 1fr 56px',
+                gap: 12,
+                alignItems: 'center',
+              }}
+            >
+              <div style={{ color: '#e2e8f0', fontSize: 12, fontWeight: 900 }}>
+                {name}
+              </div>
+              <ProgressBar
+                value={val}
+                color={val > 70 ? color : val > 35 ? '#f59e0b' : '#38bdf8'}
+              />
+              <div
+                style={{
+                  color: '#94a3b8',
+                  fontFamily: 'monospace',
+                  fontWeight: 900,
+                  fontSize: 11,
+                }}
+              >
+                {Number(val).toFixed(1)}%
+              </div>
               <div />
-              <div style={{ color: "#64748b", fontSize: 11, marginTop: -6 }}>{desc}</div>
+              <div style={{ color: '#64748b', fontSize: 11, marginTop: -6 }}>
+                {desc}
+              </div>
               <div />
             </div>
           ))}
         </div>
       </SectionCard>
 
-      <SectionCard title="خصائص المقطع الحالي" icon={<Sliders size={16} color="#f59e0b" />}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10 }}>
-          <MiniMetric label="فقد التدفق" value={`${selectedSeg?.flowLoss?.toFixed?.(2) || "0.00"}%`} color="#f59e0b" />
-          <MiniMetric label="الفقد الزائد" value={`${selectedSeg?.excessLoss?.toFixed?.(2) || "0.00"}%`} color="#ef4444" />
-          <MiniMetric label="DP DEV" value={`${selectedSeg?.dpDev?.toFixed?.(3) || "0.000"}`} color="#38bdf8" />
-          <MiniMetric label="PIPE AGE" value={`${selectedSeg?.age || 0}y`} color="#a855f7" />
+      <SectionCard
+        title="خصائص المقطع الحالي"
+        icon={<Sliders size={16} color="#f59e0b" />}
+      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4,1fr)',
+            gap: 10,
+          }}
+        >
+          <MiniMetric
+            label="فقد التدفق"
+            value={`${selectedSeg?.flowLoss?.toFixed?.(2) || '0.00'}%`}
+            color="#f59e0b"
+          />
+          <MiniMetric
+            label="الفقد الزائد"
+            value={`${selectedSeg?.excessLoss?.toFixed?.(2) || '0.00'}%`}
+            color="#ef4444"
+          />
+          <MiniMetric
+            label="DP DEV"
+            value={`${selectedSeg?.dpDev?.toFixed?.(3) || '0.000'}`}
+            color="#38bdf8"
+          />
+          <MiniMetric
+            label="PIPE AGE"
+            value={`${selectedSeg?.age || 0}y`}
+            color="#a855f7"
+          />
         </div>
       </SectionCard>
     </div>
@@ -2772,7 +3029,7 @@ function TechnicalPanel({ selectedSeg, activeModels = 4 }) {
 // MAIN DASHBOARD
 // ══════════════════════════════════════════════════════════════════════════════
 export default function AquaGuardDashboard() {
-  const [govKey, setGovKey] = useState("Amman");
+  const [govKey, setGovKey] = useState('Amman');
   const [simData, setSimData] = useState(null);
   const [allAlerts, setAllAlerts] = useState([]);
   const [selectedSeg, setSelectedSeg] = useState(null);
@@ -2780,14 +3037,14 @@ export default function AquaGuardDashboard() {
   const [countdown, setCountdown] = useState(UPDATE_INTERVAL_SEC);
   const [forceType, setForceType] = useState(null);
   const [showGovMenu, setShowGovMenu] = useState(false);
-  const [govSearch, setGovSearch] = useState("");
+  const [govSearch, setGovSearch] = useState('');
   const [simMode, setSimMode] = useState(false);
   const [simPressure, setSimPressure] = useState(80);
   const [simFlow, setSimFlow] = useState(300);
   const [flowHist, setFlowHist] = useState(Array(30).fill(0));
   const [pressHist, setPressHist] = useState(Array(30).fill(0));
   const [scatterData, setScatterData] = useState([]);
-  const [activeTab, setActiveTab] = useState("map");
+  const [activeTab, setActiveTab] = useState('map');
   const [actionLog, setActionLog] = useState([]);
   const menuRef = useRef(null);
 
@@ -2817,11 +3074,11 @@ export default function AquaGuardDashboard() {
   const runCycle = useCallback(
     async (ftype = null) => {
       const apiResult = await (async () => {
-        await apiPost("/api/refresh", {
+        await apiPost('/api/refresh', {
           gov: govKey,
           force: ftype || forceType,
         });
-        return apiGet("/api/state");
+        return apiGet('/api/state');
       })();
 
       let segments, alerts, mass;
@@ -2933,8 +3190,8 @@ export default function AquaGuardDashboard() {
       if (menuRef.current && !menuRef.current.contains(e.target))
         setShowGovMenu(false);
     };
-    document.addEventListener("mousedown", h);
-    return () => document.removeEventListener("mousedown", h);
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
   }, []);
 
   const segments = simData?.segments || [];
@@ -2946,13 +3203,14 @@ export default function AquaGuardDashboard() {
     deliveredM3: 0,
   };
   const alertSegs = segments.filter((s) => s.alert);
-  const burstSegs = segments.filter((s) => s.predType === "burst");
+  const burstSegs = segments.filter((s) => s.predType === 'burst');
   const maxLoss = Math.max(0, ...segments.map((s) => s.flowLoss));
   const maxDP = Math.max(0, ...segments.map((s) => Math.abs(s.dpDev)));
   const worstType = burstSegs.length
-    ? "burst"
-    : alertSegs[0]?.predType || "normal";
-  const selectedOrWorst = selectedSeg || burstSegs[0] || alertSegs[0] || segments[0] || null;
+    ? 'burst'
+    : alertSegs[0]?.predType || 'normal';
+  const selectedOrWorst =
+    selectedSeg || burstSegs[0] || alertSegs[0] || segments[0] || null;
 
   const currentReservoir = reservoirLevels[govKey] ?? gov.reservoirCap;
   const reservoirPct = (currentReservoir / gov.reservoirCap) * 100;
@@ -2967,12 +3225,12 @@ export default function AquaGuardDashboard() {
             id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
             action: action.title,
             detail: action.detail,
-            status: "تم اعتماد الإجراء",
+            status: 'تم اعتماد الإجراء',
             gov: gov.label,
-            type: getTypeLabelAr(seg?.predType || "normal"),
+            type: getTypeLabelAr(seg?.predType || 'normal'),
             segment: seg
               ? `${seg.branch} · D${seg.depth} · ${seg.from} → ${seg.to}`
-              : "لا يوجد مقطع محدد",
+              : 'لا يوجد مقطع محدد',
             time: new Date().toLocaleTimeString(),
             segSnapshot: seg,
           },
@@ -3005,47 +3263,47 @@ export default function AquaGuardDashboard() {
   const pressHistData = pressHist.map((v, i) => ({ i, v }));
 
   const TYPE_DOT = {
-    normal: "#22c55e",
-    leak: "#f59e0b",
-    burst: "#ef4444",
-    theft: "#a855f7",
+    normal: '#22c55e',
+    leak: '#f59e0b',
+    burst: '#ef4444',
+    theft: '#a855f7',
   };
 
   return (
     <div
       style={{
-        background: "#060c18",
-        minHeight: "100vh",
-        color: "#e2e8f0",
+        background: '#060c18',
+        minHeight: '100vh',
+        color: '#e2e8f0',
         fontFamily: "'Inter',system-ui,sans-serif",
-        overflow: "auto",
+        overflow: 'auto',
       }}
     >
       {/* ── HEADER ── */}
       <div
         style={{
-          background: "#0a1628",
-          borderBottom: "1px solid rgba(56,189,248,.15)",
-          padding: "0 20px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          background: '#0a1628',
+          borderBottom: '1px solid rgba(56,189,248,.15)',
+          padding: '0 20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           height: 52,
-          position: "sticky",
+          position: 'sticky',
           top: 0,
           zIndex: 50,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div
             style={{
               width: 32,
               height: 32,
               borderRadius: 8,
-              background: "linear-gradient(135deg,#0ea5e9,#6366f1)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              background: 'linear-gradient(135deg,#0ea5e9,#6366f1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <Droplets size={18} color="#fff" />
@@ -3055,7 +3313,7 @@ export default function AquaGuardDashboard() {
               style={{
                 fontSize: 14,
                 fontWeight: 700,
-                color: "#f8fafc",
+                color: '#f8fafc',
                 letterSpacing: 0.3,
               }}
             >
@@ -3064,8 +3322,8 @@ export default function AquaGuardDashboard() {
             <div
               style={{
                 fontSize: 10,
-                color: "#475569",
-                fontFamily: "monospace",
+                color: '#475569',
+                fontFamily: 'monospace',
               }}
             >
               LGB + XGB + ResNet-MLP + BiLSTM · HYDRAULIC MASS-BALANCE · JORDAN
@@ -3073,28 +3331,28 @@ export default function AquaGuardDashboard() {
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {["normal", "leak", "burst", "theft"].map((t) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {['normal', 'leak', 'burst', 'theft'].map((t) => (
             <button
               key={t}
               onClick={() => {
-                setForceType(t === "normal" ? null : t);
-                runCycle(t === "normal" ? null : t);
+                setForceType(t === 'normal' ? null : t);
+                runCycle(t === 'normal' ? null : t);
               }}
               style={{
-                padding: "4px 10px",
+                padding: '4px 10px',
                 borderRadius: 6,
                 fontSize: 11,
-                fontFamily: "monospace",
-                cursor: "pointer",
+                fontFamily: 'monospace',
+                cursor: 'pointer',
                 fontWeight: 600,
                 background:
-                  forceType === t || (!forceType && t === "normal")
+                  forceType === t || (!forceType && t === 'normal')
                     ? `${TYPE_DOT[t]}22`
-                    : "transparent",
+                    : 'transparent',
                 border: `1px solid ${TYPE_DOT[t]}80`,
                 color: TYPE_DOT[t],
-                transition: "all .15s",
+                transition: 'all .15s',
               }}
             >
               {t.toUpperCase()}
@@ -3104,16 +3362,16 @@ export default function AquaGuardDashboard() {
           <button
             onClick={() => setSimMode((m) => !m)}
             style={{
-              padding: "4px 10px",
+              padding: '4px 10px',
               borderRadius: 6,
               fontSize: 11,
-              cursor: "pointer",
+              cursor: 'pointer',
               fontWeight: 600,
-              background: simMode ? "rgba(99,102,241,.25)" : "transparent",
-              border: "1px solid rgba(99,102,241,.5)",
-              color: "#818cf8",
-              display: "flex",
-              alignItems: "center",
+              background: simMode ? 'rgba(99,102,241,.25)' : 'transparent',
+              border: '1px solid rgba(99,102,241,.5)',
+              color: '#818cf8',
+              display: 'flex',
+              alignItems: 'center',
               gap: 4,
             }}
           >
@@ -3123,16 +3381,16 @@ export default function AquaGuardDashboard() {
           <button
             onClick={() => runCycle()}
             style={{
-              padding: "4px 10px",
+              padding: '4px 10px',
               borderRadius: 6,
               fontSize: 11,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
               gap: 4,
-              background: "transparent",
-              border: "1px solid rgba(56,189,248,.3)",
-              color: "#38bdf8",
+              background: 'transparent',
+              border: '1px solid rgba(56,189,248,.3)',
+              color: '#38bdf8',
             }}
           >
             <RefreshCw size={12} /> Refresh
@@ -3140,44 +3398,44 @@ export default function AquaGuardDashboard() {
 
           <div
             style={{
-              padding: "4px 12px",
+              padding: '4px 12px',
               borderRadius: 20,
               background: pumping
-                ? "rgba(34,211,238,.15)"
+                ? 'rgba(34,211,238,.15)'
                 : API_URL
-                ? "rgba(34,197,94,.1)"
-                : "rgba(245,158,11,.1)",
+                ? 'rgba(34,197,94,.1)'
+                : 'rgba(245,158,11,.1)',
               border: `1px solid ${
                 pumping
-                  ? "rgba(34,211,238,.5)"
+                  ? 'rgba(34,211,238,.5)'
                   : API_URL
-                  ? "rgba(34,197,94,.3)"
-                  : "rgba(245,158,11,.3)"
+                  ? 'rgba(34,197,94,.3)'
+                  : 'rgba(245,158,11,.3)'
               }`,
               fontSize: 11,
-              color: pumping ? "#22d3ee" : API_URL ? "#22c55e" : "#f59e0b",
-              fontFamily: "monospace",
-              display: "flex",
-              alignItems: "center",
+              color: pumping ? '#22d3ee' : API_URL ? '#22c55e' : '#f59e0b',
+              fontFamily: 'monospace',
+              display: 'flex',
+              alignItems: 'center',
               gap: 5,
-              transition: "all .3s",
+              transition: 'all .3s',
             }}
           >
             <span
               style={{
                 width: 6,
                 height: 6,
-                borderRadius: "50%",
+                borderRadius: '50%',
                 background: pumping
-                  ? "#22d3ee"
+                  ? '#22d3ee'
                   : API_URL
-                  ? "#22c55e"
-                  : "#f59e0b",
-                display: "inline-block",
-                animation: "pulse 1.4s infinite",
+                  ? '#22c55e'
+                  : '#f59e0b',
+                display: 'inline-block',
+                animation: 'pulse 1.4s infinite',
               }}
             />
-            {pumping ? "PUMPING" : API_URL ? "ML LIVE" : "OFFLINE"} ·{" "}
+            {pumping ? 'PUMPING' : API_URL ? 'ML LIVE' : 'OFFLINE'} ·{' '}
             {countdown}s
           </div>
         </div>
@@ -3185,45 +3443,45 @@ export default function AquaGuardDashboard() {
 
       <div
         style={{
-          padding: "14px 20px",
-          display: "flex",
-          flexDirection: "column",
+          padding: '14px 20px',
+          display: 'flex',
+          flexDirection: 'column',
           gap: 14,
         }}
       >
         {/* ── GOV SELECTOR + RESERVOIR SUMMARY ── */}
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
             gap: 12,
-            flexWrap: "wrap",
+            flexWrap: 'wrap',
           }}
         >
-          <div ref={menuRef} style={{ position: "relative" }}>
+          <div ref={menuRef} style={{ position: 'relative' }}>
             <button
               onClick={() => setShowGovMenu((m) => !m)}
               style={{
-                padding: "8px 14px",
+                padding: '8px 14px',
                 borderRadius: 8,
-                background: "#0f1f3d",
-                border: "1px solid rgba(56,189,248,.25)",
-                color: "#e2e8f0",
+                background: '#0f1f3d',
+                border: '1px solid rgba(56,189,248,.25)',
+                color: '#e2e8f0',
                 fontSize: 13,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
                 gap: 8,
                 minWidth: 200,
               }}
             >
               <MapPin size={14} color={gov.color} />
-              <span style={{ flex: 1, textAlign: "right" }}>{gov.label}</span>
+              <span style={{ flex: 1, textAlign: 'right' }}>{gov.label}</span>
               <span
                 style={{
-                  color: "#64748b",
+                  color: '#64748b',
                   fontSize: 11,
-                  fontFamily: "monospace",
+                  fontFamily: 'monospace',
                 }}
               >
                 {govKey}
@@ -3233,22 +3491,22 @@ export default function AquaGuardDashboard() {
             {showGovMenu && (
               <div
                 style={{
-                  position: "absolute",
-                  top: "calc(100% + 4px)",
+                  position: 'absolute',
+                  top: 'calc(100% + 4px)',
                   left: 0,
                   width: 280,
-                  background: "#0f1f3d",
-                  border: "1px solid rgba(56,189,248,.2)",
+                  background: '#0f1f3d',
+                  border: '1px solid rgba(56,189,248,.2)',
                   borderRadius: 10,
                   zIndex: 100,
-                  overflow: "hidden",
-                  boxShadow: "0 20px 60px rgba(0,0,0,.6)",
+                  overflow: 'hidden',
+                  boxShadow: '0 20px 60px rgba(0,0,0,.6)',
                 }}
               >
                 <div
                   style={{
-                    padding: "8px 10px",
-                    borderBottom: "1px solid rgba(56,189,248,.1)",
+                    padding: '8px 10px',
+                    borderBottom: '1px solid rgba(56,189,248,.1)',
                   }}
                 >
                   <input
@@ -3256,18 +3514,18 @@ export default function AquaGuardDashboard() {
                     onChange={(e) => setGovSearch(e.target.value)}
                     placeholder="Search governorate..."
                     style={{
-                      width: "100%",
-                      padding: "6px 10px",
+                      width: '100%',
+                      padding: '6px 10px',
                       borderRadius: 6,
-                      background: "#060c18",
-                      border: "1px solid rgba(56,189,248,.2)",
-                      color: "#e2e8f0",
+                      background: '#060c18',
+                      border: '1px solid rgba(56,189,248,.2)',
+                      color: '#e2e8f0',
                       fontSize: 12,
-                      outline: "none",
+                      outline: 'none',
                     }}
                   />
                 </div>
-                <div style={{ maxHeight: 240, overflowY: "auto" }}>
+                <div style={{ maxHeight: 240, overflowY: 'auto' }}>
                   {filteredGovs.map(([k, v]) => {
                     const pct =
                       ((reservoirLevels[k] ?? v.reservoirCap) /
@@ -3279,35 +3537,35 @@ export default function AquaGuardDashboard() {
                         onClick={() => {
                           setGovKey(k);
                           setShowGovMenu(false);
-                          setGovSearch("");
+                          setGovSearch('');
                         }}
                         style={{
-                          width: "100%",
-                          padding: "9px 14px",
+                          width: '100%',
+                          padding: '9px 14px',
                           background:
                             k === govKey
-                              ? "rgba(56,189,248,.08)"
-                              : "transparent",
-                          border: "none",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
+                              ? 'rgba(56,189,248,.08)'
+                              : 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
                           gap: 10,
-                          color: "#e2e8f0",
-                          textAlign: "right",
+                          color: '#e2e8f0',
+                          textAlign: 'right',
                         }}
                       >
                         <span
                           style={{
                             width: 10,
                             height: 10,
-                            borderRadius: "50%",
+                            borderRadius: '50%',
                             background: v.color,
                             flexShrink: 0,
                           }}
                         />
                         <span
-                          style={{ flex: 1, textAlign: "right", fontSize: 14 }}
+                          style={{ flex: 1, textAlign: 'right', fontSize: 14 }}
                         >
                           {v.label}
                         </span>
@@ -3316,11 +3574,11 @@ export default function AquaGuardDashboard() {
                             fontSize: 10,
                             color:
                               pct > 60
-                                ? "#22c55e"
+                                ? '#22c55e'
                                 : pct > 30
-                                ? "#f59e0b"
-                                : "#ef4444",
-                            fontFamily: "monospace",
+                                ? '#f59e0b'
+                                : '#ef4444',
+                            fontFamily: 'monospace',
                             fontWeight: 700,
                           }}
                         >
@@ -3335,7 +3593,7 @@ export default function AquaGuardDashboard() {
           </div>
 
           <div
-            style={{ fontSize: 12, color: "#64748b", fontFamily: "monospace" }}
+            style={{ fontSize: 12, color: '#64748b', fontFamily: 'monospace' }}
           >
             {gov.source}
           </div>
@@ -3343,22 +3601,22 @@ export default function AquaGuardDashboard() {
           {/* Reservoir capacity indicator */}
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
               gap: 8,
-              padding: "4px 12px",
-              background: "rgba(56,189,248,.06)",
+              padding: '4px 12px',
+              background: 'rgba(56,189,248,.06)',
               borderRadius: 6,
-              border: "1px solid rgba(56,189,248,.15)",
+              border: '1px solid rgba(56,189,248,.15)',
             }}
           >
             <Database size={12} color="#38bdf8" />
-            <span style={{ fontSize: 10, color: "#64748b" }}>Capacity:</span>
+            <span style={{ fontSize: 10, color: '#64748b' }}>Capacity:</span>
             <span
               style={{
                 fontSize: 11,
-                color: "#38bdf8",
-                fontFamily: "monospace",
+                color: '#38bdf8',
+                fontFamily: 'monospace',
                 fontWeight: 700,
               }}
             >
@@ -3369,16 +3627,16 @@ export default function AquaGuardDashboard() {
           <button
             onClick={refillReservoir}
             style={{
-              padding: "4px 10px",
+              padding: '4px 10px',
               borderRadius: 6,
               fontSize: 10,
-              cursor: "pointer",
+              cursor: 'pointer',
               fontWeight: 600,
-              background: "rgba(34,197,94,.08)",
-              border: "1px solid rgba(34,197,94,.4)",
-              color: "#22c55e",
-              display: "flex",
-              alignItems: "center",
+              background: 'rgba(34,197,94,.08)',
+              border: '1px solid rgba(34,197,94,.4)',
+              color: '#22c55e',
+              display: 'flex',
+              alignItems: 'center',
               gap: 4,
             }}
           >
@@ -3387,10 +3645,10 @@ export default function AquaGuardDashboard() {
 
           <div
             style={{
-              marginLeft: "auto",
+              marginLeft: 'auto',
               fontSize: 11,
-              color: "#475569",
-              fontFamily: "monospace",
+              color: '#475569',
+              fontFamily: 'monospace',
             }}
           >
             Tick #{tick}
@@ -3400,71 +3658,71 @@ export default function AquaGuardDashboard() {
         {/* ── KPI ROW (now 9 cards incl. reservoir) ── */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(9,1fr)",
+            display: 'grid',
+            gridTemplateColumns: 'repeat(9,1fr)',
             gap: 8,
           }}
         >
           {[
             {
-              l: "RESERVOIR",
+              l: 'RESERVOIR',
               v: `${reservoirPct.toFixed(1)}%`,
               u: `${(currentReservoir / 1000).toFixed(1)}k m³`,
               c:
                 reservoirPct > 60
-                  ? "#22c55e"
+                  ? '#22c55e'
                   : reservoirPct > 30
-                  ? "#f59e0b"
-                  : "#ef4444",
+                  ? '#f59e0b'
+                  : '#ef4444',
             },
-            { l: "ALERTS", v: allAlerts.length, u: "total", c: "#ef4444" },
-            { l: "ACTIVE", v: alertSegs.length, u: "this cycle", c: "#f59e0b" },
-            { l: "BURST", v: burstSegs.length, u: "critical", c: "#ef4444" },
+            { l: 'ALERTS', v: allAlerts.length, u: 'total', c: '#ef4444' },
+            { l: 'ACTIVE', v: alertSegs.length, u: 'this cycle', c: '#f59e0b' },
+            { l: 'BURST', v: burstSegs.length, u: 'critical', c: '#ef4444' },
             {
-              l: "NRW",
+              l: 'NRW',
               v: `${Math.round(gov.nrw * 100)}%`,
-              u: "non-revenue",
+              u: 'non-revenue',
               c:
                 gov.nrw > 0.5
-                  ? "#ef4444"
+                  ? '#ef4444'
                   : gov.nrw > 0.4
-                  ? "#f59e0b"
-                  : "#22c55e",
+                  ? '#f59e0b'
+                  : '#22c55e',
             },
             {
-              l: "OUTFLOW",
+              l: 'OUTFLOW',
               v: `${mass.totalOutflowM3PerHr?.toFixed?.(0) ?? 0}`,
-              u: "m³/hour",
-              c: "#22d3ee",
+              u: 'm³/hour',
+              c: '#22d3ee',
             },
             {
-              l: "MAX LOSS",
+              l: 'MAX LOSS',
               v: `${maxLoss.toFixed(1)}%`,
-              u: "flow loss",
-              c: "#f59e0b",
+              u: 'flow loss',
+              c: '#f59e0b',
             },
-            { l: "MAX DP", v: maxDP.toFixed(2), u: "PSI dev", c: "#a855f7" },
+            { l: 'MAX DP', v: maxDP.toFixed(2), u: 'PSI dev', c: '#a855f7' },
             {
-              l: "SYS.LOSS",
+              l: 'SYS.LOSS',
               v: `${totalSystemLoss.toFixed(1)}`,
-              u: "m³ lost total",
-              c: "#ef4444",
+              u: 'm³ lost total',
+              c: '#ef4444',
             },
           ].map((k, i) => (
             <div
               key={i}
               style={{
-                background: "#0a1628",
-                border: "1px solid rgba(56,189,248,.08)",
+                background: '#0a1628',
+                border: '1px solid rgba(56,189,248,.08)',
                 borderRadius: 10,
-                padding: "10px 12px",
+                padding: '10px 12px',
               }}
             >
               <div
                 style={{
                   fontSize: 9,
-                  color: "#475569",
-                  fontFamily: "monospace",
+                  color: '#475569',
+                  fontFamily: 'monospace',
                   letterSpacing: 0.5,
                   marginBottom: 4,
                 }}
@@ -3475,14 +3733,14 @@ export default function AquaGuardDashboard() {
                 style={{
                   fontSize: 18,
                   fontWeight: 700,
-                  fontFamily: "monospace",
+                  fontFamily: 'monospace',
                   color: k.c,
                   lineHeight: 1,
                 }}
               >
                 {k.v}
               </div>
-              <div style={{ fontSize: 9, color: "#334155", marginTop: 3 }}>
+              <div style={{ fontSize: 9, color: '#334155', marginTop: 3 }}>
                 {k.u}
               </div>
             </div>
@@ -3491,52 +3749,59 @@ export default function AquaGuardDashboard() {
 
         {/* ── MAIN CONTENT GRID ── */}
         <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 14 }}
+          style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 14 }}
         >
           {/* LEFT: Map + Arabic operator tabs */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <SectionCard
               title="التبويبات التشغيلية الداخلية"
               icon={<Activity size={16} color="#38bdf8" />}
-              right={<SmallPill color={getTypeColor(selectedOrWorst?.predType || "normal")} filled>{getTypeLabelAr(selectedOrWorst?.predType || "normal")}</SmallPill>}
+              right={
+                <SmallPill
+                  color={getTypeColor(selectedOrWorst?.predType || 'normal')}
+                  filled
+                >
+                  {getTypeLabelAr(selectedOrWorst?.predType || 'normal')}
+                </SmallPill>
+              }
             >
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(6,1fr)",
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(6,1fr)',
                   gap: 7,
                   marginBottom: 14,
-                  direction: "rtl",
+                  direction: 'rtl',
                 }}
               >
                 {[
-                  ["map", "الخريطة الحية"],
-                  ["scatter", "بصمة الخلل"],
-                  ["telemetry", "القياسات الحية"],
-                  ["actions", "الإجراء المعتمد"],
-                  ["users", "بحث المستخدمين"],
-                  ["technical", "شرح الذكاء الاصطناعي"],
+                  ['map', 'الخريطة الحية'],
+                  ['scatter', 'بصمة الخلل'],
+                  ['telemetry', 'القياسات الحية'],
+                  ['actions', 'الإجراء المعتمد'],
+                  ['users', 'بحث المستخدمين'],
+                  ['technical', 'شرح الذكاء الاصطناعي'],
                 ].map(([key, label]) => (
                   <button
                     key={key}
                     onClick={() => setActiveTab(key)}
                     style={{
-                      padding: "9px 10px",
+                      padding: '9px 10px',
                       borderRadius: 10,
                       border: `1px solid ${
                         activeTab === key
-                          ? "rgba(56,189,248,.42)"
-                          : "rgba(148,163,184,.12)"
+                          ? 'rgba(56,189,248,.42)'
+                          : 'rgba(148,163,184,.12)'
                       }`,
                       background:
                         activeTab === key
-                          ? "rgba(56,189,248,.12)"
-                          : "rgba(2,6,23,.18)",
-                      color: activeTab === key ? "#38bdf8" : "#94a3b8",
+                          ? 'rgba(56,189,248,.12)'
+                          : 'rgba(2,6,23,.18)',
+                      color: activeTab === key ? '#38bdf8' : '#94a3b8',
                       fontSize: 11,
                       fontWeight: 900,
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     {label}
@@ -3544,42 +3809,60 @@ export default function AquaGuardDashboard() {
                 ))}
               </div>
 
-              {activeTab === "map" && (
+              {activeTab === 'map' && (
                 <div
                   style={{
-                    background: "rgba(2,6,23,.24)",
-                    border: "1px solid rgba(148,163,184,.08)",
+                    background: 'rgba(2,6,23,.24)',
+                    border: '1px solid rgba(148,163,184,.08)',
                     borderRadius: 14,
                     padding: 14,
-                    overflow: "hidden",
+                    overflow: 'hidden',
                   }}
                 >
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                       marginBottom: 10,
                     }}
                   >
-                    <div style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace", letterSpacing: 0.5 }}>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: '#94a3b8',
+                        fontFamily: 'monospace',
+                        letterSpacing: 0.5,
+                      }}
+                    >
                       LIVE PIPE NETWORK — {gov.label} · {gov.source}
                     </div>
                     {pumping && (
-                      <SmallPill color="#22d3ee" filled>⚡ PUMP CYCLE ACTIVE</SmallPill>
+                      <SmallPill color="#22d3ee" filled>
+                        ⚡ PUMP CYCLE ACTIVE
+                      </SmallPill>
                     )}
                   </div>
-                  <div style={{ display: "flex", gap: 16, alignItems: "stretch" }}>
+                  <div
+                    style={{ display: 'flex', gap: 16, alignItems: 'stretch' }}
+                  >
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
                         gap: 6,
                         paddingTop: 4,
                       }}
                     >
-                      <div style={{ fontSize: 9, color: "#64748b", fontFamily: "monospace", letterSpacing: 0.3 }}>
+                      <div
+                        style={{
+                          fontSize: 9,
+                          color: '#64748b',
+                          fontFamily: 'monospace',
+                          letterSpacing: 0.3,
+                        }}
+                      >
                         RESERVOIR
                       </div>
                       <ReservoirTank
@@ -3588,23 +3871,38 @@ export default function AquaGuardDashboard() {
                         pulsing={pumping}
                         govColor={gov.color}
                       />
-                      <div style={{ fontSize: 9, color: "#64748b", fontFamily: "monospace", textAlign: "center" }}>
+                      <div
+                        style={{
+                          fontSize: 9,
+                          color: '#64748b',
+                          fontFamily: 'monospace',
+                          textAlign: 'center',
+                        }}
+                      >
                         {(currentReservoir / 1000).toFixed(1)}k
                         <br />
-                        <span style={{ color: "#334155" }}>/ {(gov.reservoirCap / 1000).toFixed(0)}k m³</span>
+                        <span style={{ color: '#334155' }}>
+                          / {(gov.reservoirCap / 1000).toFixed(0)}k m³
+                        </span>
                       </div>
                       <div
                         style={{
                           fontSize: 8,
-                          color: "#64748b",
-                          textAlign: "center",
+                          color: '#64748b',
+                          textAlign: 'center',
                           paddingTop: 4,
-                          borderTop: "1px solid rgba(56,189,248,.1)",
+                          borderTop: '1px solid rgba(56,189,248,.1)',
                           marginTop: 2,
-                          width: "100%",
+                          width: '100%',
                         }}
                       >
-                        <div style={{ color: "#ef4444", fontWeight: 600, fontFamily: "monospace" }}>
+                        <div
+                          style={{
+                            color: '#ef4444',
+                            fontWeight: 600,
+                            fontFamily: 'monospace',
+                          }}
+                        >
                           −{mass.systemLossM3?.toFixed(1) ?? 0}
                         </div>
                         <div>m³ this cycle</div>
@@ -3623,47 +3921,92 @@ export default function AquaGuardDashboard() {
                       />
                     </div>
                   </div>
-                  <div style={{ display: "flex", gap: 16, marginTop: 10, fontSize: 11, fontFamily: "monospace" }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: 16,
+                      marginTop: 10,
+                      fontSize: 11,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {Object.entries(TYPE_CONFIG).map(([k, v]) => (
-                      <span key={k} style={{ color: v.color, display: "flex", alignItems: "center", gap: 4 }}>
-                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: v.color, display: "inline-block" }} />
+                      <span
+                        key={k}
+                        style={{
+                          color: v.color,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 4,
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: '50%',
+                            background: v.color,
+                            display: 'inline-block',
+                          }}
+                        />
                         {v.label}
                       </span>
                     ))}
-                    <span style={{ marginLeft: "auto", color: "#64748b" }}>اضغط على أي مقطع لعرض التفاصيل</span>
+                    <span style={{ marginLeft: 'auto', color: '#64748b' }}>
+                      اضغط على أي مقطع لعرض التفاصيل
+                    </span>
                   </div>
                 </div>
               )}
 
-              {activeTab === "scatter" && (
+              {activeTab === 'scatter' && (
                 <div
                   style={{
-                    background: "rgba(2,6,23,.24)",
-                    border: "1px solid rgba(148,163,184,.08)",
+                    background: 'rgba(2,6,23,.24)',
+                    border: '1px solid rgba(148,163,184,.08)',
                     borderRadius: 14,
                     padding: 12,
                   }}
                 >
-                  <div style={{ color: "#94a3b8", fontSize: 11, fontFamily: "monospace", fontWeight: 900, marginBottom: 4 }}>
+                  <div
+                    style={{
+                      color: '#94a3b8',
+                      fontSize: 11,
+                      fontFamily: 'monospace',
+                      fontWeight: 900,
+                      marginBottom: 4,
+                    }}
+                  >
                     بصمة الخلل — العلاقة بين فقد التدفق وانحراف الضغط
                   </div>
-                  <div style={{ color: "#64748b", fontSize: 11, marginBottom: 10, lineHeight: 1.6 }}>
-                    محور X يوضح نسبة فقد التدفق، ومحور Y يوضح مقدار انحراف هبوط الضغط عن السلوك المتوقع. كل نقطة تمثل مقطعاً واحداً في الشبكة.
+                  <div
+                    style={{
+                      color: '#64748b',
+                      fontSize: 11,
+                      marginBottom: 10,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    محور X يوضح نسبة فقد التدفق، ومحور Y يوضح مقدار انحراف هبوط
+                    الضغط عن السلوك المتوقع. كل نقطة تمثل مقطعاً واحداً في
+                    الشبكة.
                   </div>
                   <ResponsiveContainer width="100%" height={420}>
-                    <ScatterChart margin={{ top: 20, right: 24, bottom: 42, left: 24 }}>
+                    <ScatterChart
+                      margin={{ top: 20, right: 24, bottom: 42, left: 24 }}
+                    >
                       <CartesianGrid stroke="rgba(148,163,184,.12)" />
                       <XAxis
                         type="number"
                         dataKey="x"
                         name="نسبة فقد التدفق %"
                         stroke="#64748b"
-                        tick={{ fontSize: 11, fill: "#94a3b8" }}
+                        tick={{ fontSize: 11, fill: '#94a3b8' }}
                         label={{
-                          value: "محور X: نسبة فقد التدفق (%)",
-                          position: "insideBottom",
+                          value: 'نسبة فقد التدفق (%)',
+                          position: 'insideBottom',
                           offset: -10,
-                          fill: "#94a3b8",
+                          fill: '#94a3b8',
                           fontSize: 11,
                         }}
                       />
@@ -3672,25 +4015,44 @@ export default function AquaGuardDashboard() {
                         dataKey="y"
                         name="انحراف الضغط"
                         stroke="#64748b"
-                        tick={{ fontSize: 11, fill: "#94a3b8" }}
+                        tick={{ fontSize: 11, fill: '#94a3b8' }}
                         label={{
-                          value: "محور Y: انحراف الضغط / DP Deviation",
+                          value: ' انحراف الضغط / DP Deviation',
                           angle: -90,
-                          position: "insideLeft",
-                          fill: "#94a3b8",
+                          position: 'insideLeft',
+                          fill: '#94a3b8',
                           fontSize: 11,
                         }}
                       />
                       <RTooltip
-                        cursor={{ strokeDasharray: "3 3" }}
+                        cursor={{ strokeDasharray: '3 3' }}
                         content={({ payload }) => {
                           if (!payload?.length) return null;
                           const d = payload[0].payload;
                           return (
-                            <div style={{ background: "#0f1f3d", border: "1px solid rgba(56,189,248,.3)", borderRadius: 8, padding: "8px 12px", fontSize: 11 }}>
-                              <div style={{ color: TYPE_DOT[d.type], fontWeight: 700 }}>{getTypeLabelAr(d.type)}</div>
-                              <div style={{ color: "#94a3b8" }}>محور X / Flow Loss: {d.x}%</div>
-                              <div style={{ color: "#94a3b8" }}>محور Y / DP Deviation: {d.y}</div>
+                            <div
+                              style={{
+                                background: '#0f1f3d',
+                                border: '1px solid rgba(56,189,248,.3)',
+                                borderRadius: 8,
+                                padding: '8px 12px',
+                                fontSize: 11,
+                              }}
+                            >
+                              <div
+                                style={{
+                                  color: TYPE_DOT[d.type],
+                                  fontWeight: 700,
+                                }}
+                              >
+                                {getTypeLabelAr(d.type)}
+                              </div>
+                              <div style={{ color: '#94a3b8' }}>
+                                محور X / Flow Loss: {d.x}%
+                              </div>
+                              <div style={{ color: '#94a3b8' }}>
+                                محور Y / DP Deviation: {d.y}
+                              </div>
                             </div>
                           );
                         }}
@@ -3712,73 +4074,218 @@ export default function AquaGuardDashboard() {
                 </div>
               )}
 
-              {activeTab === "telemetry" && (
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                  <div style={{ height: 260, background: "rgba(2,6,23,.24)", borderRadius: 14, padding: 12 }}>
-                    <div style={{ color: "#94a3b8", fontSize: 11, fontFamily: "monospace", fontWeight: 900, marginBottom: 8 }}>
+              {activeTab === 'telemetry' && (
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 12,
+                  }}
+                >
+                  <div
+                    style={{
+                      height: 260,
+                      background: 'rgba(2,6,23,.24)',
+                      borderRadius: 14,
+                      padding: 12,
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: '#94a3b8',
+                        fontSize: 11,
+                        fontFamily: 'monospace',
+                        fontWeight: 900,
+                        marginBottom: 8,
+                      }}
+                    >
                       سجل التدفق — Flow In
                     </div>
                     <ResponsiveContainer width="100%" height="88%">
-                      <AreaChart data={flowHistData} margin={{ top: 10, right: 14, bottom: 30, left: 24 }}>
+                      <AreaChart
+                        data={flowHistData}
+                        margin={{ top: 10, right: 14, bottom: 30, left: 24 }}
+                      >
                         <defs>
-                          <linearGradient id="flowGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.55} />
-                            <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.02} />
+                          <linearGradient
+                            id="flowGrad"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#38bdf8"
+                              stopOpacity={0.55}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#38bdf8"
+                              stopOpacity={0.02}
+                            />
                           </linearGradient>
                         </defs>
                         <CartesianGrid stroke="rgba(148,163,184,.10)" />
                         <XAxis
                           dataKey="i"
                           stroke="#64748b"
-                          tick={{ fontSize: 10, fill: "#94a3b8" }}
-                          label={{ value: "محور X: آخر القراءات الزمنية", position: "insideBottom", offset: -18, fill: "#94a3b8", fontSize: 10 }}
+                          tick={{ fontSize: 10, fill: '#94a3b8' }}
+                          label={{
+                            value: ' آخر القراءات الزمنية',
+                            position: 'insideBottom',
+                            offset: -18,
+                            fill: '#94a3b8',
+                            fontSize: 10,
+                          }}
                         />
                         <YAxis
                           stroke="#64748b"
-                          tick={{ fontSize: 10, fill: "#94a3b8" }}
-                          label={{ value: "محور Y: التدفق (L/min)", angle: -90, position: "insideLeft", fill: "#94a3b8", fontSize: 10 }}
+                          tick={{ fontSize: 10, fill: '#94a3b8' }}
+                          label={{
+                            value: ' التدفق (L/min)',
+                            angle: -90,
+                            position: 'insideLeft',
+                            fill: '#94a3b8',
+                            fontSize: 10,
+                          }}
                         />
-                        <RTooltip contentStyle={{ background: "#0a1628", border: "1px solid rgba(56,189,248,.16)", borderRadius: 10, color: "#f8fafc" }} />
-                        <Area type="monotone" dataKey="v" stroke="#38bdf8" fill="url(#flowGrad)" strokeWidth={2} dot={false} />
+                        <RTooltip
+                          contentStyle={{
+                            background: '#0a1628',
+                            border: '1px solid rgba(56,189,248,.16)',
+                            borderRadius: 10,
+                            color: '#f8fafc',
+                          }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="v"
+                          stroke="#38bdf8"
+                          fill="url(#flowGrad)"
+                          strokeWidth={2}
+                          dot={false}
+                        />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
 
-                  <div style={{ height: 260, background: "rgba(2,6,23,.24)", borderRadius: 14, padding: 12 }}>
-                    <div style={{ color: "#94a3b8", fontSize: 11, fontFamily: "monospace", fontWeight: 900, marginBottom: 8 }}>
+                  <div
+                    style={{
+                      height: 260,
+                      background: 'rgba(2,6,23,.24)',
+                      borderRadius: 14,
+                      padding: 12,
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: '#94a3b8',
+                        fontSize: 11,
+                        fontFamily: 'monospace',
+                        fontWeight: 900,
+                        marginBottom: 8,
+                      }}
+                    >
                       سجل الضغط — Pressure In
                     </div>
                     <ResponsiveContainer width="100%" height="88%">
-                      <AreaChart data={pressHistData} margin={{ top: 10, right: 14, bottom: 30, left: 24 }}>
+                      <AreaChart
+                        data={pressHistData}
+                        margin={{ top: 10, right: 14, bottom: 30, left: 24 }}
+                      >
                         <defs>
-                          <linearGradient id="pressGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#a855f7" stopOpacity={0.55} />
-                            <stop offset="95%" stopColor="#a855f7" stopOpacity={0.02} />
+                          <linearGradient
+                            id="pressGrad"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#a855f7"
+                              stopOpacity={0.55}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#a855f7"
+                              stopOpacity={0.02}
+                            />
                           </linearGradient>
                         </defs>
                         <CartesianGrid stroke="rgba(148,163,184,.10)" />
                         <XAxis
                           dataKey="i"
                           stroke="#64748b"
-                          tick={{ fontSize: 10, fill: "#94a3b8" }}
-                          label={{ value: "محور X: آخر القراءات الزمنية", position: "insideBottom", offset: -18, fill: "#94a3b8", fontSize: 10 }}
+                          tick={{ fontSize: 10, fill: '#94a3b8' }}
+                          label={{
+                            value: ' آخر القراءات الزمنية',
+                            position: 'insideBottom',
+                            offset: -18,
+                            fill: '#94a3b8',
+                            fontSize: 10,
+                          }}
                         />
                         <YAxis
                           stroke="#64748b"
-                          tick={{ fontSize: 10, fill: "#94a3b8" }}
-                          label={{ value: "محور Y: الضغط (PSI)", angle: -90, position: "insideLeft", fill: "#94a3b8", fontSize: 10 }}
+                          tick={{ fontSize: 10, fill: '#94a3b8' }}
+                          label={{
+                            value: ' الضغط (PSI)',
+                            angle: -90,
+                            position: 'insideLeft',
+                            fill: '#94a3b8',
+                            fontSize: 10,
+                          }}
                         />
-                        <RTooltip contentStyle={{ background: "#0a1628", border: "1px solid rgba(56,189,248,.16)", borderRadius: 10, color: "#f8fafc" }} />
-                        <Area type="monotone" dataKey="v" stroke="#a855f7" fill="url(#pressGrad)" strokeWidth={2} dot={false} />
+                        <RTooltip
+                          contentStyle={{
+                            background: '#0a1628',
+                            border: '1px solid rgba(56,189,248,.16)',
+                            borderRadius: 10,
+                            color: '#f8fafc',
+                          }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="v"
+                          stroke="#a855f7"
+                          fill="url(#pressGrad)"
+                          strokeWidth={2}
+                          dot={false}
+                        />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
 
-                  <div style={{ background: "rgba(2,6,23,.24)", borderRadius: 14, padding: 14, gridColumn: "1 / -1" }}>
-                    <div style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace", fontWeight: 900, marginBottom: 12 }}>
+                  <div
+                    style={{
+                      background: 'rgba(2,6,23,.24)',
+                      borderRadius: 14,
+                      padding: 14,
+                      gridColumn: '1 / -1',
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: '#94a3b8',
+                        fontFamily: 'monospace',
+                        fontWeight: 900,
+                        marginBottom: 12,
+                      }}
+                    >
                       ENSEMBLE MODEL SCORES — احتمالية الشذوذ لكل مقطع
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 280, overflowY: "auto" }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 8,
+                        maxHeight: 280,
+                        overflowY: 'auto',
+                      }}
+                    >
                       {segments.slice(0, 12).map((seg) => {
                         const tc = TYPE_DOT[seg.predType];
                         return (
@@ -3786,27 +4293,94 @@ export default function AquaGuardDashboard() {
                             key={seg.id}
                             onClick={() => setSelectedSeg(seg)}
                             style={{
-                              cursor: "pointer",
-                              padding: "8px 10px",
-                              background: "#0d1830",
+                              cursor: 'pointer',
+                              padding: '8px 10px',
+                              background: '#0d1830',
                               borderRadius: 8,
-                              border: `1px solid ${seg.alert ? tc + "50" : "rgba(56,189,248,.06)"}`,
+                              border: `1px solid ${
+                                seg.alert ? tc + '50' : 'rgba(56,189,248,.06)'
+                              }`,
                             }}
                           >
-                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                              <span style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace" }}>{seg.from}→{seg.to}</span>
-                              <span style={{ fontSize: 10, padding: "1px 7px", borderRadius: 4, background: `${tc}22`, color: tc, fontWeight: 600 }}>
+                            <div
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                marginBottom: 6,
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontSize: 11,
+                                  color: '#94a3b8',
+                                  fontFamily: 'monospace',
+                                }}
+                              >
+                                {seg.from}→{seg.to}
+                              </span>
+                              <span
+                                style={{
+                                  fontSize: 10,
+                                  padding: '1px 7px',
+                                  borderRadius: 4,
+                                  background: `${tc}22`,
+                                  color: tc,
+                                  fontWeight: 600,
+                                }}
+                              >
                                 {getTypeLabelAr(seg.predType)}
                               </span>
                             </div>
-                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 6 }}>
-                              {[["LGB", seg.models.lgb], ["XGB", seg.models.xgb], ["NN", seg.models.nn], ["LSTM", seg.models.lstm]].map(([n, v]) => (
+                            <div
+                              style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                                gap: 6,
+                              }}
+                            >
+                              {[
+                                ['LGB', seg.models.lgb],
+                                ['XGB', seg.models.xgb],
+                                ['NN', seg.models.nn],
+                                ['LSTM', seg.models.lstm],
+                              ].map(([n, v]) => (
                                 <div key={n}>
-                                  <div style={{ fontSize: 9, color: "#475569", marginBottom: 2 }}>{n}</div>
-                                  <div style={{ height: 4, background: "#1e293b", borderRadius: 2 }}>
-                                    <div style={{ height: 4, width: `${Math.min(v, 100)}%`, background: v > 50 ? tc : "#38bdf8", borderRadius: 2, transition: "width .5s" }} />
+                                  <div
+                                    style={{
+                                      fontSize: 9,
+                                      color: '#475569',
+                                      marginBottom: 2,
+                                    }}
+                                  >
+                                    {n}
                                   </div>
-                                  <div style={{ fontSize: 9, color: v > 50 ? tc : "#64748b", fontFamily: "monospace", marginTop: 2 }}>{v.toFixed(0)}%</div>
+                                  <div
+                                    style={{
+                                      height: 4,
+                                      background: '#1e293b',
+                                      borderRadius: 2,
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        height: 4,
+                                        width: `${Math.min(v, 100)}%`,
+                                        background: v > 50 ? tc : '#38bdf8',
+                                        borderRadius: 2,
+                                        transition: 'width .5s',
+                                      }}
+                                    />
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: 9,
+                                      color: v > 50 ? tc : '#64748b',
+                                      fontFamily: 'monospace',
+                                      marginTop: 2,
+                                    }}
+                                  >
+                                    {v.toFixed(0)}%
+                                  </div>
                                 </div>
                               ))}
                             </div>
@@ -3818,7 +4392,7 @@ export default function AquaGuardDashboard() {
                 </div>
               )}
 
-              {activeTab === "actions" && (
+              {activeTab === 'actions' && (
                 <SuggestedActionsPanel
                   seg={selectedOrWorst}
                   gov={gov}
@@ -3826,29 +4400,31 @@ export default function AquaGuardDashboard() {
                   onApproveAction={approveAction}
                   onSelectActionLog={(seg) => {
                     setSelectedSeg(seg);
-                    setActiveTab("map");
+                    setActiveTab('map');
                   }}
                 />
               )}
 
-              {activeTab === "users" && <UserResearchPanel />}
+              {activeTab === 'users' && <UserResearchPanel />}
 
-              {activeTab === "technical" && <TechnicalPanel selectedSeg={selectedOrWorst} />}
+              {activeTab === 'technical' && (
+                <TechnicalPanel selectedSeg={selectedOrWorst} />
+              )}
             </SectionCard>
             {/* SIMULATION MODE */}
             {simMode && (
               <div
                 style={{
-                  background: "linear-gradient(135deg,#0f0d2e,#1a0a2e)",
-                  border: "1px solid rgba(99,102,241,.3)",
+                  background: 'linear-gradient(135deg,#0f0d2e,#1a0a2e)',
+                  border: '1px solid rgba(99,102,241,.3)',
                   borderRadius: 12,
                   padding: 16,
                 }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
+                    display: 'flex',
+                    alignItems: 'center',
                     gap: 8,
                     marginBottom: 14,
                   }}
@@ -3857,8 +4433,8 @@ export default function AquaGuardDashboard() {
                   <span
                     style={{
                       fontSize: 12,
-                      color: "#818cf8",
-                      fontFamily: "monospace",
+                      color: '#818cf8',
+                      fontFamily: 'monospace',
                       fontWeight: 600,
                     }}
                   >
@@ -3868,23 +4444,23 @@ export default function AquaGuardDashboard() {
                 </div>
                 <div
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr 1fr",
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr 1fr',
                     gap: 16,
-                    alignItems: "center",
+                    alignItems: 'center',
                   }}
                 >
                   <div>
                     <div
                       style={{
                         fontSize: 11,
-                        color: "#6366f1",
+                        color: '#6366f1',
                         marginBottom: 6,
                       }}
                     >
-                      Inlet Pressure:{" "}
+                      Inlet Pressure:{' '}
                       <span
-                        style={{ color: "#c7d2fe", fontFamily: "monospace" }}
+                        style={{ color: '#c7d2fe', fontFamily: 'monospace' }}
                       >
                         {simPressure} PSI
                       </span>
@@ -3895,20 +4471,20 @@ export default function AquaGuardDashboard() {
                       max={130}
                       value={simPressure}
                       onChange={(e) => setSimPressure(+e.target.value)}
-                      style={{ width: "100%", accentColor: "#6366f1" }}
+                      style={{ width: '100%', accentColor: '#6366f1' }}
                     />
                   </div>
                   <div>
                     <div
                       style={{
                         fontSize: 11,
-                        color: "#6366f1",
+                        color: '#6366f1',
                         marginBottom: 6,
                       }}
                     >
-                      Inlet Flow:{" "}
+                      Inlet Flow:{' '}
                       <span
-                        style={{ color: "#c7d2fe", fontFamily: "monospace" }}
+                        style={{ color: '#c7d2fe', fontFamily: 'monospace' }}
                       >
                         {simFlow} L/min
                       </span>
@@ -3919,14 +4495,14 @@ export default function AquaGuardDashboard() {
                       max={600}
                       value={simFlow}
                       onChange={(e) => setSimFlow(+e.target.value)}
-                      style={{ width: "100%", accentColor: "#6366f1" }}
+                      style={{ width: '100%', accentColor: '#6366f1' }}
                     />
                   </div>
-                  <div style={{ textAlign: "center" }}>
+                  <div style={{ textAlign: 'center' }}>
                     <div
                       style={{
                         fontSize: 11,
-                        color: "#6366f1",
+                        color: '#3265c9',
                         marginBottom: 4,
                       }}
                     >
@@ -3936,25 +4512,25 @@ export default function AquaGuardDashboard() {
                       style={{
                         fontSize: 36,
                         fontWeight: 700,
-                        fontFamily: "monospace",
+                        fontFamily: 'monospace',
                         color:
                           simAnomalyProb > 60
-                            ? "#ef4444"
+                            ? '#ef4444'
                             : simAnomalyProb > 30
-                            ? "#f59e0b"
-                            : "#22c55e",
+                            ? '#f59e0b'
+                            : '#22c55e',
                       }}
                     >
                       {simAnomalyProb}%
                     </div>
                     <div
-                      style={{ fontSize: 11, color: "#4c1d95", marginTop: 2 }}
+                      style={{ fontSize: 11, color: '#4c1d95', marginTop: 2 }}
                     >
                       {simAnomalyProb > 60
-                        ? "HIGH RISK"
+                        ? 'HIGH RISK'
                         : simAnomalyProb > 30
-                        ? "ELEVATED"
-                        : "NORMAL"}
+                        ? 'ELEVATED'
+                        : 'NORMAL'}
                     </div>
                   </div>
                 </div>
@@ -3963,12 +4539,12 @@ export default function AquaGuardDashboard() {
           </div>
 
           {/* RIGHT PANEL */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {/* NRW + Reservoir combined */}
             <div
               style={{
-                background: "#0a1628",
-                border: "1px solid rgba(56,189,248,.1)",
+                background: '#0a1628',
+                border: '1px solid rgba(56,189,248,.1)',
                 borderRadius: 12,
                 padding: 14,
               }}
@@ -3976,60 +4552,60 @@ export default function AquaGuardDashboard() {
               <div
                 style={{
                   fontSize: 10,
-                  color: "#475569",
-                  fontFamily: "monospace",
+                  color: '#475569',
+                  fontFamily: 'monospace',
                   letterSpacing: 0.5,
                   marginBottom: 10,
                 }}
               >
                 HYDRAULIC OVERVIEW
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <NRWGauge nrw={gov.nrw} target={gov.target_nrw} />
                 <div
                   style={{
                     flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
+                    display: 'flex',
+                    flexDirection: 'column',
                     gap: 5,
                     fontSize: 11,
                   }}
                 >
                   {[
                     {
-                      l: "Delivered",
+                      l: 'Delivered',
                       v: `${mass.deliveredM3?.toFixed(1) ?? 0} m³`,
-                      c: "#22c55e",
+                      c: '#22c55e',
                     },
                     {
-                      l: "Lost (NRW)",
+                      l: 'Lost (NRW)',
                       v: `−${mass.systemLossM3?.toFixed(1) ?? 0} m³`,
-                      c: "#ef4444",
+                      c: '#ef4444',
                     },
                     {
-                      l: "Cycle Total",
+                      l: 'Cycle Total',
                       v: `${mass.cycleOutflowM3?.toFixed(1) ?? 0} m³`,
-                      c: "#38bdf8",
+                      c: '#38bdf8',
                     },
                     {
-                      l: "Flow Rate",
+                      l: 'Flow Rate',
                       v: `${mass.totalOutflowM3PerHr?.toFixed(0) ?? 0} m³/h`,
-                      c: "#22d3ee",
+                      c: '#22d3ee',
                     },
-                    { l: "Elevation", v: `${gov.elev}m`, c: "#94a3b8" },
+                    { l: 'Elevation', v: `${gov.elev}m`, c: '#94a3b8' },
                   ].map(({ l, v, c }) => (
                     <div
                       key={l}
                       style={{
-                        display: "flex",
-                        justifyContent: "space-between",
+                        display: 'flex',
+                        justifyContent: 'space-between',
                       }}
                     >
-                      <span style={{ color: "#475569" }}>{l}</span>
+                      <span style={{ color: '#475569' }}>{l}</span>
                       <span
                         style={{
                           color: c,
-                          fontFamily: "monospace",
+                          fontFamily: 'monospace',
                           fontWeight: 600,
                         }}
                       >
@@ -4044,7 +4620,7 @@ export default function AquaGuardDashboard() {
             {/* Solution box */}
             <div
               style={{
-                background: "#0a1628",
+                background: '#0a1628',
                 border: `1px solid ${TYPE_CONFIG[worstType].color}40`,
                 borderRight: `3px solid ${TYPE_CONFIG[worstType].color}`,
                 borderRadius: 12,
@@ -4059,79 +4635,79 @@ export default function AquaGuardDashboard() {
                   marginBottom: 8,
                 }}
               >
-                {worstType === "normal" && "النظام طبيعي — All Clear"}
-                {worstType === "leak" && "تسرب مكتشف — Leak Detected"}
-                {worstType === "burst" && "انفجار حرج — Critical Burst"}
-                {worstType === "theft" && "استهلاك غير مرخص — Theft"}
+                {worstType === 'normal' && 'النظام طبيعي — All Clear'}
+                {worstType === 'leak' && 'تسرب مكتشف — Leak Detected'}
+                {worstType === 'burst' && 'انفجار حرج — Critical Burst'}
+                {worstType === 'theft' && 'استهلاك غير مرخص — Theft'}
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                {worstType === "normal" &&
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {worstType === 'normal' &&
                   [
-                    "All readings within normal thresholds.",
-                    "No field intervention required.",
+                    'All readings within normal thresholds.',
+                    'No field intervention required.',
                   ].map((s, i) => (
                     <div
                       key={i}
                       style={{
                         fontSize: 11,
-                        color: "#475569",
+                        color: '#475569',
                         paddingBottom: 4,
-                        borderBottom: "1px solid rgba(56,189,248,.05)",
+                        borderBottom: '1px solid rgba(56,189,248,.05)',
                       }}
                     >
                       {s}
                     </div>
                   ))}
-                {worstType === "leak" &&
+                {worstType === 'leak' &&
                   [
-                    "Deploy acoustic field detection team.",
-                    "Reduce network pressure 15%.",
-                    "File repair ticket — Medium priority.",
+                    'Deploy acoustic field detection team.',
+                    'Reduce network pressure 15%.',
+                    'File repair ticket — Medium priority.',
                   ].map((s, i) => (
                     <div
                       key={i}
                       style={{
                         fontSize: 11,
-                        color: "#475569",
+                        color: '#475569',
                         paddingBottom: 4,
-                        borderBottom: "1px solid rgba(56,189,248,.05)",
+                        borderBottom: '1px solid rgba(56,189,248,.05)',
                       }}
                     >
                       {s}
                     </div>
                   ))}
-                {worstType === "burst" &&
+                {worstType === 'burst' &&
                   [
-                    "ISOLATE SECTION IMMEDIATELY.",
-                    "Alert emergency response team.",
-                    "Dispatch crew — ETA < 2 hours.",
-                    "Document losses for management.",
+                    'ISOLATE SECTION IMMEDIATELY.',
+                    'Alert emergency response team.',
+                    'Dispatch crew — ETA < 2 hours.',
+                    'Document losses for management.',
                   ].map((s, i) => (
                     <div
                       key={i}
                       style={{
                         fontSize: 11,
-                        color: "#475569",
+                        color: '#475569',
                         paddingBottom: 4,
-                        borderBottom: "1px solid rgba(56,189,248,.05)",
+                        borderBottom: '1px solid rgba(56,189,248,.05)',
                       }}
                     >
                       {s}
                     </div>
                   ))}
-                {worstType === "theft" &&
+                {worstType === 'theft' &&
                   [
-                    "Inspect lateral connections on site.",
-                    "Review consumption logs — 72h.",
-                    "Coordinate with Revenue Protection.",
+                    'Inspect lateral connections on site.',
+                    'Review consumption logs — 72h.',
+                    'Coordinate with Revenue Protection.',
                   ].map((s, i) => (
                     <div
                       key={i}
                       style={{
                         fontSize: 11,
-                        color: "#475569",
+                        color: '#475569',
                         paddingBottom: 4,
-                        borderBottom: "1px solid rgba(56,189,248,.05)",
+                        borderBottom: '1px solid rgba(56,189,248,.05)',
                       }}
                     >
                       {s}
@@ -4144,25 +4720,25 @@ export default function AquaGuardDashboard() {
             {selectedSeg && (
               <div
                 style={{
-                  background: "#0a1628",
-                  border: "1px solid rgba(56,189,248,.15)",
+                  background: '#0a1628',
+                  border: '1px solid rgba(56,189,248,.15)',
                   borderRadius: 12,
                   padding: 14,
                 }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                     marginBottom: 10,
                   }}
                 >
                   <span
                     style={{
                       fontSize: 11,
-                      color: "#38bdf8",
-                      fontFamily: "monospace",
+                      color: '#38bdf8',
+                      fontFamily: 'monospace',
                       fontWeight: 600,
                     }}
                   >
@@ -4171,7 +4747,7 @@ export default function AquaGuardDashboard() {
                   <span
                     style={{
                       fontSize: 10,
-                      padding: "2px 8px",
+                      padding: '2px 8px',
                       borderRadius: 4,
                       background: `${TYPE_DOT[selectedSeg.predType]}22`,
                       color: TYPE_DOT[selectedSeg.predType],
@@ -4183,57 +4759,57 @@ export default function AquaGuardDashboard() {
                 </div>
                 <div
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "4px 12px",
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '4px 12px',
                   }}
                 >
                   {[
                     [
-                      "Flow In",
+                      'Flow In',
                       `${selectedSeg.flowIn.toFixed(2)} L/m`,
-                      "#38bdf8",
+                      '#38bdf8',
                     ],
                     [
-                      "Flow Out",
+                      'Flow Out',
                       `${selectedSeg.flowOut.toFixed(2)} L/m`,
-                      "#22c55e",
+                      '#22c55e',
                     ],
                     [
-                      "Flow Loss",
+                      'Flow Loss',
                       `${selectedSeg.flowLoss.toFixed(2)}%`,
                       TYPE_DOT[selectedSeg.predType],
                     ],
                     [
-                      "Excess Loss",
+                      'Excess Loss',
                       `${selectedSeg.excessLoss.toFixed(2)}%`,
                       TYPE_DOT[selectedSeg.predType],
                     ],
                     [
-                      "Press. In",
+                      'Press. In',
                       `${selectedSeg.pressIn.toFixed(2)} PSI`,
-                      "#a855f7",
+                      '#a855f7',
                     ],
                     [
-                      "Press. Out",
+                      'Press. Out',
                       `${selectedSeg.pressOut.toFixed(2)} PSI`,
-                      "#f59e0b",
+                      '#f59e0b',
                     ],
                     [
-                      "DP Predicted",
+                      'DP Predicted',
                       `${selectedSeg.dpPred.toFixed(3)}`,
-                      "#64748b",
+                      '#64748b',
                     ],
                     [
-                      "DP Deviation",
+                      'DP Deviation',
                       `${selectedSeg.dpDev.toFixed(3)}`,
-                      "#a855f7",
+                      '#a855f7',
                     ],
-                    ["Pipe Age", `${selectedSeg.age} yrs`, "#94a3b8"],
-                    ["Pipe Length", `${selectedSeg.len} m`, "#94a3b8"],
-                    ["HW Coeff.", `${selectedSeg.hw}`, "#94a3b8"],
+                    ['Pipe Age', `${selectedSeg.age} yrs`, '#94a3b8'],
+                    ['Pipe Length', `${selectedSeg.len} m`, '#94a3b8'],
+                    ['HW Coeff.', `${selectedSeg.hw}`, '#94a3b8'],
                     [
-                      "Confidence",
+                      'Confidence',
                       `${(selectedSeg.confidence * 100).toFixed(0)}%`,
                       TYPE_DOT[selectedSeg.predType],
                     ],
@@ -4241,16 +4817,16 @@ export default function AquaGuardDashboard() {
                     <div
                       key={l}
                       style={{
-                        padding: "3px 0",
-                        borderBottom: "1px solid rgba(56,189,248,.04)",
+                        padding: '3px 0',
+                        borderBottom: '1px solid rgba(56,189,248,.04)',
                       }}
                     >
-                      <div style={{ fontSize: 9, color: "#475569" }}>{l}</div>
+                      <div style={{ fontSize: 9, color: '#475569' }}>{l}</div>
                       <div
                         style={{
                           fontSize: 12,
                           color: c,
-                          fontFamily: "monospace",
+                          fontFamily: 'monospace',
                           fontWeight: 600,
                         }}
                       >
@@ -4263,32 +4839,32 @@ export default function AquaGuardDashboard() {
                   style={{
                     marginTop: 10,
                     paddingTop: 8,
-                    borderTop: "1px solid rgba(56,189,248,.06)",
+                    borderTop: '1px solid rgba(56,189,248,.06)',
                   }}
                 >
                   <div
-                    style={{ fontSize: 9, color: "#475569", marginBottom: 6 }}
+                    style={{ fontSize: 9, color: '#475569', marginBottom: 6 }}
                   >
                     MODEL CONSENSUS
                   </div>
                   <div
                     style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 1fr 1fr 1fr',
                       gap: 4,
                     }}
                   >
                     {[
-                      ["LGB", selectedSeg.models.lgb],
-                      ["XGB", selectedSeg.models.xgb],
-                      ["NN", selectedSeg.models.nn],
-                      ["LSTM", selectedSeg.models.lstm],
+                      ['LGB', selectedSeg.models.lgb],
+                      ['XGB', selectedSeg.models.xgb],
+                      ['NN', selectedSeg.models.nn],
+                      ['LSTM', selectedSeg.models.lstm],
                     ].map(([n, v]) => (
-                      <div key={n} style={{ textAlign: "center" }}>
+                      <div key={n} style={{ textAlign: 'center' }}>
                         <div
                           style={{
                             fontSize: 9,
-                            color: "#475569",
+                            color: '#475569',
                             marginBottom: 2,
                           }}
                         >
@@ -4297,12 +4873,12 @@ export default function AquaGuardDashboard() {
                         <div
                           style={{
                             fontSize: 14,
-                            fontFamily: "monospace",
+                            fontFamily: 'monospace',
                             fontWeight: 700,
                             color:
                               v > 50
                                 ? TYPE_DOT[selectedSeg.predType]
-                                : "#38bdf8",
+                                : '#38bdf8',
                           }}
                         >
                           {v.toFixed(0)}%
@@ -4317,8 +4893,8 @@ export default function AquaGuardDashboard() {
             {/* Alert log */}
             <div
               style={{
-                background: "#0a1628",
-                border: "1px solid rgba(56,189,248,.1)",
+                background: '#0a1628',
+                border: '1px solid rgba(56,189,248,.1)',
                 borderRadius: 12,
                 padding: 14,
                 flex: 1,
@@ -4326,17 +4902,17 @@ export default function AquaGuardDashboard() {
             >
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                   marginBottom: 10,
                 }}
               >
                 <span
                   style={{
                     fontSize: 10,
-                    color: "#475569",
-                    fontFamily: "monospace",
+                    color: '#475569',
+                    fontFamily: 'monospace',
                     letterSpacing: 0.5,
                   }}
                 >
@@ -4345,8 +4921,8 @@ export default function AquaGuardDashboard() {
                 <span
                   style={{
                     fontSize: 11,
-                    color: "#ef4444",
-                    fontFamily: "monospace",
+                    color: '#ef4444',
+                    fontFamily: 'monospace',
                   }}
                 >
                   {allAlerts.length}
@@ -4354,19 +4930,19 @@ export default function AquaGuardDashboard() {
               </div>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
+                  display: 'flex',
+                  flexDirection: 'column',
                   gap: 5,
                   maxHeight: 260,
-                  overflowY: "auto",
+                  overflowY: 'auto',
                 }}
               >
                 {allAlerts.length === 0 && (
                   <div
                     style={{
-                      color: "#334155",
+                      color: '#334155',
                       fontSize: 11,
-                      textAlign: "center",
+                      textAlign: 'center',
                       padding: 16,
                     }}
                   >
@@ -4380,18 +4956,18 @@ export default function AquaGuardDashboard() {
                       key={i}
                       onClick={() => setSelectedSeg(a)}
                       style={{
-                        background: "#0d1830",
+                        background: '#0d1830',
                         borderRadius: 7,
-                        padding: "8px 10px",
+                        padding: '8px 10px',
                         borderRight: `3px solid ${tc}`,
-                        cursor: "pointer",
-                        animation: "slideIn .2s ease",
+                        cursor: 'pointer',
+                        animation: 'slideIn .2s ease',
                       }}
                     >
                       <div
                         style={{
-                          display: "flex",
-                          justifyContent: "space-between",
+                          display: 'flex',
+                          justifyContent: 'space-between',
                           marginBottom: 3,
                         }}
                       >
@@ -4399,8 +4975,8 @@ export default function AquaGuardDashboard() {
                           style={{
                             fontSize: 11,
                             fontWeight: 600,
-                            color: "#e2e8f0",
-                            fontFamily: "monospace",
+                            color: '#e2e8f0',
+                            fontFamily: 'monospace',
                           }}
                         >
                           {a.branch} · D{a.depth}
@@ -4408,18 +4984,18 @@ export default function AquaGuardDashboard() {
                         <span
                           style={{
                             fontSize: 9,
-                            color: "#475569",
-                            fontFamily: "monospace",
+                            color: '#475569',
+                            fontFamily: 'monospace',
                           }}
                         >
                           {a.ts}
                         </span>
                       </div>
-                      <div style={{ fontSize: 10, color: "#64748b" }}>
+                      <div style={{ fontSize: 10, color: '#64748b' }}>
                         {a.from} → {a.to}
                       </div>
-                      <div style={{ fontSize: 10, color: "#64748b" }}>
-                        ΔFlow: {a.flowLoss?.toFixed(1)}% · DP:{" "}
+                      <div style={{ fontSize: 10, color: '#64748b' }}>
+                        ΔFlow: {a.flowLoss?.toFixed(1)}% · DP:{' '}
                         {a.dpDev?.toFixed(3)}
                       </div>
                       <div
@@ -4428,10 +5004,10 @@ export default function AquaGuardDashboard() {
                           color: tc,
                           fontWeight: 600,
                           marginTop: 2,
-                          fontFamily: "monospace",
+                          fontFamily: 'monospace',
                         }}
                       >
-                        {a.predType.toUpperCase()} ·{" "}
+                        {a.predType.toUpperCase()} ·{' '}
                         {(a.confidence * 100).toFixed(0)}%
                       </div>
                     </div>
@@ -4445,8 +5021,8 @@ export default function AquaGuardDashboard() {
         {/* ── BOTTOM: All governorates NRW + reservoir overview ── */}
         <div
           style={{
-            background: "#0a1628",
-            border: "1px solid rgba(56,189,248,.08)",
+            background: '#0a1628',
+            border: '1px solid rgba(56,189,248,.08)',
             borderRadius: 12,
             padding: 14,
           }}
@@ -4454,8 +5030,8 @@ export default function AquaGuardDashboard() {
           <div
             style={{
               fontSize: 10,
-              color: "#475569",
-              fontFamily: "monospace",
+              color: '#475569',
+              fontFamily: 'monospace',
               letterSpacing: 0.5,
               marginBottom: 12,
             }}
@@ -4464,8 +5040,8 @@ export default function AquaGuardDashboard() {
           </div>
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(12,1fr)",
+              display: 'grid',
+              gridTemplateColumns: 'repeat(12,1fr)',
               gap: 8,
             }}
           >
@@ -4479,17 +5055,17 @@ export default function AquaGuardDashboard() {
                   key={k}
                   onClick={() => setGovKey(k)}
                   style={{
-                    cursor: "pointer",
-                    textAlign: "center",
-                    padding: "8px 4px",
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    padding: '8px 4px',
                     borderRadius: 8,
                     background: isActive
-                      ? "rgba(56,189,248,.08)"
-                      : "transparent",
+                      ? 'rgba(56,189,248,.08)'
+                      : 'transparent',
                     border: `1px solid ${
-                      isActive ? "rgba(56,189,248,.3)" : "transparent"
+                      isActive ? 'rgba(56,189,248,.3)' : 'transparent'
                     }`,
-                    transition: "all .15s",
+                    transition: 'all .15s',
                   }}
                 >
                   {/* Mini tank */}
@@ -4497,35 +5073,35 @@ export default function AquaGuardDashboard() {
                     style={{
                       width: 18,
                       height: 44,
-                      margin: "0 auto 4px",
-                      position: "relative",
-                      background: "#0f172a",
+                      margin: '0 auto 4px',
+                      position: 'relative',
+                      background: '#0f172a',
                       borderRadius: 3,
-                      overflow: "hidden",
-                      border: "1px solid #1e293b",
+                      overflow: 'hidden',
+                      border: '1px solid #1e293b',
                     }}
                   >
                     <div
                       style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: 0,
                         left: 0,
                         right: 0,
                         height: `${rPct}%`,
                         background:
                           rPct > 60
-                            ? "#22c55e"
+                            ? '#22c55e'
                             : rPct > 30
-                            ? "#f59e0b"
-                            : "#ef4444",
-                        transition: "height .4s",
+                            ? '#f59e0b'
+                            : '#ef4444',
+                        transition: 'height .4s',
                       }}
                     />
                   </div>
                   <div
                     style={{
                       fontSize: 9,
-                      color: isActive ? "#38bdf8" : "#64748b",
+                      color: isActive ? '#38bdf8' : '#64748b',
                       fontWeight: isActive ? 700 : 400,
                     }}
                   >
@@ -4536,11 +5112,11 @@ export default function AquaGuardDashboard() {
                       fontSize: 9,
                       color:
                         rPct > 60
-                          ? "#22c55e"
+                          ? '#22c55e'
                           : rPct > 30
-                          ? "#f59e0b"
-                          : "#ef4444",
-                      fontFamily: "monospace",
+                          ? '#f59e0b'
+                          : '#ef4444',
+                      fontFamily: 'monospace',
                       fontWeight: 600,
                     }}
                   >
@@ -4551,11 +5127,11 @@ export default function AquaGuardDashboard() {
                       fontSize: 8,
                       color:
                         v.nrw > 0.5
-                          ? "#ef4444"
+                          ? '#ef4444'
                           : v.nrw > 0.4
-                          ? "#f59e0b"
-                          : "#22c55e",
-                      fontFamily: "monospace",
+                          ? '#f59e0b'
+                          : '#22c55e',
+                      fontFamily: 'monospace',
                     }}
                   >
                     NRW {nrwPct}
