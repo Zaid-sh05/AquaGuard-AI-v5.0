@@ -2630,7 +2630,7 @@ export default function AquaGuardDashboard() {
                 letterSpacing: 0.3,
               }}
             >
-              Aqurd AI v4.3
+              AquaGuard AI v5.0
             </div>
             <div
               style={{
