@@ -2366,6 +2366,408 @@ function NRWGauge({ nrw, target }) {
   );
 }
 
+
+// ══════════════════════════════════════════════════════════════════════════════
+// OPERATOR TAB PANELS — Arabic internal tabs, approved actions, UX research, AI explanation
+// ══════════════════════════════════════════════════════════════════════════════
+const ACTION_SUGGESTIONS = {
+  normal: [
+    {
+      title: "استمرار المراقبة التشغيلية",
+      detail: "لا يوجد خلل نشط؛ يتم الاكتفاء بتحديث القراءات ومراقبة الانحرافات القادمة.",
+      priority: "منخفضة",
+    },
+    {
+      title: "توثيق دورة القياس الحالية",
+      detail: "حفظ حالة الشبكة الطبيعية كمرجع للمقارنة مع أي تغير لاحق.",
+      priority: "منخفضة",
+    },
+  ],
+  leak: [
+    {
+      title: "إرسال فريق صيانة للفحص الميداني",
+      detail: "توجيه الفريق إلى المقطع المحدد مع أولوية متوسطة قبل تحول التسرب إلى عطل أكبر.",
+      priority: "متوسطة",
+    },
+    {
+      title: "تخفيض الضغط بنسبة 10–15% مؤقتاً",
+      detail: "تقليل الفاقد لحين وصول الفريق مع التأكد من عدم التأثير على التزويد الأساسي.",
+      priority: "متوسطة",
+    },
+    {
+      title: "تشغيل فحص صوتي موضعي",
+      detail: "استخدام حساس التسرب الصوتي لتأكيد النقطة الأدق قبل الحفر أو الإغلاق.",
+      priority: "متوسطة",
+    },
+  ],
+  burst: [
+    {
+      title: "عزل المقطع المتأثر فوراً",
+      detail: "إغلاق الصمام الذكي أو المحبس الأقرب لتقليل الفاقد وحصر الضرر.",
+      priority: "حرجة",
+    },
+    {
+      title: "فتح بلاغ صيانة طارئ",
+      detail: "إرسال فريق إصلاح مع إحداثيات المقطع وقراءات التدفق والضغط الداعمة للقرار.",
+      priority: "حرجة",
+    },
+    {
+      title: "إعادة توزيع التزويد مؤقتاً",
+      detail: "تحويل جزء من التدفق إلى مسار بديل لتقليل أثر الانقطاع على المشتركين.",
+      priority: "مرتفعة",
+    },
+  ],
+  theft: [
+    {
+      title: "فتح مهمة تحقق ميداني",
+      detail: "فحص الوصلات غير المشروعة حول المقطع المحدد دون قطع الخدمة مباشرة.",
+      priority: "تحقق",
+    },
+    {
+      title: "مقارنة آخر 72 ساعة مع سجلات العدادات",
+      detail: "ربط نمط الفاقد مع قراءات الاستهلاك للتأكد من وجود استخدام غير مشروع.",
+      priority: "تحقق",
+    },
+    {
+      title: "توثيق الحالة كاشتباه سرقة",
+      detail: "حفظ القراءات والموقع والوقت كمرجع للجهة المختصة قبل الإجراء القانوني.",
+      priority: "تحقق",
+    },
+  ],
+};
+
+function getTypeColor(type) {
+  return TYPE_CONFIG[type]?.color || "#22c55e";
+}
+
+function getRiskLabel(type) {
+  if (type === "burst") return "حرج";
+  if (type === "leak") return "مرتفع";
+  if (type === "theft") return "تحقق";
+  return "طبيعي";
+}
+
+function getTypeLabelAr(type) {
+  if (type === "burst") return "انفجار";
+  if (type === "leak") return "تسرب";
+  if (type === "theft") return "سرقة";
+  return "طبيعي";
+}
+
+function SmallPill({ children, color = "#38bdf8", filled = false }) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "5px 9px",
+        borderRadius: 999,
+        border: `1px solid ${color}66`,
+        background: filled ? `${color}22` : "rgba(2,6,23,.28)",
+        color,
+        fontSize: 10,
+        fontWeight: 800,
+        letterSpacing: 0.35,
+        fontFamily: "monospace",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function SectionCard({ children, title, icon, right, style = {} }) {
+  return (
+    <div
+      style={{
+        background: "linear-gradient(180deg,rgba(15,23,42,.92),rgba(8,15,30,.94))",
+        border: "1px solid rgba(56,189,248,.12)",
+        borderRadius: 16,
+        boxShadow: "0 18px 44px rgba(0,0,0,.18)",
+        overflow: "hidden",
+        ...style,
+      }}
+    >
+      {title && (
+        <div
+          style={{
+            padding: "14px 16px",
+            borderBottom: "1px solid rgba(56,189,248,.08)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+            {icon}
+            <div style={{ fontSize: 13, fontWeight: 900, color: "#f8fafc" }}>
+              {title}
+            </div>
+          </div>
+          {right}
+        </div>
+      )}
+      <div style={{ padding: 16 }}>{children}</div>
+    </div>
+  );
+}
+
+function MiniMetric({ label, value, color = "#e2e8f0", sub }) {
+  return (
+    <div
+      style={{
+        border: "1px solid rgba(148,163,184,.13)",
+        background: "rgba(2,6,23,.28)",
+        borderRadius: 12,
+        padding: "12px 13px",
+      }}
+    >
+      <div
+        style={{
+          color: "#64748b",
+          fontSize: 10,
+          fontFamily: "monospace",
+          fontWeight: 800,
+          letterSpacing: 0.5,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          color,
+          fontSize: 19,
+          fontFamily: "monospace",
+          fontWeight: 950,
+          marginTop: 5,
+        }}
+      >
+        {value}
+      </div>
+      {sub && <div style={{ color: "#64748b", fontSize: 10, marginTop: 4 }}>{sub}</div>}
+    </div>
+  );
+}
+
+function ProgressBar({ value, color = "#38bdf8", height = 8 }) {
+  const pct = Math.max(0, Math.min(100, Number(value || 0)));
+  return (
+    <div
+      style={{
+        height,
+        borderRadius: 999,
+        background: "rgba(51,65,85,.7)",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          width: `${pct}%`,
+          height: "100%",
+          borderRadius: 999,
+          background: color,
+          transition: "width .35s ease",
+        }}
+      />
+    </div>
+  );
+}
+
+function actionButtonStyle(color = "#38bdf8") {
+  return {
+    border: `1px solid ${color}80`,
+    background: `linear-gradient(135deg,${color}33,rgba(15,23,42,.9))`,
+    color: "#f8fafc",
+    borderRadius: 12,
+    padding: "9px 12px",
+    fontWeight: 900,
+    cursor: "pointer",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    justifyContent: "center",
+    boxShadow: `0 12px 36px ${color}16`,
+  };
+}
+
+function SuggestedActionsPanel({ seg, gov, actionLog, onApproveAction, onSelectActionLog }) {
+  const type = seg?.predType || "normal";
+  const color = getTypeColor(type);
+  const suggestions = ACTION_SUGGESTIONS[type] || ACTION_SUGGESTIONS.normal;
+
+  return (
+    <div style={{ display: "grid", gap: 16, direction: "rtl", textAlign: "right" }}>
+      <SectionCard
+        title="الإجراء المعتمد"
+        icon={<Shield size={16} color={color} />}
+        right={<SmallPill color={color} filled>{getTypeLabelAr(type)}</SmallPill>}
+      >
+        <div style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.75, marginBottom: 14 }}>
+          يعرض النظام أكثر من إجراء ممكن حتى يبقى القرار بيد المشغّل. عند اعتماد أي إجراء يتم حفظه في سجل تاريخي قابل للمراجعة والضغط عليه للرجوع إلى المقطع المرتبط به.
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
+          {suggestions.map((action, i) => (
+            <div
+              key={action.title}
+              style={{
+                border: `1px solid ${color}33`,
+                background: `${color}10`,
+                borderRadius: 14,
+                padding: 14,
+                display: "grid",
+                gap: 10,
+                minHeight: 176,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                <SmallPill color={color}>اقتراح {i + 1}</SmallPill>
+                <span style={{ color, fontSize: 10, fontFamily: "monospace", fontWeight: 900 }}>{action.priority}</span>
+              </div>
+              <div style={{ color: "#f8fafc", fontSize: 14, fontWeight: 950, lineHeight: 1.45 }}>
+                {action.title}
+              </div>
+              <div style={{ color: "#cbd5e1", fontSize: 12, lineHeight: 1.7 }}>{action.detail}</div>
+              <button onClick={() => onApproveAction(action)} style={{ ...actionButtonStyle(color), marginTop: "auto" }}>
+                <Zap size={14} /> اعتماد الإجراء
+              </button>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      <SectionCard
+        title="سجل الإجراءات المعتمدة"
+        icon={<Bell size={16} color="#22c55e" />}
+        right={<SmallPill color="#22c55e">{actionLog.length} إجراء</SmallPill>}
+      >
+        <div style={{ display: "grid", gap: 8, maxHeight: 280, overflowY: "auto" }}>
+          {actionLog.length === 0 && (
+            <div style={{ color: "#64748b", fontSize: 12, textAlign: "center", padding: 18 }}>
+              لم يتم اعتماد أي إجراء بعد. اختر أحد الإجراءات المقترحة ليظهر هنا كمرجع تشغيلي.
+            </div>
+          )}
+          {actionLog.map((item) => (
+            <div
+              key={item.id}
+              onClick={() => item.segSnapshot && onSelectActionLog(item.segSnapshot)}
+              style={{
+                border: "1px solid rgba(34,197,94,.20)",
+                background: "rgba(34,197,94,.08)",
+                borderRadius: 12,
+                padding: 12,
+                cursor: item.segSnapshot ? "pointer" : "default",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center" }}>
+                <div style={{ color: "#f8fafc", fontWeight: 950, fontSize: 13 }}>{item.action}</div>
+                <SmallPill color="#22c55e" filled>{item.status}</SmallPill>
+              </div>
+              <div style={{ color: "#94a3b8", fontSize: 11, lineHeight: 1.6, marginTop: 6 }}>
+                {item.gov} · {item.segment} · {item.type} · {item.time}
+              </div>
+              <div style={{ color: "#64748b", fontSize: 11, lineHeight: 1.6, marginTop: 4 }}>
+                {item.detail}
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+    </div>
+  );
+}
+
+function UserResearchPanel() {
+  const personas = [
+    ["مشغّل غرفة التحكم", "يريد معرفة الحالة والموقع والإجراء بسرعة دون تحليل جداول طويلة.", "يحتاج: أولوية الإنذار، موقع الخريطة، نسبة الثقة، والإجراء."],
+    ["قائد فريق الصيانة", "يريد نقطة واضحة للذهاب إليها ونوع الخلل قبل النزول للميدان.", "يحتاج: الفرع، المقطع، درجة الخطورة، وتوجيهات العزل."],
+    ["صاحب القرار", "يريد مؤشرات الفاقد والمناطق الأخطر وأثر الحل على NRW.", "يحتاج: اتجاهات الفاقد، الأثر المالي، وقابلية التوسع."],
+  ];
+  const pains = [
+    "تأخر اكتشاف التسربات والانفجارات",
+    "بحث ميداني طويل عن موقع الخلل",
+    "صعوبة التمييز بين التسرب والانفجار والسرقة",
+    "تشتت البيانات بين الحساسات والفرق وصنّاع القرار",
+  ];
+
+  return (
+    <div style={{ display: "grid", gap: 16, direction: "rtl", textAlign: "right" }}>
+      <SectionCard title="بحث المستخدمين" icon={<Eye size={16} color="#a855f7" />}>
+        <div style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.75, marginBottom: 14 }}>
+          هذا القسم يوضح أن الواجهة مصممة حول المستخدم التشغيلي: المشغّل، فريق الصيانة، وصاحب القرار، وليس حول عرض أرقام النموذج فقط.
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
+          {personas.map(([title, ar, need]) => (
+            <div key={title} style={{ border: "1px solid rgba(168,85,247,.18)", background: "rgba(88,28,135,.12)", borderRadius: 14, padding: 14 }}>
+              <div style={{ color: "#f8fafc", fontWeight: 950, fontSize: 14 }}>{title}</div>
+              <div style={{ color: "#cbd5e1", fontSize: 12, lineHeight: 1.7, marginTop: 8 }}>{ar}</div>
+              <div style={{ color: "#a78bfa", fontSize: 11, lineHeight: 1.6, marginTop: 8, fontFamily: "monospace" }}>{need}</div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      <SectionCard title="نقاط الألم التي يعالجها النظام" icon={<AlertTriangle size={16} color="#f59e0b" />}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10 }}>
+          {pains.map((p, i) => (
+            <div key={p} style={{ padding: 13, borderRadius: 12, background: "rgba(245,158,11,.10)", border: "1px solid rgba(245,158,11,.18)" }}>
+              <div style={{ color: "#f59e0b", fontWeight: 950, fontFamily: "monospace", marginBottom: 6 }}>0{i + 1}</div>
+              <div style={{ color: "#e2e8f0", fontSize: 12, lineHeight: 1.6 }}>{p}</div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+    </div>
+  );
+}
+
+function TechnicalPanel({ selectedSeg, activeModels = 4 }) {
+  const models = selectedSeg?.models || { lgb: 0, xgb: 0, nn: 0, lstm: 0 };
+  const rows = [
+    ["LightGBM", models.lgb || 0, "خصائص جدولية من الضغط والتدفق"],
+    ["XGBoost", models.xgb || 0, "تحقق متقاطع للأنماط غير الخطية"],
+    ["ResNet-MLP", models.nn || 0, "نمذجة العلاقات المعقدة بين الخصائص"],
+    ["BiLSTM", models.lstm || 0, "فهم تسلسل المقاطع داخل الفرع"],
+  ];
+  const color = getTypeColor(selectedSeg?.predType || "normal");
+
+  return (
+    <div style={{ display: "grid", gap: 16, direction: "rtl", textAlign: "right" }}>
+      <SectionCard
+        title="شرح الذكاء الاصطناعي"
+        icon={<Cpu size={16} color="#38bdf8" />}
+        right={<SmallPill color="#22c55e">{activeModels} نماذج فعالة</SmallPill>}
+      >
+        <div style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.75, marginBottom: 14 }}>
+          النظام لا يعتمد على إشارة واحدة فقط؛ بل يدمج خصائص الضغط والتدفق، ميزان الكتلة، نماذج التعلم الآلي، النموذج التسلسلي، ثم يخرج قراراً موحداً مع نسبة ثقة قابلة للتفسير.
+        </div>
+        <div style={{ display: "grid", gap: 10 }}>
+          {rows.map(([name, val, desc]) => (
+            <div key={name} style={{ display: "grid", gridTemplateColumns: "110px 1fr 56px", gap: 12, alignItems: "center" }}>
+              <div style={{ color: "#e2e8f0", fontSize: 12, fontWeight: 900 }}>{name}</div>
+              <ProgressBar value={val} color={val > 70 ? color : val > 35 ? "#f59e0b" : "#38bdf8"} />
+              <div style={{ color: "#94a3b8", fontFamily: "monospace", fontWeight: 900, fontSize: 11 }}>{Number(val).toFixed(1)}%</div>
+              <div />
+              <div style={{ color: "#64748b", fontSize: 11, marginTop: -6 }}>{desc}</div>
+              <div />
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      <SectionCard title="خصائص المقطع الحالي" icon={<Sliders size={16} color="#f59e0b" />}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10 }}>
+          <MiniMetric label="فقد التدفق" value={`${selectedSeg?.flowLoss?.toFixed?.(2) || "0.00"}%`} color="#f59e0b" />
+          <MiniMetric label="الفقد الزائد" value={`${selectedSeg?.excessLoss?.toFixed?.(2) || "0.00"}%`} color="#ef4444" />
+          <MiniMetric label="DP DEV" value={`${selectedSeg?.dpDev?.toFixed?.(3) || "0.000"}`} color="#38bdf8" />
+          <MiniMetric label="PIPE AGE" value={`${selectedSeg?.age || 0}y`} color="#a855f7" />
+        </div>
+      </SectionCard>
+    </div>
+  );
+}
 // ══════════════════════════════════════════════════════════════════════════════
 // MAIN DASHBOARD
 // ══════════════════════════════════════════════════════════════════════════════
@@ -2386,6 +2788,7 @@ export default function AquaGuardDashboard() {
   const [pressHist, setPressHist] = useState(Array(30).fill(0));
   const [scatterData, setScatterData] = useState([]);
   const [activeTab, setActiveTab] = useState("map");
+  const [actionLog, setActionLog] = useState([]);
   const menuRef = useRef(null);
 
   // ─── HYDRAULIC STATE ──────────────────────────────────────────────────
@@ -2549,10 +2952,36 @@ export default function AquaGuardDashboard() {
   const worstType = burstSegs.length
     ? "burst"
     : alertSegs[0]?.predType || "normal";
+  const selectedOrWorst = selectedSeg || burstSegs[0] || alertSegs[0] || segments[0] || null;
 
   const currentReservoir = reservoirLevels[govKey] ?? gov.reservoirCap;
   const reservoirPct = (currentReservoir / gov.reservoirCap) * 100;
   const totalSystemLoss = systemLoss[govKey] || 0;
+
+  const approveAction = useCallback(
+    (action) => {
+      const seg = selectedOrWorst;
+      setActionLog((prev) =>
+        [
+          {
+            id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+            action: action.title,
+            detail: action.detail,
+            status: "تم اعتماد الإجراء",
+            gov: gov.label,
+            type: getTypeLabelAr(seg?.predType || "normal"),
+            segment: seg
+              ? `${seg.branch} · D${seg.depth} · ${seg.from} → ${seg.to}`
+              : "لا يوجد مقطع محدد",
+            time: new Date().toLocaleTimeString(),
+            segSnapshot: seg,
+          },
+          ...prev,
+        ].slice(0, 30)
+      );
+    },
+    [selectedOrWorst, gov.label]
+  );
 
   const refillReservoir = () => {
     setReservoirLevels((prev) => ({ ...prev, [govKey]: gov.reservoirCap }));
@@ -3064,536 +3493,348 @@ export default function AquaGuardDashboard() {
         <div
           style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 14 }}
         >
-          {/* LEFT: Map + tabs */}
+          {/* LEFT: Map + Arabic operator tabs */}
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", gap: 4 }}>
-              {[
-                ["map", "Map"],
-                ["scatter", "Scatter"],
-                ["telemetry", "Telemetry"],
-              ].map(([k, l]) => (
-                <button
-                  key={k}
-                  onClick={() => setActiveTab(k)}
-                  style={{
-                    padding: "6px 14px",
-                    borderRadius: 6,
-                    fontSize: 12,
-                    cursor: "pointer",
-                    fontWeight: 500,
-                    background:
-                      activeTab === k ? "rgba(56,189,248,.15)" : "transparent",
-                    border: `1px solid ${
-                      activeTab === k
-                        ? "rgba(56,189,248,.4)"
-                        : "rgba(56,189,248,.1)"
-                    }`,
-                    color: activeTab === k ? "#38bdf8" : "#64748b",
-                  }}
-                >
-                  {l}
-                </button>
-              ))}
-            </div>
-
-            {/* MAP TAB */}
-            {activeTab === "map" && (
-              <div
-                style={{
-                  background: "#0a1628",
-                  border: "1px solid rgba(56,189,248,.1)",
-                  borderRadius: 12,
-                  padding: 16,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: "#475569",
-                      fontFamily: "monospace",
-                      letterSpacing: 0.5,
-                    }}
-                  >
-                    LIVE PIPE NETWORK — {gov.label} · {gov.source}
-                  </div>
-                  {pumping && (
-                    <div
-                      style={{
-                        fontSize: 10,
-                        color: "#22d3ee",
-                        fontFamily: "monospace",
-                        fontWeight: 700,
-                        padding: "2px 8px",
-                        borderRadius: 4,
-                        background: "rgba(34,211,238,.1)",
-                        border: "1px solid rgba(34,211,238,.3)",
-                      }}
-                    >
-                      ⚡ PUMP CYCLE ACTIVE
-                    </div>
-                  )}
-                </div>
-                <div
-                  style={{ display: "flex", gap: 16, alignItems: "stretch" }}
-                >
-                  {/* Reservoir tank on the left of map */}
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 6,
-                      paddingTop: 4,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 9,
-                        color: "#475569",
-                        fontFamily: "monospace",
-                        letterSpacing: 0.3,
-                      }}
-                    >
-                      RESERVOIR
-                    </div>
-                    <ReservoirTank
-                      currentM3={currentReservoir}
-                      capacityM3={gov.reservoirCap}
-                      pulsing={pumping}
-                      govColor={gov.color}
-                    />
-                    <div
-                      style={{
-                        fontSize: 9,
-                        color: "#64748b",
-                        fontFamily: "monospace",
-                        textAlign: "center",
-                      }}
-                    >
-                      {(currentReservoir / 1000).toFixed(1)}k
-                      <br />
-                      <span style={{ color: "#334155" }}>
-                        / {(gov.reservoirCap / 1000).toFixed(0)}k m³
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 8,
-                        color: "#64748b",
-                        textAlign: "center",
-                        paddingTop: 4,
-                        borderTop: "1px solid rgba(56,189,248,.1)",
-                        marginTop: 2,
-                        width: "100%",
-                      }}
-                    >
-                      <div
-                        style={{
-                          color: "#ef4444",
-                          fontWeight: 600,
-                          fontFamily: "monospace",
-                        }}
-                      >
-                        −{mass.systemLossM3?.toFixed(1) ?? 0}
-                      </div>
-                      <div>m³ this cycle</div>
-                    </div>
-                  </div>
-                  {/* Pipe network */}
-                  <div style={{ flex: 1 }}>
-                    <PipeNetworkMap
-                      govKey={govKey}
-                      segments={segments}
-                      onSegClick={setSelectedSeg}
-                      selectedSeg={selectedSeg}
-                      pumping={pumping}
-                      branchInflows={mass.branchInflows}
-                      totalOutflowM3PerHr={mass.totalOutflowM3PerHr}
-                    />
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 16,
-                    marginTop: 10,
-                    fontSize: 11,
-                    fontFamily: "monospace",
-                  }}
-                >
-                  {Object.entries(TYPE_CONFIG).map(([k, v]) => (
-                    <span
-                      key={k}
-                      style={{
-                        color: v.color,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 4,
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: "50%",
-                          background: v.color,
-                          display: "inline-block",
-                        }}
-                      />
-                      {v.label}
-                    </span>
-                  ))}
-                  <span style={{ marginLeft: "auto", color: "#475569" }}>
-                    Click segment for detail
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* SCATTER TAB */}
-            {activeTab === "scatter" && (
-              <div
-                style={{
-                  background: "#0a1628",
-                  border: "1px solid rgba(56,189,248,.1)",
-                  borderRadius: 12,
-                  padding: 16,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: "#475569",
-                    fontFamily: "monospace",
-                    letterSpacing: 0.5,
-                    marginBottom: 4,
-                  }}
-                >
-                  SPATIAL SIGNATURES — Flow Loss % vs DP Deviation (PSI)
-                </div>
-                <div
-                  style={{ fontSize: 10, color: "#334155", marginBottom: 12 }}
-                >
-                  Each dot = one pipe segment. Pattern reveals anomaly type.
-                </div>
-                <ResponsiveContainer width="100%" height={320}>
-                  <ScatterChart
-                    margin={{ top: 10, right: 20, bottom: 20, left: 0 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis
-                      dataKey="x"
-                      name="Flow Loss %"
-                      label={{
-                        value: "Flow Loss %",
-                        position: "insideBottom",
-                        offset: -10,
-                        fill: "#475569",
-                        fontSize: 11,
-                      }}
-                      tick={{ fill: "#475569", fontSize: 10 }}
-                      stroke="#1e293b"
-                    />
-                    <YAxis
-                      dataKey="y"
-                      name="DP Dev"
-                      label={{
-                        value: "DP Deviation",
-                        angle: -90,
-                        position: "insideLeft",
-                        fill: "#475569",
-                        fontSize: 11,
-                      }}
-                      tick={{ fill: "#475569", fontSize: 10 }}
-                      stroke="#1e293b"
-                    />
-                    <RTooltip
-                      cursor={{ strokeDasharray: "3 3" }}
-                      content={({ payload }) => {
-                        if (!payload?.length) return null;
-                        const d = payload[0].payload;
-                        return (
-                          <div
-                            style={{
-                              background: "#0f1f3d",
-                              border: "1px solid rgba(56,189,248,.3)",
-                              borderRadius: 8,
-                              padding: "8px 12px",
-                              fontSize: 11,
-                            }}
-                          >
-                            <div
-                              style={{
-                                color: TYPE_DOT[d.type],
-                                fontWeight: 700,
-                              }}
-                            >
-                              {d.type.toUpperCase()}
-                            </div>
-                            <div style={{ color: "#94a3b8" }}>
-                              Flow Loss: {d.x}%
-                            </div>
-                            <div style={{ color: "#94a3b8" }}>
-                              DP Dev: {d.y} PSI
-                            </div>
-                          </div>
-                        );
-                      }}
-                    />
-                    {Object.keys(TYPE_DOT).map((t) => (
-                      <Scatter
-                        key={t}
-                        name={t}
-                        data={scatterData.filter((d) => d.type === t)}
-                        fill={TYPE_DOT[t]}
-                        fillOpacity={0.75}
-                        shape={(props) => {
-                          const { cx, cy } = props;
-                          return (
-                            <circle
-                              cx={cx}
-                              cy={cy}
-                              r={t === "burst" ? 7 : t === "leak" ? 5 : 4}
-                              fill={TYPE_DOT[t]}
-                              fillOpacity={0.8}
-                            />
-                          );
-                        }}
-                      />
-                    ))}
-                  </ScatterChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-
-            {/* TELEMETRY TAB */}
-            {activeTab === "telemetry" && (
+            <SectionCard
+              title="التبويبات التشغيلية الداخلية"
+              icon={<Activity size={16} color="#38bdf8" />}
+              right={<SmallPill color={getTypeColor(selectedOrWorst?.predType || "normal")} filled>{getTypeLabelAr(selectedOrWorst?.predType || "normal")}</SmallPill>}
+            >
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
+                  gridTemplateColumns: "repeat(6,1fr)",
+                  gap: 7,
+                  marginBottom: 14,
+                  direction: "rtl",
                 }}
               >
                 {[
-                  {
-                    title: "Flow In — L/min",
-                    data: flowHistData,
-                    color: "#38bdf8",
-                    key: "v",
-                  },
-                  {
-                    title: "Pressure In — PSI",
-                    data: pressHistData,
-                    color: "#a855f7",
-                    key: "v",
-                  },
-                ].map((ch, ci) => (
-                  <div
-                    key={ci}
+                  ["map", "الخريطة الحية"],
+                  ["scatter", "بصمة الخلل"],
+                  ["telemetry", "القياسات الحية"],
+                  ["actions", "الإجراء المعتمد"],
+                  ["users", "بحث المستخدمين"],
+                  ["technical", "شرح الذكاء الاصطناعي"],
+                ].map(([key, label]) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveTab(key)}
                     style={{
-                      background: "#0a1628",
-                      border: "1px solid rgba(56,189,248,.1)",
-                      borderRadius: 12,
-                      padding: 16,
+                      padding: "9px 10px",
+                      borderRadius: 10,
+                      border: `1px solid ${
+                        activeTab === key
+                          ? "rgba(56,189,248,.42)"
+                          : "rgba(148,163,184,.12)"
+                      }`,
+                      background:
+                        activeTab === key
+                          ? "rgba(56,189,248,.12)"
+                          : "rgba(2,6,23,.18)",
+                      color: activeTab === key ? "#38bdf8" : "#94a3b8",
+                      fontSize: 11,
+                      fontWeight: 900,
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    <div
-                      style={{
-                        fontSize: 11,
-                        color: "#475569",
-                        fontFamily: "monospace",
-                        marginBottom: 8,
-                      }}
-                    >
-                      {ch.title}
-                    </div>
-                    <ResponsiveContainer width="100%" height={160}>
-                      <AreaChart
-                        data={ch.data}
-                        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#0f172a" />
-                        <XAxis hide />
-                        <YAxis
-                          tick={{ fill: "#475569", fontSize: 9 }}
-                          stroke="#0f172a"
-                          width={36}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey={ch.key}
-                          stroke={ch.color}
-                          fill={`${ch.color}18`}
-                          strokeWidth={2}
-                          dot={false}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginTop: 8,
-                        fontSize: 11,
-                      }}
-                    >
-                      <span style={{ color: "#475569" }}>Current</span>
-                      <span
-                        style={{
-                          color: ch.color,
-                          fontFamily: "monospace",
-                          fontWeight: 600,
-                        }}
-                      >
-                        {ch.data[ch.data.length - 1]?.v.toFixed(1)}
-                      </span>
-                    </div>
-                  </div>
+                    {label}
+                  </button>
                 ))}
+              </div>
 
+              {activeTab === "map" && (
                 <div
                   style={{
-                    background: "#0a1628",
-                    border: "1px solid rgba(56,189,248,.1)",
-                    borderRadius: 12,
-                    padding: 16,
-                    gridColumn: "1/-1",
+                    background: "rgba(2,6,23,.24)",
+                    border: "1px solid rgba(148,163,184,.08)",
+                    borderRadius: 14,
+                    padding: 14,
+                    overflow: "hidden",
                   }}
                 >
                   <div
                     style={{
-                      fontSize: 11,
-                      color: "#475569",
-                      fontFamily: "monospace",
-                      marginBottom: 12,
-                    }}
-                  >
-                    ENSEMBLE MODEL SCORES — Anomaly Probability per Segment
-                  </div>
-                  <div
-                    style={{
                       display: "flex",
-                      flexDirection: "column",
-                      gap: 8,
-                      maxHeight: 280,
-                      overflowY: "auto",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: 10,
                     }}
                   >
-                    {segments.slice(0, 12).map((seg) => {
-                      const tc = TYPE_DOT[seg.predType];
-                      return (
-                        <div
-                          key={seg.id}
-                          onClick={() => setSelectedSeg(seg)}
-                          style={{
-                            cursor: "pointer",
-                            padding: "8px 10px",
-                            background: "#0d1830",
-                            borderRadius: 8,
-                            border: `1px solid ${
-                              seg.alert ? tc + "50" : "rgba(56,189,248,.06)"
-                            }`,
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              marginBottom: 6,
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: 11,
-                                color: "#94a3b8",
-                                fontFamily: "monospace",
-                              }}
-                            >
-                              {seg.from}→{seg.to}
-                            </span>
-                            <span
-                              style={{
-                                fontSize: 10,
-                                padding: "1px 7px",
-                                borderRadius: 4,
-                                background: `${tc}22`,
-                                color: tc,
-                                fontWeight: 600,
-                              }}
-                            >
-                              {seg.predType.toUpperCase()}
-                            </span>
-                          </div>
-                          <div
-                            style={{
-                              display: "grid",
-                              gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                              gap: 6,
-                            }}
-                          >
-                            {[
-                              ["LGB", seg.models.lgb],
-                              ["XGB", seg.models.xgb],
-                              ["NN", seg.models.nn],
-                              ["LSTM", seg.models.lstm],
-                            ].map(([n, v]) => (
-                              <div key={n}>
-                                <div
-                                  style={{
-                                    fontSize: 9,
-                                    color: "#475569",
-                                    marginBottom: 2,
-                                  }}
-                                >
-                                  {n}
-                                </div>
-                                <div
-                                  style={{
-                                    height: 4,
-                                    background: "#1e293b",
-                                    borderRadius: 2,
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      height: 4,
-                                      width: `${Math.min(v, 100)}%`,
-                                      background: v > 50 ? tc : "#38bdf8",
-                                      borderRadius: 2,
-                                      transition: "width .5s",
-                                    }}
-                                  />
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: 9,
-                                    color: v > 50 ? tc : "#64748b",
-                                    fontFamily: "monospace",
-                                    marginTop: 2,
-                                  }}
-                                >
-                                  {v.toFixed(0)}%
-                                </div>
-                              </div>
-                            ))}
-                          </div>
+                    <div style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace", letterSpacing: 0.5 }}>
+                      LIVE PIPE NETWORK — {gov.label} · {gov.source}
+                    </div>
+                    {pumping && (
+                      <SmallPill color="#22d3ee" filled>⚡ PUMP CYCLE ACTIVE</SmallPill>
+                    )}
+                  </div>
+                  <div style={{ display: "flex", gap: 16, alignItems: "stretch" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 6,
+                        paddingTop: 4,
+                      }}
+                    >
+                      <div style={{ fontSize: 9, color: "#64748b", fontFamily: "monospace", letterSpacing: 0.3 }}>
+                        RESERVOIR
+                      </div>
+                      <ReservoirTank
+                        currentM3={currentReservoir}
+                        capacityM3={gov.reservoirCap}
+                        pulsing={pumping}
+                        govColor={gov.color}
+                      />
+                      <div style={{ fontSize: 9, color: "#64748b", fontFamily: "monospace", textAlign: "center" }}>
+                        {(currentReservoir / 1000).toFixed(1)}k
+                        <br />
+                        <span style={{ color: "#334155" }}>/ {(gov.reservoirCap / 1000).toFixed(0)}k m³</span>
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 8,
+                          color: "#64748b",
+                          textAlign: "center",
+                          paddingTop: 4,
+                          borderTop: "1px solid rgba(56,189,248,.1)",
+                          marginTop: 2,
+                          width: "100%",
+                        }}
+                      >
+                        <div style={{ color: "#ef4444", fontWeight: 600, fontFamily: "monospace" }}>
+                          −{mass.systemLossM3?.toFixed(1) ?? 0}
                         </div>
-                      );
-                    })}
+                        <div>m³ this cycle</div>
+                      </div>
+                    </div>
+
+                    <div style={{ flex: 1 }}>
+                      <PipeNetworkMap
+                        govKey={govKey}
+                        segments={segments}
+                        onSegClick={setSelectedSeg}
+                        selectedSeg={selectedSeg}
+                        pumping={pumping}
+                        branchInflows={mass.branchInflows}
+                        totalOutflowM3PerHr={mass.totalOutflowM3PerHr}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: 16, marginTop: 10, fontSize: 11, fontFamily: "monospace" }}>
+                    {Object.entries(TYPE_CONFIG).map(([k, v]) => (
+                      <span key={k} style={{ color: v.color, display: "flex", alignItems: "center", gap: 4 }}>
+                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: v.color, display: "inline-block" }} />
+                        {v.label}
+                      </span>
+                    ))}
+                    <span style={{ marginLeft: "auto", color: "#64748b" }}>اضغط على أي مقطع لعرض التفاصيل</span>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
+              {activeTab === "scatter" && (
+                <div
+                  style={{
+                    background: "rgba(2,6,23,.24)",
+                    border: "1px solid rgba(148,163,184,.08)",
+                    borderRadius: 14,
+                    padding: 12,
+                  }}
+                >
+                  <div style={{ color: "#94a3b8", fontSize: 11, fontFamily: "monospace", fontWeight: 900, marginBottom: 4 }}>
+                    بصمة الخلل — العلاقة بين فقد التدفق وانحراف الضغط
+                  </div>
+                  <div style={{ color: "#64748b", fontSize: 11, marginBottom: 10, lineHeight: 1.6 }}>
+                    محور X يوضح نسبة فقد التدفق، ومحور Y يوضح مقدار انحراف هبوط الضغط عن السلوك المتوقع. كل نقطة تمثل مقطعاً واحداً في الشبكة.
+                  </div>
+                  <ResponsiveContainer width="100%" height={420}>
+                    <ScatterChart margin={{ top: 20, right: 24, bottom: 42, left: 24 }}>
+                      <CartesianGrid stroke="rgba(148,163,184,.12)" />
+                      <XAxis
+                        type="number"
+                        dataKey="x"
+                        name="نسبة فقد التدفق %"
+                        stroke="#64748b"
+                        tick={{ fontSize: 11, fill: "#94a3b8" }}
+                        label={{
+                          value: "محور X: نسبة فقد التدفق (%)",
+                          position: "insideBottom",
+                          offset: -10,
+                          fill: "#94a3b8",
+                          fontSize: 11,
+                        }}
+                      />
+                      <YAxis
+                        type="number"
+                        dataKey="y"
+                        name="انحراف الضغط"
+                        stroke="#64748b"
+                        tick={{ fontSize: 11, fill: "#94a3b8" }}
+                        label={{
+                          value: "محور Y: انحراف الضغط / DP Deviation",
+                          angle: -90,
+                          position: "insideLeft",
+                          fill: "#94a3b8",
+                          fontSize: 11,
+                        }}
+                      />
+                      <RTooltip
+                        cursor={{ strokeDasharray: "3 3" }}
+                        content={({ payload }) => {
+                          if (!payload?.length) return null;
+                          const d = payload[0].payload;
+                          return (
+                            <div style={{ background: "#0f1f3d", border: "1px solid rgba(56,189,248,.3)", borderRadius: 8, padding: "8px 12px", fontSize: 11 }}>
+                              <div style={{ color: TYPE_DOT[d.type], fontWeight: 700 }}>{getTypeLabelAr(d.type)}</div>
+                              <div style={{ color: "#94a3b8" }}>محور X / Flow Loss: {d.x}%</div>
+                              <div style={{ color: "#94a3b8" }}>محور Y / DP Deviation: {d.y}</div>
+                            </div>
+                          );
+                        }}
+                      />
+                      {Object.keys(TYPE_DOT).map((t) => (
+                        <Scatter
+                          key={t}
+                          name={getTypeLabelAr(t)}
+                          data={scatterData.filter((d) => d.type === t)}
+                          fill={TYPE_DOT[t]}
+                          onClick={(d) => {
+                            const seg = segments.find((s) => s.id === d?.id);
+                            if (seg) setSelectedSeg(seg);
+                          }}
+                        />
+                      ))}
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+
+              {activeTab === "telemetry" && (
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  <div style={{ height: 260, background: "rgba(2,6,23,.24)", borderRadius: 14, padding: 12 }}>
+                    <div style={{ color: "#94a3b8", fontSize: 11, fontFamily: "monospace", fontWeight: 900, marginBottom: 8 }}>
+                      سجل التدفق — Flow In
+                    </div>
+                    <ResponsiveContainer width="100%" height="88%">
+                      <AreaChart data={flowHistData} margin={{ top: 10, right: 14, bottom: 30, left: 24 }}>
+                        <defs>
+                          <linearGradient id="flowGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.55} />
+                            <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.02} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid stroke="rgba(148,163,184,.10)" />
+                        <XAxis
+                          dataKey="i"
+                          stroke="#64748b"
+                          tick={{ fontSize: 10, fill: "#94a3b8" }}
+                          label={{ value: "محور X: آخر القراءات الزمنية", position: "insideBottom", offset: -18, fill: "#94a3b8", fontSize: 10 }}
+                        />
+                        <YAxis
+                          stroke="#64748b"
+                          tick={{ fontSize: 10, fill: "#94a3b8" }}
+                          label={{ value: "محور Y: التدفق (L/min)", angle: -90, position: "insideLeft", fill: "#94a3b8", fontSize: 10 }}
+                        />
+                        <RTooltip contentStyle={{ background: "#0a1628", border: "1px solid rgba(56,189,248,.16)", borderRadius: 10, color: "#f8fafc" }} />
+                        <Area type="monotone" dataKey="v" stroke="#38bdf8" fill="url(#flowGrad)" strokeWidth={2} dot={false} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  <div style={{ height: 260, background: "rgba(2,6,23,.24)", borderRadius: 14, padding: 12 }}>
+                    <div style={{ color: "#94a3b8", fontSize: 11, fontFamily: "monospace", fontWeight: 900, marginBottom: 8 }}>
+                      سجل الضغط — Pressure In
+                    </div>
+                    <ResponsiveContainer width="100%" height="88%">
+                      <AreaChart data={pressHistData} margin={{ top: 10, right: 14, bottom: 30, left: 24 }}>
+                        <defs>
+                          <linearGradient id="pressGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#a855f7" stopOpacity={0.55} />
+                            <stop offset="95%" stopColor="#a855f7" stopOpacity={0.02} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid stroke="rgba(148,163,184,.10)" />
+                        <XAxis
+                          dataKey="i"
+                          stroke="#64748b"
+                          tick={{ fontSize: 10, fill: "#94a3b8" }}
+                          label={{ value: "محور X: آخر القراءات الزمنية", position: "insideBottom", offset: -18, fill: "#94a3b8", fontSize: 10 }}
+                        />
+                        <YAxis
+                          stroke="#64748b"
+                          tick={{ fontSize: 10, fill: "#94a3b8" }}
+                          label={{ value: "محور Y: الضغط (PSI)", angle: -90, position: "insideLeft", fill: "#94a3b8", fontSize: 10 }}
+                        />
+                        <RTooltip contentStyle={{ background: "#0a1628", border: "1px solid rgba(56,189,248,.16)", borderRadius: 10, color: "#f8fafc" }} />
+                        <Area type="monotone" dataKey="v" stroke="#a855f7" fill="url(#pressGrad)" strokeWidth={2} dot={false} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  <div style={{ background: "rgba(2,6,23,.24)", borderRadius: 14, padding: 14, gridColumn: "1 / -1" }}>
+                    <div style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace", fontWeight: 900, marginBottom: 12 }}>
+                      ENSEMBLE MODEL SCORES — احتمالية الشذوذ لكل مقطع
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 280, overflowY: "auto" }}>
+                      {segments.slice(0, 12).map((seg) => {
+                        const tc = TYPE_DOT[seg.predType];
+                        return (
+                          <div
+                            key={seg.id}
+                            onClick={() => setSelectedSeg(seg)}
+                            style={{
+                              cursor: "pointer",
+                              padding: "8px 10px",
+                              background: "#0d1830",
+                              borderRadius: 8,
+                              border: `1px solid ${seg.alert ? tc + "50" : "rgba(56,189,248,.06)"}`,
+                            }}
+                          >
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                              <span style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace" }}>{seg.from}→{seg.to}</span>
+                              <span style={{ fontSize: 10, padding: "1px 7px", borderRadius: 4, background: `${tc}22`, color: tc, fontWeight: 600 }}>
+                                {getTypeLabelAr(seg.predType)}
+                              </span>
+                            </div>
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 6 }}>
+                              {[["LGB", seg.models.lgb], ["XGB", seg.models.xgb], ["NN", seg.models.nn], ["LSTM", seg.models.lstm]].map(([n, v]) => (
+                                <div key={n}>
+                                  <div style={{ fontSize: 9, color: "#475569", marginBottom: 2 }}>{n}</div>
+                                  <div style={{ height: 4, background: "#1e293b", borderRadius: 2 }}>
+                                    <div style={{ height: 4, width: `${Math.min(v, 100)}%`, background: v > 50 ? tc : "#38bdf8", borderRadius: 2, transition: "width .5s" }} />
+                                  </div>
+                                  <div style={{ fontSize: 9, color: v > 50 ? tc : "#64748b", fontFamily: "monospace", marginTop: 2 }}>{v.toFixed(0)}%</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "actions" && (
+                <SuggestedActionsPanel
+                  seg={selectedOrWorst}
+                  gov={gov}
+                  actionLog={actionLog}
+                  onApproveAction={approveAction}
+                  onSelectActionLog={(seg) => {
+                    setSelectedSeg(seg);
+                    setActiveTab("map");
+                  }}
+                />
+              )}
+
+              {activeTab === "users" && <UserResearchPanel />}
+
+              {activeTab === "technical" && <TechnicalPanel selectedSeg={selectedOrWorst} />}
+            </SectionCard>
             {/* SIMULATION MODE */}
             {simMode && (
               <div
