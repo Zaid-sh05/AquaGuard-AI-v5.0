@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -13,7 +13,7 @@ import {
   RadialBar,
   AreaChart,
   Area,
-} from 'recharts';
+} from "recharts";
 import {
   Activity,
   AlertTriangle,
@@ -38,21 +38,21 @@ import {
   Gauge,
   Sliders,
   Database,
-} from 'lucide-react';
+} from "lucide-react";
 
 // ══════════════════════════════════════════════════════════════════════════════
-// إعدادات API — ضع رابط ngrok هنا عند تشغيل Backend من Colab
+// API CONFIGURATION — paste your ngrok URL here when running Colab backend
 // ══════════════════════════════════════════════════════════════════════════════
-const API_URL = ''; // ← ضع رابط ngrok هنا
+const API_URL = "https://abc123.ngrok.io"; // ← paste ngrok URL here
 
 async function apiPost(path, body) {
   if (!API_URL) return null;
   try {
     const r = await fetch(API_URL + path, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
-      mode: 'cors',
+      mode: "cors",
     });
     return r.ok ? r.json() : null;
   } catch {
@@ -63,7 +63,7 @@ async function apiPost(path, body) {
 async function apiGet(path) {
   if (!API_URL) return null;
   try {
-    const r = await fetch(API_URL + path, { mode: 'cors' });
+    const r = await fetch(API_URL + path, { mode: "cors" });
     return r.ok ? r.json() : null;
   } catch {
     return null;
@@ -71,7 +71,7 @@ async function apiGet(path) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// بيانات الشبكة — محافظات الأردن مع سعات الخزانات
+// NETWORK DATA — All 12 Jordan Governorates (with reservoir capacities)
 // ══════════════════════════════════════════════════════════════════════════════
 // reservoirCap = initial reservoir capacity in m³ (realistic WAJ-style values)
 const NETWORK = {
@@ -647,7 +647,7 @@ function mlInfer(seg) {
 // HYDRAULIC MASS-BALANCE SIMULATION
 // ══════════════════════════════════════════════════════════════════════════════
 // Key contract: reservoir → branches → segments — all volumes add up.
-// Every UPDATE_INTERVAL_SEC seconds the pump fires: total branch inflow leaves the reservoir.
+// Every 40s the pump fires: total branch inflow leaves the reservoir.
 // NRW loss factor: a fraction of that outflow "disappears" (leaks/theft)
 // so it is tracked separately as systemLoss.
 
@@ -1283,7 +1283,7 @@ function NationalCarrierMap({
         مشروع الناقل الوطني الأردني
       </text>
       <text x="400" y="50" fill="#38bdf8" fontSize="11" fontWeight="700">
-        البحر الأحمر -> العقبة -> معان -> عمّان -> AL MUNTAZAH / ABU ALANDA
+        البحر الأحمر → العقبة → معان → عمّان → AL MUNTAZAH / ABU ALANDA
       </text>
 
       <text
@@ -1430,7 +1430,6 @@ function NationalCarrierMap({
         >
           أبو علندا / المنتزه / PS ADC
         </text>
-        ---
         {routeSegments.map((seg) => {
           const p1 = pointsByCode[seg.from];
           const p2 = pointsByCode[seg.to];
@@ -2305,22 +2304,22 @@ function NRWGauge({ nrw, target }) {
   const tgt = Math.round(target * 100);
   const data = [
     {
-      name: 'NRW',
+      name: "NRW",
       value: pct,
-      fill: nrw > 0.5 ? '#ef4444' : nrw > 0.4 ? '#f59e0b' : '#22c55e',
+      fill: nrw > 0.5 ? "#ef4444" : nrw > 0.4 ? "#f59e0b" : "#22c55e",
     },
-    { name: 'Gap', value: 100 - pct, fill: '#1e293b' },
+    { name: "Gap", value: 100 - pct, fill: "#1e293b" },
   ];
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
         gap: 2,
       }}
     >
-      <div style={{ position: 'relative', width: 130, height: 74 }}>
+      <div style={{ position: "relative", width: 130, height: 74 }}>
         <ResponsiveContainer width={130} height={74}>
           <RadialBarChart
             cx={65}
@@ -2333,1718 +2332,45 @@ function NRWGauge({ nrw, target }) {
           >
             <RadialBar
               dataKey="value"
-              background={{ fill: '#1e293b' }}
+              background={{ fill: "#1e293b" }}
               cornerRadius={4}
             />
           </RadialBarChart>
         </ResponsiveContainer>
         <div
           style={{
-            position: 'absolute',
+            position: "absolute",
             bottom: 0,
             left: 0,
             right: 0,
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
           <div
             style={{
               fontSize: 20,
               fontWeight: 700,
-              fontFamily: 'monospace',
-              color: pct > 50 ? '#ef4444' : pct > 40 ? '#f59e0b' : '#22c55e',
+              fontFamily: "monospace",
+              color: pct > 50 ? "#ef4444" : pct > 40 ? "#f59e0b" : "#22c55e",
             }}
           >
             {pct}%
           </div>
         </div>
       </div>
-      <div style={{ fontSize: 10, color: '#64748b' }}>
-        الهدف: <span style={{ color: '#22c55e', fontWeight: 600 }}>{tgt}%</span>
+      <div style={{ fontSize: 10, color: "#64748b" }}>
+        Target:{" "}
+        <span style={{ color: "#22c55e", fontWeight: 600 }}>{tgt}%</span>
       </div>
     </div>
   );
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// COMPETITION-READY MAIN DASHBOARD
-// UX-first version for IT judges: guided demo + operator view + pilot plan
+// MAIN DASHBOARD
 // ══════════════════════════════════════════════════════════════════════════════
-const ACTION_LIBRARY = {
-  normal: {
-    title: 'الوضع التشغيلي مستقر',
-    titleAr: 'الوضع التشغيلي مستقر',
-    badge: 'أولوية منخفضة',
-    action: 'استمرار المراقبة فقط، ولا يوجد تدخل ميداني مطلوب حالياً.',
-    actionAr: 'استمرار المراقبة فقط، ولا يوجد إجراء ميداني مطلوب حالياً.',
-    response: 'المراقبة',
-  },
-  leak: {
-    title: 'تسرب تدريجي محتمل',
-    titleAr: 'تسرب تدريجي محتمل',
-    badge: 'أولوية متوسطة',
-    action:
-      'إرسال فريق صيانة للموقع مع دراسة تخفيض الضغط بنسبة 10–15% إذا كان ذلك آمناً.',
-    actionAr:
-      'إرسال فريق صيانة للموقع مع دراسة تخفيض الضغط بنسبة 10–15% إذا كان ذلك آمناً.',
-    response: 'إرسال فريق',
-  },
-  burst: {
-    title: 'انفجار حرج في الخط',
-    titleAr: 'انفجار حرج في الخط',
-    badge: 'حرج',
-    action: 'عزل المقطع المتأثر فوراً وفتح بلاغ صيانة طارئ.',
-    actionAr: 'عزل المقطع المتأثر فوراً وفتح بلاغ صيانة طارئ.',
-    response: 'العزل الفوري',
-  },
-  theft: {
-    title: 'نمط استعمال غير مشروع',
-    titleAr: 'نمط استعمال غير مشروع',
-    badge: 'تحقق ميداني',
-    action: 'فحص الوصلات غير المشروعة ومقارنة آخر 72 ساعة مع سجلات العدادات.',
-    actionAr:
-      'فحص الوصلات غير المشروعة ومقارنة آخر 72 ساعة مع سجلات الاستهلاك.',
-    response: 'التحقق',
-  },
-};
-
-const ACTION_SUGGESTIONS = {
-  normal: [
-    {
-      title: 'استمرار المراقبة التشغيلية',
-      detail:
-        'لا يوجد خلل نشط؛ يتم الاكتفاء بتحديث القراءات ومراقبة الانحرافات القادمة.',
-      priority: 'منخفضة',
-    },
-    {
-      title: 'توثيق دورة القياس الحالية',
-      detail: 'حفظ حالة الشبكة الطبيعية كمرجع للمقارنة مع أي تغير لاحق.',
-      priority: 'منخفضة',
-    },
-  ],
-  leak: [
-    {
-      title: 'إرسال فريق صيانة للفحص الميداني',
-      detail:
-        'توجيه الفريق إلى المقطع المحدد مع أولوية متوسطة قبل تحول التسرب إلى عطل أكبر.',
-      priority: 'متوسطة',
-    },
-    {
-      title: 'تخفيض الضغط بنسبة 10–15% مؤقتاً',
-      detail:
-        'تقليل الفاقد لحين وصول الفريق مع التأكد من عدم التأثير على التزويد الأساسي.',
-      priority: 'متوسطة',
-    },
-    {
-      title: 'تشغيل فحص صوتي موضعي',
-      detail:
-        'استخدام حساس التسرب الصوتي لتأكيد النقطة الأدق قبل الحفر أو الإغلاق.',
-      priority: 'متوسطة',
-    },
-  ],
-  burst: [
-    {
-      title: 'عزل المقطع المتأثر فوراً',
-      detail: 'إغلاق الصمام الذكي أو المحبس الأقرب لتقليل الفاقد وحصر الضرر.',
-      priority: 'حرجة',
-    },
-    {
-      title: 'فتح بلاغ صيانة طارئ',
-      detail:
-        'إرسال فريق إصلاح مع إحداثيات المقطع وقراءات التدفق والضغط الداعمة للقرار.',
-      priority: 'حرجة',
-    },
-    {
-      title: 'إعادة توزيع التزويد مؤقتاً',
-      detail:
-        'تحويل جزء من التدفق إلى مسار بديل لتقليل أثر الانقطاع على المشتركين.',
-      priority: 'مرتفعة',
-    },
-  ],
-  theft: [
-    {
-      title: 'فتح مهمة تحقق ميداني',
-      detail:
-        'فحص الوصلات غير المشروعة حول المقطع المحدد دون قطع الخدمة مباشرة.',
-      priority: 'تحقق',
-    },
-    {
-      title: 'مقارنة آخر 72 ساعة مع سجلات العدادات',
-      detail:
-        'ربط نمط الفاقد مع قراءات الاستهلاك للتأكد من وجود استخدام غير مشروع.',
-      priority: 'تحقق',
-    },
-    {
-      title: 'توثيق الحالة كاشتباه سرقة',
-      detail:
-        'حفظ القراءات والموقع والوقت كمرجع للجهة المختصة قبل الإجراء القانوني.',
-      priority: 'تحقق',
-    },
-  ],
-};
-
-function fmtNum(v, digits = 0) {
-  if (!Number.isFinite(Number(v))) return '0';
-  return Number(v).toLocaleString(undefined, { maximumFractionDigits: digits });
-}
-
-function fmtM3(v, digits = 1) {
-  return `${fmtNum(v || 0, digits)} m³`;
-}
-
-function getTypeColor(type) {
-  return TYPE_CONFIG[type]?.color || '#22c55e';
-}
-
-function getRiskLabel(type) {
-  if (type === 'burst') return 'حرج';
-  if (type === 'leak') return 'مرتفع';
-  if (type === 'theft') return 'تحقيق';
-  return 'طبيعي';
-}
-
-function getTypeLabelAr(type) {
-  if (type === 'burst') return 'انفجار';
-  if (type === 'leak') return 'تسرب';
-  if (type === 'theft') return 'سرقة';
-  return 'طبيعي';
-}
-
-function SmallPill({ children, color = '#38bdf8', filled = false }) {
-  return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 6,
-        padding: '5px 9px',
-        borderRadius: 999,
-        border: `1px solid ${color}66`,
-        background: filled ? `${color}22` : 'rgba(2,6,23,.28)',
-        color,
-        fontSize: 10,
-        fontWeight: 800,
-        letterSpacing: 0.35,
-        fontFamily: 'monospace',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
-function SectionCard({ children, title, icon, right, style = {} }) {
-  return (
-    <div
-      style={{
-        background:
-          'linear-gradient(180deg,rgba(15,23,42,.92),rgba(8,15,30,.94))',
-        border: '1px solid rgba(56,189,248,.12)',
-        borderRadius: 16,
-        boxShadow: '0 18px 44px rgba(0,0,0,.18)',
-        overflow: 'hidden',
-        ...style,
-      }}
-    >
-      {title && (
-        <div
-          style={{
-            padding: '14px 16px',
-            borderBottom: '1px solid rgba(56,189,248,.08)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 12,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-            {icon}
-            <div style={{ fontSize: 13, fontWeight: 900, color: '#f8fafc' }}>
-              {title}
-            </div>
-          </div>
-          {right}
-        </div>
-      )}
-      <div style={{ padding: 16 }}>{children}</div>
-    </div>
-  );
-}
-
-function KpiCard({ label, value, sub, color = '#38bdf8', icon, trend }) {
-  return (
-    <div
-      style={{
-        background: `linear-gradient(135deg,${color}14,rgba(15,23,42,.88) 52%)`,
-        border: `1px solid ${color}2e`,
-        borderRadius: 14,
-        padding: 14,
-        minHeight: 96,
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          right: -18,
-          top: -18,
-          width: 72,
-          height: 72,
-          borderRadius: '50%',
-          background: `${color}16`,
-        }}
-      />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <div
-          style={{
-            fontSize: 10,
-            color: '#94a3b8',
-            fontFamily: 'monospace',
-            fontWeight: 800,
-            letterSpacing: 0.6,
-          }}
-        >
-          {label}
-        </div>
-        <div style={{ color, opacity: 0.9 }}>{icon}</div>
-      </div>
-      <div
-        style={{
-          fontSize: 24,
-          color: '#f8fafc',
-          fontWeight: 950,
-          marginTop: 10,
-          fontFamily: 'monospace',
-        }}
-      >
-        {value}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          gap: 8,
-          marginTop: 6,
-        }}
-      >
-        <div style={{ fontSize: 11, color: '#64748b' }}>{sub}</div>
-        {trend && (
-          <div
-            style={{
-              color,
-              fontSize: 10,
-              fontFamily: 'monospace',
-              fontWeight: 800,
-            }}
-          >
-            {trend}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function MiniMetric({ label, value, color = '#e2e8f0', sub }) {
-  return (
-    <div
-      style={{
-        border: '1px solid rgba(148,163,184,.13)',
-        background: 'rgba(2,6,23,.28)',
-        borderRadius: 12,
-        padding: '12px 13px',
-      }}
-    >
-      <div
-        style={{
-          color: '#64748b',
-          fontSize: 10,
-          fontFamily: 'monospace',
-          fontWeight: 800,
-          letterSpacing: 0.5,
-        }}
-      >
-        {label}
-      </div>
-      <div
-        style={{
-          color,
-          fontSize: 19,
-          fontFamily: 'monospace',
-          fontWeight: 950,
-          marginTop: 5,
-        }}
-      >
-        {value}
-      </div>
-      {sub && (
-        <div style={{ color: '#64748b', fontSize: 10, marginTop: 4 }}>
-          {sub}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ProgressBar({ value, color = '#38bdf8', height = 8 }) {
-  const pct = Math.max(0, Math.min(100, Number(value || 0)));
-  return (
-    <div
-      style={{
-        height,
-        borderRadius: 999,
-        background: 'rgba(51,65,85,.7)',
-        overflow: 'hidden',
-      }}
-    >
-      <div
-        style={{
-          width: `${pct}%`,
-          height: '100%',
-          borderRadius: 999,
-          background: color,
-          transition: 'width .35s ease',
-        }}
-      />
-    </div>
-  );
-}
-
-function HeroLanding({ onLaunch, onDemo }) {
-  return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background:
-          'radial-gradient(circle at 20% 12%,rgba(56,189,248,.18),transparent 34%), radial-gradient(circle at 75% 22%,rgba(99,102,241,.16),transparent 30%), #060c18',
-        color: '#e2e8f0',
-        fontFamily: "'Tajawal','Cairo','Inter',system-ui,sans-serif",
-        direction: 'rtl',
-        textAlign: 'right',
-        padding: 24,
-      }}
-    >
-      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: 16,
-            padding: '12px 0 42px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div
-              style={{
-                width: 42,
-                height: 42,
-                borderRadius: 13,
-                background: 'linear-gradient(135deg,#0ea5e9,#6366f1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 0 34px rgba(56,189,248,.18)',
-              }}
-            >
-              <Droplets size={23} color="#fff" />
-            </div>
-            <div>
-              <div style={{ fontWeight: 950, fontSize: 18, color: '#f8fafc' }}>
-                AquaGuard AI
-              </div>
-              <div
-                style={{
-                  fontSize: 11,
-                  color: '#7dd3fc',
-                  fontFamily: 'monospace',
-                }}
-              >
-                نظام دعم قرار لشبكات المياه الذكية
-              </div>
-            </div>
-          </div>
-          <SmallPill color="#22c55e" filled>
-            جاهز للعرض أمام الحكّام
-          </SmallPill>
-        </div>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0,1.1fr) minmax(340px,.9fr)',
-            gap: 24,
-            alignItems: 'center',
-          }}
-        >
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                gap: 8,
-                flexWrap: 'wrap',
-                marginBottom: 18,
-              }}
-            >
-              <SmallPill color="#38bdf8">
-                ذكاء اصطناعي + إنترنت الأشياء
-              </SmallPill>
-              <SmallPill color="#a855f7">التحقق عبر نقاط القياس</SmallPill>
-              <SmallPill color="#f59e0b">تجربة مستخدم للمشغّل</SmallPill>
-            </div>
-            <h1
-              style={{
-                fontSize: 56,
-                lineHeight: 1.02,
-                margin: 0,
-                letterSpacing: -1.8,
-                color: '#f8fafc',
-              }}
-            >
-              من إشارات فاقد المياه إلى قرار تشغيلي واضح في لوحة واحدة.
-            </h1>
-            <p
-              style={{
-                fontSize: 17,
-                color: '#94a3b8',
-                lineHeight: 1.75,
-                maxWidth: 780,
-                marginTop: 20,
-              }}
-            >
-              يتوقع AquaGuard AI الطلب المتوقع، ويتحقق من المياه المضخوخة عبر
-              نقاط قياس التدفق والضغط، ويكشف أنماط التسرب والانفجار والسرقة، ثم
-              يحدد المقطع المتأثر ويعطي المشغّل الإجراء التالي بوضوح.
-            </p>
-            <div
-              style={{
-                display: 'flex',
-                gap: 12,
-                flexWrap: 'wrap',
-                marginTop: 26,
-              }}
-            >
-              <button onClick={onDemo} style={primaryButton('#38bdf8')}>
-                <Zap size={16} /> ابدأ عرض التحكيم خلال 15 ثانية
-              </button>
-              <button onClick={onLaunch} style={secondaryButton()}>
-                <Eye size={16} /> افتح لوحة التحكم الحية
-              </button>
-            </div>
-          </div>
-
-          <div
-            style={{
-              background:
-                'linear-gradient(180deg,rgba(15,23,42,.82),rgba(2,6,23,.74))',
-              border: '1px solid rgba(56,189,248,.16)',
-              borderRadius: 24,
-              padding: 20,
-              boxShadow: '0 28px 80px rgba(0,0,0,.32)',
-            }}
-          >
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: 12,
-              }}
-            >
-              <MiniMetric
-                label="دقة الكشف"
-                value="99.94%"
-                color="#22c55e"
-                sub="نتيجة النموذج المعتمدة v4.2"
-              />
-              <MiniMetric
-                label="دورة الاستجابة"
-                value="15s"
-                color="#38bdf8"
-                sub="دورة عرض مختصرة للتحكيم"
-              />
-              <MiniMetric
-                label="الحالات"
-                value="4"
-                color="#f59e0b"
-                sub="طبيعي / تسرب / انفجار / سرقة"
-              />
-              <MiniMetric
-                label="التغطية"
-                value="12+"
-                color="#a855f7"
-                sub="محافظات الأردن + الناقل الوطني"
-              />
-            </div>
-            <div
-              style={{
-                marginTop: 16,
-                padding: 14,
-                borderRadius: 16,
-                background: 'rgba(8,15,30,.85)',
-                border: '1px solid rgba(148,163,184,.12)',
-              }}
-            >
-              <div
-                style={{
-                  color: '#f8fafc',
-                  fontWeight: 900,
-                  fontSize: 13,
-                  marginBottom: 10,
-                }}
-              >
-                ما الذي سيراه الحكّام؟
-              </div>
-              {[
-                ['1', 'التحقق بين الطلب المتوقع والضخ والكمية الواصلة'],
-                ['2', 'خريطة حية مع تحديد موقع الخلل'],
-                ['3', 'توصية تشغيلية جاهزة للمشغّل'],
-                ['4', 'خطة تطبيق واقعية وقابلة للتنفيذ'],
-              ].map(([n, t]) => (
-                <div
-                  key={n}
-                  style={{
-                    display: 'flex',
-                    gap: 10,
-                    alignItems: 'center',
-                    margin: '9px 0',
-                  }}
-                >
-                  <span
-                    style={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: '50%',
-                      background: 'rgba(56,189,248,.14)',
-                      color: '#38bdf8',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: 11,
-                      fontWeight: 900,
-                    }}
-                  >
-                    {n}
-                  </span>
-                  <span style={{ color: '#cbd5e1', fontSize: 12 }}>{t}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <style>{responsiveCss()}</style>
-    </div>
-  );
-}
-
-function primaryButton(color = '#38bdf8') {
-  return {
-    border: `1px solid ${color}80`,
-    background: `linear-gradient(135deg,${color}33,rgba(15,23,42,.9))`,
-    color: '#f8fafc',
-    borderRadius: 12,
-    padding: '11px 15px',
-    fontWeight: 900,
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 8,
-    boxShadow: `0 12px 36px ${color}16`,
-  };
-}
-
-function secondaryButton() {
-  return {
-    border: '1px solid rgba(148,163,184,.24)',
-    background: 'rgba(15,23,42,.55)',
-    color: '#cbd5e1',
-    borderRadius: 12,
-    padding: '11px 15px',
-    fontWeight: 850,
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 8,
-  };
-}
-
-function DecisionCard({ seg, gov, mass, onIsolate }) {
-  const type = seg?.predType || 'normal';
-  const cfg = ACTION_LIBRARY[type] || ACTION_LIBRARY.normal;
-  const color = getTypeColor(type);
-  const confidence = seg?.confidence
-    ? Math.round(seg.confidence * 100)
-    : type === 'normal'
-    ? 99
-    : 0;
-
-  return (
-    <SectionCard
-      title="بطاقة القرار التشغيلي"
-      icon={<Shield size={16} color={color} />}
-      right={
-        <SmallPill color={color} filled>
-          {cfg.badge}
-        </SmallPill>
-      }
-    >
-      <div style={{ display: 'grid', gap: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 14,
-              background: `${color}22`,
-              border: `1px solid ${color}55`,
-              color,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 950,
-              fontSize: 20,
-            }}
-          >
-            {type === 'normal' ? '✓' : '!'}
-          </div>
-          <div>
-            <div style={{ color: '#f8fafc', fontSize: 17, fontWeight: 950 }}>
-              {cfg.title}
-            </div>
-            <div
-              style={{
-                color: '#94a3b8',
-                fontSize: 12,
-                lineHeight: 1.6,
-                marginTop: 4,
-              }}
-            >
-              {cfg.titleAr}
-            </div>
-          </div>
-        </div>
-
-        <div
-          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}
-        >
-          <MiniMetric
-            label="ما الحالة؟"
-            value={getTypeLabelAr(type)}
-            color={color}
-            sub={getRiskLabel(type)}
-          />
-          <MiniMetric
-            label="الثقة"
-            value={`${confidence}%`}
-            color="#38bdf8"
-            sub="نسبة ثقة معايرة من النموذج"
-          />
-        </div>
-
-        <div
-          style={{
-            border: '1px solid rgba(148,163,184,.12)',
-            background: 'rgba(2,6,23,.26)',
-            borderRadius: 12,
-            padding: 12,
-          }}
-        >
-          <div
-            style={{
-              color: '#64748b',
-              fontSize: 10,
-              fontFamily: 'monospace',
-              fontWeight: 850,
-            }}
-          >
-            أين؟
-          </div>
-          <div
-            style={{
-              color: '#e2e8f0',
-              fontSize: 13,
-              fontWeight: 850,
-              marginTop: 5,
-            }}
-          >
-            {type !== 'normal' && seg
-              ? `${gov.label} · ${seg.branch} · ${seg.from} → ${seg.to}`
-              : `${gov.label} · لا يوجد خلل نشط محدد`}
-          </div>
-        </div>
-
-        <div
-          style={{
-            border: '1px solid rgba(148,163,184,.12)',
-            background: 'rgba(2,6,23,.26)',
-            borderRadius: 12,
-            padding: 12,
-          }}
-        >
-          <div
-            style={{
-              color: '#64748b',
-              fontSize: 10,
-              fontFamily: 'monospace',
-              fontWeight: 850,
-            }}
-          >
-            لماذا؟
-          </div>
-          <div
-            style={{
-              color: '#cbd5e1',
-              fontSize: 12,
-              lineHeight: 1.65,
-              marginTop: 5,
-            }}
-          >
-            {type !== 'normal' && seg
-              ? `فقد التدفق ${seg.flowLoss?.toFixed?.(
-                  1
-                )}% مع انحراف ضغط ${seg.dpDev?.toFixed?.(
-                  3
-                )} PSI. تمت مقارنة النمط مع ميزان الكتلة الهيدروليكي ونموذج الذكاء الاصطناعي المجمّع.`
-              : 'سلوك الضغط والتدفق الحالي ضمن حدود الفقد الخلفي المتوقع.'}
-          </div>
-        </div>
-
-        <div
-          style={{
-            border: `1px solid ${color}44`,
-            background: `${color}12`,
-            borderRadius: 12,
-            padding: 12,
-          }}
-        >
-          <div
-            style={{
-              color,
-              fontSize: 10,
-              fontFamily: 'monospace',
-              fontWeight: 900,
-            }}
-          >
-            الإجراء المقترح
-          </div>
-          <div
-            style={{
-              color: '#f8fafc',
-              fontSize: 13,
-              fontWeight: 850,
-              lineHeight: 1.6,
-              marginTop: 6,
-            }}
-          >
-            {cfg.action}
-          </div>
-          <div
-            style={{
-              color: '#cbd5e1',
-              fontSize: 12,
-              lineHeight: 1.6,
-              marginTop: 5,
-            }}
-          >
-            {cfg.actionAr}
-          </div>
-        </div>
-
-        <button
-          onClick={onIsolate}
-          disabled={type === 'normal'}
-          style={{
-            ...primaryButton(color),
-            opacity: type === 'normal' ? 0.45 : 1,
-            justifyContent: 'center',
-            width: '100%',
-          }}
-        >
-          <Zap size={15} /> محاكاة: {cfg.response}
-        </button>
-
-        <div
-          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}
-        >
-          <MiniMetric
-            label="الفقد الحالي"
-            value={fmtM3(mass.systemLossM3, 2)}
-            color="#f59e0b"
-            sub="ضمن دورة القياس الحالية"
-          />
-          <MiniMetric
-            label="الكمية الواصلة"
-            value={fmtM3(mass.deliveredM3, 2)}
-            color="#22c55e"
-            sub="بعد احتساب معامل الفاقد"
-          />
-        </div>
-      </div>
-    </SectionCard>
-  );
-}
-
-function DemandVerificationCard({
-  gov,
-  mass,
-  totalSystemLoss,
-  isolationSavings,
-}) {
-  const expectedDemand = Math.max(
-    mass.deliveredM3 || 0,
-    (mass.cycleOutflowM3 || 0) * (1 - gov.target_nrw)
-  );
-  const pumped = mass.cycleOutflowM3 || 0;
-  const delivered = mass.deliveredM3 || 0;
-  const gap = Math.max(0, pumped - delivered);
-  const gapPct = pumped > 0 ? (gap / pumped) * 100 : 0;
-
-  return (
-    <SectionCard
-      title="الطلب المتوقع ← الضخ ← التحقق عبر نقاط القياس"
-      icon={<Database size={16} color="#38bdf8" />}
-    >
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4,1fr)',
-          gap: 10,
-        }}
-        className="aq-grid-4"
-      >
-        <MiniMetric
-          label="الطلب المتوقع"
-          value={fmtM3(expectedDemand, 1)}
-          color="#38bdf8"
-          sub="تقدير حاجة المنطقة"
-        />
-        <MiniMetric
-          label="الضخ المعتمد"
-          value={fmtM3(pumped, 1)}
-          color="#f8fafc"
-          sub="كمية الدورة الحالية"
-        />
-        <MiniMetric
-          label="الكمية المقاسة الواصلة"
-          value={fmtM3(delivered, 1)}
-          color="#22c55e"
-          sub="نتيجة نقاط القياس"
-        />
-        <MiniMetric
-          label="الفجوة غير المبررة"
-          value={fmtM3(gap, 1)}
-          color={gapPct > 35 ? '#ef4444' : '#f59e0b'}
-          sub={`${gapPct.toFixed(1)}% من الضخ`}
-        />
-      </div>
-
-      <div
-        style={{
-          marginTop: 14,
-          border: '1px solid rgba(148,163,184,.12)',
-          background: 'rgba(2,6,23,.26)',
-          borderRadius: 12,
-          padding: 13,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            gap: 12,
-            marginBottom: 8,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 11,
-              color: '#94a3b8',
-              fontFamily: 'monospace',
-              fontWeight: 800,
-            }}
-          >
-            فجوة التحقق
-          </span>
-          <span
-            style={{
-              fontSize: 11,
-              color: gapPct > 35 ? '#ef4444' : '#f59e0b',
-              fontFamily: 'monospace',
-              fontWeight: 900,
-            }}
-          >
-            {gapPct.toFixed(1)}%
-          </span>
-        </div>
-        <ProgressBar
-          value={gapPct}
-          color={gapPct > 35 ? '#ef4444' : '#f59e0b'}
-        />
-        <div
-          style={{
-            color: '#64748b',
-            fontSize: 11,
-            lineHeight: 1.6,
-            marginTop: 9,
-          }}
-        >
-          هذه البطاقة تحول النظام من مجرد لوحة حساسات إلى سلسلة تشغيلية قابلة
-          للتحقق: طلب متوقع، كمية ضخ، كمية واصلة عبر نقاط القياس، ثم قرار حول
-          وجود خلل.
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 10,
-          marginTop: 10,
-        }}
-        className="aq-grid-2"
-      >
-        <MiniMetric
-          label="إجمالي الفاقد التراكمي"
-          value={fmtM3(totalSystemLoss, 1)}
-          color="#f59e0b"
-          sub="منذ بداية الجلسة"
-        />
-        <MiniMetric
-          label="وفورات العزل"
-          value={fmtM3(isolationSavings, 1)}
-          color="#22c55e"
-          sub="فاقد متجنب بالمحاكاة"
-        />
-      </div>
-    </SectionCard>
-  );
-}
-
-function IncidentTimeline({ demoStep, activeType }) {
-  const steps = [
-    ['00s', 'توقع الطلب', 'تقدير احتياج المنطقة قبل الضخ.'],
-    [
-      '03s',
-      'اكتشاف فرق في نقاط القياس',
-      'النظام يلاحظ فرقاً غير طبيعي بين التدفق والضغط المتوقع والمقاس.',
-    ],
-    [
-      '07s',
-      'تصنيف الذكاء الاصطناعي',
-      `النظام يصنف الحالة التشغيلية كـ ${getTypeLabelAr(activeType)}.`,
-    ],
-    [
-      '11s',
-      'تحديد موقع الخلل',
-      'تمييز المقطع الأكثر احتمالاً على خريطة الشبكة.',
-    ],
-    ['15s', 'قرار المشغّل', 'عرض الإجراءات المقترحة واعتماد القرار المناسب.'],
-  ];
-  return (
-    <SectionCard
-      title="الخط الزمني للحالة خلال 15 ثانية"
-      icon={<Activity size={16} color="#22d3ee" />}
-    >
-      <div style={{ display: 'grid', gap: 10 }}>
-        {steps.map(([time, title, body], idx) => {
-          const active = idx <= Math.min(demoStep, steps.length - 1);
-          return (
-            <div
-              key={time}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '48px 18px 1fr',
-                gap: 10,
-                alignItems: 'start',
-              }}
-            >
-              <div
-                style={{
-                  color: active ? '#22d3ee' : '#475569',
-                  fontSize: 10,
-                  fontFamily: 'monospace',
-                  fontWeight: 900,
-                }}
-              >
-                {time}
-              </div>
-              <div
-                style={{
-                  width: 14,
-                  height: 14,
-                  borderRadius: '50%',
-                  background: active ? '#22d3ee' : '#1e293b',
-                  border: '2px solid #0f172a',
-                  boxShadow: active ? '0 0 18px rgba(34,211,238,.35)' : 'none',
-                  marginTop: 2,
-                }}
-              />
-              <div>
-                <div
-                  style={{
-                    color: active ? '#f8fafc' : '#64748b',
-                    fontSize: 12,
-                    fontWeight: 900,
-                  }}
-                >
-                  {title}
-                </div>
-                <div
-                  style={{
-                    color: '#64748b',
-                    fontSize: 11,
-                    lineHeight: 1.55,
-                    marginTop: 2,
-                  }}
-                >
-                  {body}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </SectionCard>
-  );
-}
-
-function UserResearchPanel() {
-  const personas = [
-    [
-      'مشغّل غرفة التحكم',
-      'يريد معرفة الحالة والموقع والإجراء بسرعة دون تحليل جداول طويلة.',
-      'يحتاج: أولوية الإنذار، موقع الخريطة، نسبة الثقة، والإجراء.',
-    ],
-    [
-      'قائد فريق الصيانة',
-      'يريد نقطة واضحة للذهاب إليها ونوع الخلل قبل النزول للميدان.',
-      'يحتاج: الفرع، المقطع، درجة الخطورة، وتوجيهات العزل.',
-    ],
-    [
-      'صاحب القرار',
-      'يريد مؤشرات الفاقد والمناطق الأخطر وأثر الحل على NRW.',
-      'يحتاج: اتجاهات الفاقد، الأثر المالي، وقابلية التوسع.',
-    ],
-  ];
-  const pains = [
-    'تأخر اكتشاف التسربات والانفجارات',
-    'بحث ميداني طويل عن موقع الخلل',
-    'صعوبة التمييز بين التسرب والانفجار والسرقة',
-    'تشتت البيانات بين الحساسات والفرق وصنّاع القرار',
-  ];
-
-  return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <SectionCard
-        title="عرض بحث المستخدمين"
-        icon={<Eye size={16} color="#a855f7" />}
-      >
-        <div
-          style={{
-            color: '#94a3b8',
-            fontSize: 13,
-            lineHeight: 1.75,
-            marginBottom: 14,
-          }}
-        >
-          هذا القسم مخصص لمعيار تجربة المستخدم؛ فهو يثبت أن AquaGuard مصمم حول
-          مستخدمين تشغيليين حقيقيين وليس حول أرقام النموذج فقط.
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3,1fr)',
-            gap: 12,
-          }}
-          className="aq-grid-3"
-        >
-          {personas.map(([title, ar, need]) => (
-            <div
-              key={title}
-              style={{
-                border: '1px solid rgba(168,85,247,.18)',
-                background: 'rgba(88,28,135,.12)',
-                borderRadius: 14,
-                padding: 14,
-              }}
-            >
-              <div style={{ color: '#f8fafc', fontWeight: 950, fontSize: 14 }}>
-                {title}
-              </div>
-              <div
-                style={{
-                  color: '#cbd5e1',
-                  fontSize: 12,
-                  lineHeight: 1.7,
-                  marginTop: 8,
-                }}
-              >
-                {ar}
-              </div>
-              <div
-                style={{
-                  color: '#a78bfa',
-                  fontSize: 11,
-                  lineHeight: 1.6,
-                  marginTop: 8,
-                  fontFamily: 'monospace',
-                }}
-              >
-                {need}
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-
-      <SectionCard
-        title="نقاط الألم التي يعالجها النظام"
-        icon={<AlertTriangle size={16} color="#f59e0b" />}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4,1fr)',
-            gap: 10,
-          }}
-          className="aq-grid-4"
-        >
-          {pains.map((p, i) => (
-            <div
-              key={p}
-              style={{
-                padding: 13,
-                borderRadius: 12,
-                background: 'rgba(245,158,11,.10)',
-                border: '1px solid rgba(245,158,11,.18)',
-              }}
-            >
-              <div
-                style={{
-                  color: '#f59e0b',
-                  fontWeight: 950,
-                  fontFamily: 'monospace',
-                  marginBottom: 6,
-                }}
-              >
-                0{i + 1}
-              </div>
-              <div style={{ color: '#e2e8f0', fontSize: 12, lineHeight: 1.6 }}>
-                {p}
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-    </div>
-  );
-}
-
-function PilotPlanPanel() {
-  const phases = [
-    [
-      'النموذج الأولي',
-      'حلقة صغيرة بخزانين + حساسات تدفق/ضغط + تحقق عبر الداشبورد',
-    ],
-    [
-      'منطقة تجريبية',
-      'منطقة DMA واحدة أو فرع في عمّان مع نقاط قياس دخول وخروج',
-    ],
-    ['توسع على مستوى المدينة', 'توسيع نقاط القياس وربط سير عمل فرق الصيانة'],
-    ['توسع وطني', 'ربط المحافظات والأصول الاستراتيجية مثل الناقل الوطني'],
-  ];
-  const stack = [
-    ['Sensors', 'حساس تدفق، حساس ضغط، حساس صوتي للتسرب، وصمام عزل ذكي'],
-    [
-      'الاتصال',
-      'وحدة RTU / بوابة إنترنت أشياء باستخدام MQTT عبر الشبكة الخلوية أو LoRaWAN',
-    ],
-    [
-      'Backend',
-      'حالياً Flask API ويمكن نشره لاحقاً على Render أو Railway أو خادم سحابي',
-    ],
-    ['لوحة التحكم', 'واجهة React للمشغّل مع وضع محاكاة دون اتصال ووضع API حي'],
-  ];
-
-  return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <SectionCard
-        title="الواقعية وقابلية التطبيق: خطة نشر تجريبية"
-        icon={<Target size={16} color="#22c55e" />}
-      >
-        <div
-          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}
-          className="aq-grid-2"
-        >
-          <div
-            style={{
-              border: '1px solid rgba(34,197,94,.16)',
-              borderRadius: 14,
-              padding: 14,
-              background: 'rgba(34,197,94,.08)',
-            }}
-          >
-            <div
-              style={{
-                color: '#22c55e',
-                fontSize: 11,
-                fontFamily: 'monospace',
-                fontWeight: 900,
-              }}
-            >
-              التجربة الأولى المقترحة
-            </div>
-            <div
-              style={{
-                color: '#f8fafc',
-                fontWeight: 950,
-                fontSize: 18,
-                marginTop: 8,
-              }}
-            >
-              فرع مراقب أو منطقة DMA صغيرة داخل عمّان
-            </div>
-            <div
-              style={{
-                color: '#94a3b8',
-                fontSize: 12,
-                lineHeight: 1.75,
-                marginTop: 9,
-              }}
-            >
-              نبدأ بنقطة قياس دخول واحدة ونقطتي قياس بعدية مع مسار استخدام واضح
-              للمشغّل. هذا يحافظ على التكلفة الواقعية ويثبت الكشف وتحديد الموقع
-              والاستجابة.
-            </div>
-          </div>
-          <div
-            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}
-          >
-            <MiniMetric
-              label="حجم التجربة"
-              value="1 Zone"
-              color="#22c55e"
-              sub="نطاق مضبوط"
-            />
-            <MiniMetric
-              label="نقاط القياس"
-              value="3–5"
-              color="#38bdf8"
-              sub="أقل شبكة قابلة للإثبات"
-            />
-            <MiniMetric
-              label="دورة التحديث"
-              value="15s"
-              color="#f59e0b"
-              sub="مناسبة للعرض السريع"
-            />
-            <MiniMetric
-              label="التكامل"
-              value="MQTT"
-              color="#a855f7"
-              sub="جاهز لإنترنت الأشياء"
-            />
-          </div>
-        </div>
-      </SectionCard>
-
-      <SectionCard
-        title="مراحل التطبيق"
-        icon={<GitBranch size={16} color="#38bdf8" />}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4,1fr)',
-            gap: 10,
-          }}
-          className="aq-grid-4"
-        >
-          {phases.map(([title, body], i) => (
-            <div
-              key={title}
-              style={{
-                border: '1px solid rgba(56,189,248,.14)',
-                borderRadius: 14,
-                padding: 14,
-                background: 'rgba(56,189,248,.07)',
-              }}
-            >
-              <div
-                style={{
-                  color: '#38bdf8',
-                  fontFamily: 'monospace',
-                  fontWeight: 950,
-                }}
-              >
-                PHASE {i + 1}
-              </div>
-              <div style={{ color: '#f8fafc', fontWeight: 900, marginTop: 6 }}>
-                {title}
-              </div>
-              <div
-                style={{
-                  color: '#94a3b8',
-                  fontSize: 11,
-                  lineHeight: 1.65,
-                  marginTop: 7,
-                }}
-              >
-                {body}
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-
-      <SectionCard
-        title="مكونات التنفيذ"
-        icon={<Cpu size={16} color="#a855f7" />}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4,1fr)',
-            gap: 10,
-          }}
-          className="aq-grid-4"
-        >
-          {stack.map(([title, body]) => (
-            <div
-              key={title}
-              style={{
-                border: '1px solid rgba(148,163,184,.13)',
-                borderRadius: 14,
-                padding: 14,
-                background: 'rgba(2,6,23,.26)',
-              }}
-            >
-              <div style={{ color: '#e2e8f0', fontWeight: 950 }}>{title}</div>
-              <div
-                style={{
-                  color: '#94a3b8',
-                  fontSize: 11,
-                  lineHeight: 1.65,
-                  marginTop: 7,
-                }}
-              >
-                {body}
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-    </div>
-  );
-}
-
-function SuggestedActionsPanel({ seg, gov, actionLog, onApproveAction }) {
-  const type = seg?.predType || 'normal';
-  const color = getTypeColor(type);
-  const suggestions = ACTION_SUGGESTIONS[type] || ACTION_SUGGESTIONS.normal;
-
-  return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <SectionCard
-        title="الإجراءات المقترحة واعتماد القرار"
-        icon={<Shield size={16} color={color} />}
-        right={
-          <SmallPill color={color} filled>
-            {getTypeLabelAr(type)}
-          </SmallPill>
-        }
-      >
-        <div
-          style={{
-            color: '#94a3b8',
-            fontSize: 13,
-            lineHeight: 1.75,
-            marginBottom: 14,
-          }}
-        >
-          يعرض النظام أكثر من إجراء ممكن حتى لا يكون القرار آلياً بالكامل؛
-          المدير يختار الإجراء الأنسب، ثم يتم حفظه في سجل مرجعي قابل للمراجعة من
-          الجهة المختصة.
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3,1fr)',
-            gap: 12,
-          }}
-          className="aq-grid-3"
-        >
-          {suggestions.map((action, i) => (
-            <div
-              key={action.title}
-              style={{
-                border: `1px solid ${color}33`,
-                background: `${color}10`,
-                borderRadius: 14,
-                padding: 14,
-                display: 'grid',
-                gap: 10,
-                minHeight: 176,
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: 8,
-                }}
-              >
-                <SmallPill color={color}>اقتراح {i + 1}</SmallPill>
-                <span
-                  style={{
-                    color,
-                    fontSize: 10,
-                    fontFamily: 'monospace',
-                    fontWeight: 900,
-                  }}
-                >
-                  {action.priority}
-                </span>
-              </div>
-              <div
-                style={{
-                  color: '#f8fafc',
-                  fontSize: 14,
-                  fontWeight: 950,
-                  lineHeight: 1.45,
-                }}
-              >
-                {action.title}
-              </div>
-              <div style={{ color: '#cbd5e1', fontSize: 12, lineHeight: 1.7 }}>
-                {action.detail}
-              </div>
-              <button
-                onClick={() => onApproveAction(action)}
-                style={{
-                  ...primaryButton(color),
-                  justifyContent: 'center',
-                  padding: '9px 11px',
-                  marginTop: 'auto',
-                }}
-              >
-                <Zap size={14} /> اعتماد الإجراء
-              </button>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-
-      <SectionCard
-        title="سجل الإجراءات المعتمدة"
-        icon={<Bell size={16} color="#22c55e" />}
-        right={<SmallPill color="#22c55e">{actionLog.length} إجراء</SmallPill>}
-      >
-        <div
-          style={{ display: 'grid', gap: 8, maxHeight: 280, overflowY: 'auto' }}
-        >
-          {actionLog.length === 0 && (
-            <div
-              style={{
-                color: '#64748b',
-                fontSize: 12,
-                textAlign: 'center',
-                padding: 18,
-              }}
-            >
-              لم يتم اعتماد أي إجراء بعد. اختر أحد الإجراءات المقترحة ليظهر هنا
-              كمرجع تشغيلي.
-            </div>
-          )}
-          {actionLog.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                border: '1px solid rgba(34,197,94,.20)',
-                background: 'rgba(34,197,94,.08)',
-                borderRadius: 12,
-                padding: 12,
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: 10,
-                  alignItems: 'center',
-                }}
-              >
-                <div
-                  style={{ color: '#f8fafc', fontWeight: 950, fontSize: 13 }}
-                >
-                  {item.action}
-                </div>
-                <SmallPill color="#22c55e" filled>
-                  {item.status}
-                </SmallPill>
-              </div>
-              <div
-                style={{
-                  color: '#94a3b8',
-                  fontSize: 11,
-                  lineHeight: 1.6,
-                  marginTop: 6,
-                }}
-              >
-                {item.gov} · {item.segment} · {item.type} · {item.time}
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-    </div>
-  );
-}
-
-function TechnicalPanel({ selectedSeg, activeModels = 4 }) {
-  const models = selectedSeg?.models || { lgb: 0, xgb: 0, nn: 0, lstm: 0 };
-  const rows = [
-    ['LightGBM', models.lgb || 0, 'خصائص جدولية من الضغط والتدفق'],
-    ['XGBoost', models.xgb || 0, 'تحقق متقاطع للأنماط غير الخطية'],
-    ['ResNet-MLP', models.nn || 0, 'نمذجة العلاقات المعقدة بين الخصائص'],
-    ['BiLSTM', models.lstm || 0, 'فهم تسلسل المقاطع داخل الفرع'],
-  ];
-  return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <SectionCard
-        title="شرح قرار الذكاء الاصطناعي"
-        icon={<Cpu size={16} color="#38bdf8" />}
-        right={
-          <SmallPill color="#22c55e">{activeModels} نماذج فعالة</SmallPill>
-        }
-      >
-        <div
-          style={{
-            color: '#94a3b8',
-            fontSize: 13,
-            lineHeight: 1.75,
-            marginBottom: 14,
-          }}
-        >
-          تشرح هذه الواجهة التقنية النموذج بلغة مناسبة للحكّام: النظام لا يعتمد
-          على إشارة واحدة فقط، بل يدمج الخصائص الجدولية، وفيزياء الضغط والتدفق،
-          وسلوك التسلسل الزمني، والتجميع بين النماذج، والمعايرة، وتحديد موقع
-          الخلل.
-        </div>
-        <div style={{ display: 'grid', gap: 10 }}>
-          {rows.map(([name, val, desc]) => (
-            <div
-              key={name}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '110px 1fr 54px',
-                gap: 12,
-                alignItems: 'center',
-              }}
-            >
-              <div style={{ color: '#e2e8f0', fontSize: 12, fontWeight: 900 }}>
-                {name}
-              </div>
-              <ProgressBar
-                value={val}
-                color={val > 70 ? '#ef4444' : val > 35 ? '#f59e0b' : '#38bdf8'}
-              />
-              <div
-                style={{
-                  color: '#94a3b8',
-                  fontFamily: 'monospace',
-                  fontWeight: 900,
-                  fontSize: 11,
-                }}
-              >
-                {Number(val).toFixed(1)}%
-              </div>
-              <div />
-              <div style={{ color: '#64748b', fontSize: 11, marginTop: -6 }}>
-                {desc}
-              </div>
-              <div />
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-
-      <SectionCard
-        title="خصائص المقطع الحالي"
-        icon={<Sliders size={16} color="#f59e0b" />}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4,1fr)',
-            gap: 10,
-          }}
-          className="aq-grid-4"
-        >
-          <MiniMetric
-            label="فقد التدفق"
-            value={`${selectedSeg?.flowLoss?.toFixed?.(2) || '0.00'}%`}
-            color="#f59e0b"
-          />
-          <MiniMetric
-            label="الفقد الزائد"
-            value={`${selectedSeg?.excessLoss?.toFixed?.(2) || '0.00'}%`}
-            color="#ef4444"
-          />
-          <MiniMetric
-            label="DP DEV"
-            value={`${selectedSeg?.dpDev?.toFixed?.(3) || '0.000'}`}
-            color="#38bdf8"
-          />
-          <MiniMetric
-            label="PIPE AGE"
-            value={`${selectedSeg?.age || 0}y`}
-            color="#a855f7"
-          />
-        </div>
-      </SectionCard>
-    </div>
-  );
-}
-
-function responsiveCss() {
-  return `
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.32} }
-    @keyframes slideIn { from{transform:translateY(6px);opacity:0} to{transform:none;opacity:1} }
-    @keyframes glowLine { from{box-shadow:0 0 0 rgba(56,189,248,0)} to{box-shadow:0 0 28px rgba(56,189,248,.22)} }
-    ::-webkit-scrollbar{width:4px;height:4px}
-    ::-webkit-scrollbar-track{background:#0a1628}
-    ::-webkit-scrollbar-thumb{background:rgba(56,189,248,.30);border-radius:999px}
-    button:hover{filter:brightness(1.08)}
-    input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;outline:none;background:linear-gradient(90deg,#334155 0%,#475569 100%);border:1px solid rgba(99,102,241,.18)}
-    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:#818cf8;border:2px solid #e2e8f0;box-shadow:0 0 0 4px rgba(99,102,241,.18);cursor:pointer}
-    @media (max-width: 1100px){
-      .aq-main-grid{grid-template-columns:1fr !important}
-      .aq-grid-4{grid-template-columns:repeat(2,1fr) !important}
-      .aq-grid-3{grid-template-columns:1fr !important}
-    }
-    @media (max-width: 760px){
-      .aq-topbar{height:auto !important;align-items:flex-start !important;flex-direction:column !important;padding:12px !important}
-      .aq-grid-4,.aq-grid-2{grid-template-columns:1fr !important}
-      .aq-tabs{overflow-x:auto !important;display:flex !important}
-      h1{font-size:38px !important}
-    }
-  `;
-}
-
 export default function AquaGuardDashboard() {
-  const [showLanding, setShowLanding] = useState(true);
-  const [govKey, setGovKey] = useState('Amman');
+  const [govKey, setGovKey] = useState("Amman");
   const [simData, setSimData] = useState(null);
   const [allAlerts, setAllAlerts] = useState([]);
   const [selectedSeg, setSelectedSeg] = useState(null);
@@ -4052,22 +2378,18 @@ export default function AquaGuardDashboard() {
   const [countdown, setCountdown] = useState(UPDATE_INTERVAL_SEC);
   const [forceType, setForceType] = useState(null);
   const [showGovMenu, setShowGovMenu] = useState(false);
-  const [govSearch, setGovSearch] = useState('');
+  const [govSearch, setGovSearch] = useState("");
   const [simMode, setSimMode] = useState(false);
   const [simPressure, setSimPressure] = useState(80);
   const [simFlow, setSimFlow] = useState(300);
   const [flowHist, setFlowHist] = useState(Array(30).fill(0));
   const [pressHist, setPressHist] = useState(Array(30).fill(0));
   const [scatterData, setScatterData] = useState([]);
-  const [activeTab, setActiveTab] = useState('map');
-  const [demoMode, setDemoMode] = useState(false);
-  const [demoStep, setDemoStep] = useState(0);
-  const [isolationSavings, setIsolationSavings] = useState(0);
-  const [actionLog, setActionLog] = useState([]);
-  const [actionToast, setActionToast] = useState(null);
+  const [activeTab, setActiveTab] = useState("map");
   const menuRef = useRef(null);
-  const demoTimerRef = useRef(null);
 
+  // ─── HYDRAULIC STATE ──────────────────────────────────────────────────
+  // Persistent reservoir volumes per governorate (Record<string, number>)
   const [reservoirLevels, setReservoirLevels] = useState(() => {
     const init = {};
     Object.entries(NETWORK).forEach(([k, v]) => {
@@ -4075,7 +2397,7 @@ export default function AquaGuardDashboard() {
     });
     return init;
   });
-
+  // Cumulative system loss (NRW water "disappeared") per governorate
   const [systemLoss, setSystemLoss] = useState(() => {
     const init = {};
     Object.keys(NETWORK).forEach((k) => {
@@ -4083,23 +2405,20 @@ export default function AquaGuardDashboard() {
     });
     return init;
   });
-
+  // Pump pulse visual flag — true for the first ~1.2s after each cycle
   const [pumping, setPumping] = useState(false);
+
   const gov = NETWORK[govKey];
 
+  // ─── runCycle: simulate + apply mass balance ──────────────────────────
   const runCycle = useCallback(
-    async (ftype = null, govOverride = null) => {
-      const activeGovKey = govOverride || govKey;
-      const activeGov = NETWORK[activeGovKey];
-      const activeForce = ftype || forceType;
-
+    async (ftype = null) => {
       const apiResult = await (async () => {
-        if (govOverride) return null;
-        await apiPost('/api/refresh', {
-          gov: activeGovKey,
-          force: activeForce,
+        await apiPost("/api/refresh", {
+          gov: govKey,
+          force: ftype || forceType,
         });
-        return apiGet('/api/state');
+        return apiGet("/api/state");
       })();
 
       let segments, alerts, mass;
@@ -4110,7 +2429,7 @@ export default function AquaGuardDashboard() {
         if (apiResult.fh) setFlowHist(apiResult.fh);
         if (apiResult.ph) setPressHist(apiResult.ph);
       } else {
-        const sim = simulateGov(activeGovKey, activeForce);
+        const sim = simulateGov(govKey, ftype || forceType);
         segments = sim.segments;
         alerts = sim.alerts;
         mass = sim.mass;
@@ -4127,6 +2446,7 @@ export default function AquaGuardDashboard() {
         }
       }
 
+      // Build fallback mass object if API didn't provide one
       if (!mass) {
         const totalFlow = segments.reduce(
           (s, seg) => s + (seg.depth === 1 ? seg.flowIn : 0),
@@ -4142,32 +2462,27 @@ export default function AquaGuardDashboard() {
           totalBranchInflow: totalFlow,
           totalOutflowM3PerHr: +((totalFlow * 60) / 1000).toFixed(1),
           cycleOutflowM3: +cycleM3.toFixed(2),
-          systemLossM3: +(cycleM3 * activeGov.nrw).toFixed(2),
-          deliveredM3: +(cycleM3 * (1 - activeGov.nrw)).toFixed(2),
+          systemLossM3: +(cycleM3 * gov.nrw).toFixed(2),
+          deliveredM3: +(cycleM3 * (1 - gov.nrw)).toFixed(2),
         };
       }
 
+      // Apply mass balance to reservoir
       setReservoirLevels((prev) => {
-        const cur = prev[activeGovKey] ?? activeGov.reservoirCap;
+        const cur = prev[govKey] ?? gov.reservoirCap;
         const nxt = Math.max(0, cur - mass.cycleOutflowM3);
-        return { ...prev, [activeGovKey]: nxt };
+        return { ...prev, [govKey]: nxt };
       });
       setSystemLoss((prev) => ({
         ...prev,
-        [activeGovKey]: (prev[activeGovKey] || 0) + mass.systemLossM3,
+        [govKey]: (prev[govKey] || 0) + mass.systemLossM3,
       }));
 
+      // Trigger pump pulse animation
       setPumping(true);
       setTimeout(() => setPumping(false), 1200);
 
-      setSimData({ segments, govKey: activeGovKey, mass });
-      const strongest =
-        segments.find((s) => s.predType === 'burst') ||
-        segments.find((s) => s.alert) ||
-        segments[0] ||
-        null;
-      if (strongest) setSelectedSeg(strongest);
-
+      setSimData({ segments, govKey, mass });
       if (alerts.length) {
         setAllAlerts((prev) =>
           [
@@ -4176,10 +2491,9 @@ export default function AquaGuardDashboard() {
               ts: a.ts || new Date().toLocaleTimeString(),
             })),
             ...prev,
-          ].slice(0, 70)
+          ].slice(0, 60)
         );
       }
-
       setScatterData(
         segments.map((s) => ({
           x: +s.flowLoss.toFixed(2),
@@ -4190,13 +2504,14 @@ export default function AquaGuardDashboard() {
       );
       setTick((t) => t + 1);
     },
-    [govKey, forceType]
+    [govKey, forceType, gov.nrw, gov.reservoirCap]
   );
 
   useEffect(() => {
     runCycle();
   }, [govKey]);
 
+  // SYNCHRONIZED PUMP CYCLE
   useEffect(() => {
     const id = setInterval(() => {
       setCountdown((c) => {
@@ -4215,110 +2530,33 @@ export default function AquaGuardDashboard() {
       if (menuRef.current && !menuRef.current.contains(e.target))
         setShowGovMenu(false);
     };
-    document.addEventListener('mousedown', h);
-    return () => document.removeEventListener('mousedown', h);
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (demoTimerRef.current) clearInterval(demoTimerRef.current);
-    };
-  }, []);
+  const segments = simData?.segments || [];
+  const mass = simData?.mass || {
+    branchInflows: {},
+    totalOutflowM3PerHr: 0,
+    cycleOutflowM3: 0,
+    systemLossM3: 0,
+    deliveredM3: 0,
+  };
+  const alertSegs = segments.filter((s) => s.alert);
+  const burstSegs = segments.filter((s) => s.predType === "burst");
+  const maxLoss = Math.max(0, ...segments.map((s) => s.flowLoss));
+  const maxDP = Math.max(0, ...segments.map((s) => Math.abs(s.dpDev)));
+  const worstType = burstSegs.length
+    ? "burst"
+    : alertSegs[0]?.predType || "normal";
 
-  const stopJudgeDemo = useCallback(() => {
-    if (demoTimerRef.current) clearInterval(demoTimerRef.current);
-    demoTimerRef.current = null;
-    setDemoMode(false);
-    setDemoStep(0);
-  }, []);
-
-  const startJudgeDemo = useCallback(() => {
-    if (demoTimerRef.current) clearInterval(demoTimerRef.current);
-    setShowLanding(false);
-    setDemoMode(true);
-    setActiveTab('map');
-    setAllAlerts([]);
-    setSelectedSeg(null);
-    setIsolationSavings(0);
-
-    const steps = [
-      () => {
-        setDemoStep(0);
-        setGovKey('Amman');
-        setForceType(null);
-        runCycle(null, 'Amman');
-      },
-      () => {
-        setDemoStep(1);
-        setGovKey('Amman');
-        setForceType('burst');
-        setActiveTab('map');
-        runCycle('burst', 'Amman');
-      },
-      () => {
-        setDemoStep(2);
-        setActiveTab('map');
-      },
-      () => {
-        setDemoStep(3);
-        setActiveTab('technical');
-      },
-      () => {
-        setDemoStep(4);
-        setActiveTab('pilot');
-      },
-    ];
-
-    let idx = 0;
-    const runStep = () => {
-      steps[idx]?.();
-      idx += 1;
-      if (idx >= steps.length && demoTimerRef.current) {
-        clearInterval(demoTimerRef.current);
-        demoTimerRef.current = null;
-        setDemoMode(false);
-      }
-    };
-    runStep();
-    demoTimerRef.current = setInterval(runStep, 3000);
-  }, [runCycle]);
+  const currentReservoir = reservoirLevels[govKey] ?? gov.reservoirCap;
+  const reservoirPct = (currentReservoir / gov.reservoirCap) * 100;
+  const totalSystemLoss = systemLoss[govKey] || 0;
 
   const refillReservoir = () => {
     setReservoirLevels((prev) => ({ ...prev, [govKey]: gov.reservoirCap }));
     setSystemLoss((prev) => ({ ...prev, [govKey]: 0 }));
-    setIsolationSavings(0);
-  };
-
-  const simulateIsolation = () => {
-    const saving = (simData?.mass?.systemLossM3 || 0) * 0.82;
-    setIsolationSavings((v) => v + saving);
-    setSystemLoss((prev) => ({
-      ...prev,
-      [govKey]: Math.max(0, (prev[govKey] || 0) - saving),
-    }));
-  };
-
-  const approveAction = (action) => {
-    const type = selectedOrWorst?.predType || worstType || 'normal';
-    const item = {
-      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-      time: new Date().toLocaleTimeString('ar-JO'),
-      gov: gov.label,
-      segment: selectedOrWorst
-        ? `${selectedOrWorst.branch || 'الشبكة'} · ${
-            selectedOrWorst.from || 'نقطة'
-          } → ${selectedOrWorst.to || 'نقطة'}`
-        : 'الشبكة العامة',
-      type: getTypeLabelAr(type),
-      action: action.title,
-      status: 'تم اتخاذ الإجراء',
-    };
-    setActionLog((prev) => [item, ...prev].slice(0, 24));
-    setActionToast(item);
-    if (type !== 'normal' && /عزل|تخفيض|خفض/.test(action.title)) {
-      simulateIsolation();
-    }
-    window.setTimeout(() => setActionToast(null), 2800);
   };
 
   const simAnomalyProb = useMemo(() => {
@@ -4334,164 +2572,100 @@ export default function AquaGuardDashboard() {
       k.toLowerCase().includes(govSearch.toLowerCase())
   );
 
-  const segments = simData?.segments || [];
-  const mass = simData?.mass || {
-    branchInflows: {},
-    totalOutflowM3PerHr: 0,
-    cycleOutflowM3: 0,
-    systemLossM3: 0,
-    deliveredM3: 0,
-  };
-  const alertSegs = segments.filter((s) => s.alert);
-  const burstSegs = segments.filter((s) => s.predType === 'burst');
-  const leakSegs = segments.filter((s) => s.predType === 'leak');
-  const theftSegs = segments.filter((s) => s.predType === 'theft');
-  const maxLoss = Math.max(0, ...segments.map((s) => s.flowLoss));
-  const maxDP = Math.max(0, ...segments.map((s) => Math.abs(s.dpDev)));
-  const worstType = burstSegs.length
-    ? 'burst'
-    : alertSegs[0]?.predType || 'normal';
-  const selectedOrWorst = selectedSeg || alertSegs[0] || segments[0] || null;
-  const activeType =
-    selectedOrWorst?.alert || selectedOrWorst?.predType !== 'normal'
-      ? selectedOrWorst?.predType || worstType
-      : worstType;
-  const currentReservoir = reservoirLevels[govKey] ?? gov.reservoirCap;
-  const reservoirPct = (currentReservoir / gov.reservoirCap) * 100;
-  const totalSystemLoss = systemLoss[govKey] || 0;
   const flowHistData = flowHist.map((v, i) => ({ i, v }));
   const pressHistData = pressHist.map((v, i) => ({ i, v }));
 
   const TYPE_DOT = {
-    normal: '#22c55e',
-    leak: '#f59e0b',
-    burst: '#ef4444',
-    theft: '#a855f7',
+    normal: "#22c55e",
+    leak: "#f59e0b",
+    burst: "#ef4444",
+    theft: "#a855f7",
   };
-
-  if (showLanding) {
-    return (
-      <HeroLanding
-        onLaunch={() => setShowLanding(false)}
-        onDemo={startJudgeDemo}
-      />
-    );
-  }
-
-  const tabs = [
-    ['map', 'الخريطة الحية'],
-    ['scatter', 'بصمة الخلل'],
-    ['telemetry', 'القياسات الحية'],
-    ['actions', 'الإجراءات المقترحة'],
-    ['users', 'بحث المستخدمين'],
-    ['pilot', 'خطة التطبيق'],
-    ['technical', 'شرح الذكاء الاصطناعي'],
-  ];
 
   return (
     <div
       style={{
-        background: '#060c18',
-        minHeight: '100vh',
-        color: '#e2e8f0',
-        fontFamily: "'Tajawal','Cairo','Inter',system-ui,sans-serif",
-        direction: 'rtl',
-        textAlign: 'right',
-        overflow: 'auto',
+        background: "#060c18",
+        minHeight: "100vh",
+        color: "#e2e8f0",
+        fontFamily: "'Inter',system-ui,sans-serif",
+        overflow: "auto",
       }}
     >
+      {/* ── HEADER ── */}
       <div
-        className="aq-topbar"
         style={{
-          background: 'rgba(10,22,40,.96)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(56,189,248,.15)',
-          padding: '0 18px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          minHeight: 58,
-          position: 'sticky',
+          background: "#0a1628",
+          borderBottom: "1px solid rgba(56,189,248,.15)",
+          padding: "0 20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: 52,
+          position: "sticky",
           top: 0,
           zIndex: 50,
-          gap: 12,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 12,
-              background: 'linear-gradient(135deg,#0ea5e9,#6366f1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              background: "linear-gradient(135deg,#0ea5e9,#6366f1)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <Droplets size={20} color="#fff" />
+            <Droplets size={18} color="#fff" />
           </div>
           <div>
             <div
               style={{
-                fontSize: 15,
-                fontWeight: 950,
-                color: '#f8fafc',
-                letterSpacing: 0.2,
+                fontSize: 14,
+                fontWeight: 700,
+                color: "#f8fafc",
+                letterSpacing: 0.3,
               }}
             >
-              AquaGuard AI v5.0
+              Aqurd AI v4.3
             </div>
             <div
               style={{
                 fontSize: 10,
-                color: '#7dd3fc',
-                fontFamily: 'monospace',
+                color: "#475569",
+                fontFamily: "monospace",
               }}
             >
-              توقع الطلب · التحقق من نقاط القياس · ذكاء الأعطال
+              LGB + XGB + ResNet-MLP + BiLSTM · HYDRAULIC MASS-BALANCE · JORDAN
             </div>
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            flexWrap: 'wrap',
-          }}
-        >
-          <button onClick={startJudgeDemo} style={primaryButton('#38bdf8')}>
-            <Zap size={14} /> عرض التحكيم
-          </button>
-          {demoMode && (
-            <button onClick={stopJudgeDemo} style={secondaryButton()}>
-              إيقاف العرض
-            </button>
-          )}
-
-          {['normal', 'leak', 'burst', 'theft'].map((t) => (
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {["normal", "leak", "burst", "theft"].map((t) => (
             <button
               key={t}
               onClick={() => {
-                stopJudgeDemo();
-                setForceType(t === 'normal' ? null : t);
-                runCycle(t === 'normal' ? null : t);
+                setForceType(t === "normal" ? null : t);
+                runCycle(t === "normal" ? null : t);
               }}
               style={{
-                padding: '7px 10px',
-                borderRadius: 9,
-                fontSize: 10,
-                fontFamily: 'monospace',
-                cursor: 'pointer',
-                fontWeight: 900,
+                padding: "4px 10px",
+                borderRadius: 6,
+                fontSize: 11,
+                fontFamily: "monospace",
+                cursor: "pointer",
+                fontWeight: 600,
                 background:
-                  forceType === t || (!forceType && t === 'normal')
+                  forceType === t || (!forceType && t === "normal")
                     ? `${TYPE_DOT[t]}22`
-                    : 'transparent',
-                border: `1px solid ${TYPE_DOT[t]}70`,
+                    : "transparent",
+                border: `1px solid ${TYPE_DOT[t]}80`,
                 color: TYPE_DOT[t],
+                transition: "all .15s",
               }}
             >
               {t.toUpperCase()}
@@ -4501,996 +2675,1491 @@ export default function AquaGuardDashboard() {
           <button
             onClick={() => setSimMode((m) => !m)}
             style={{
-              ...secondaryButton(),
-              padding: '7px 10px',
-              background: simMode
-                ? 'rgba(99,102,241,.22)'
-                : 'rgba(15,23,42,.55)',
-              color: '#a5b4fc',
+              padding: "4px 10px",
+              borderRadius: 6,
+              fontSize: 11,
+              cursor: "pointer",
+              fontWeight: 600,
+              background: simMode ? "rgba(99,102,241,.25)" : "transparent",
+              border: "1px solid rgba(99,102,241,.5)",
+              color: "#818cf8",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
             }}
           >
-            <Sliders size={13} /> Sim
+            <Sliders size={12} /> Sim
           </button>
 
           <button
             onClick={() => runCycle()}
             style={{
-              ...secondaryButton(),
-              padding: '7px 10px',
-              color: '#38bdf8',
+              padding: "4px 10px",
+              borderRadius: 6,
+              fontSize: 11,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              background: "transparent",
+              border: "1px solid rgba(56,189,248,.3)",
+              color: "#38bdf8",
             }}
           >
-            <RefreshCw size={13} /> تحديث
+            <RefreshCw size={12} /> Refresh
           </button>
 
-          <SmallPill
-            color={pumping ? '#22d3ee' : API_URL ? '#22c55e' : '#f59e0b'}
-            filled
+          <div
+            style={{
+              padding: "4px 12px",
+              borderRadius: 20,
+              background: pumping
+                ? "rgba(34,211,238,.15)"
+                : API_URL
+                ? "rgba(34,197,94,.1)"
+                : "rgba(245,158,11,.1)",
+              border: `1px solid ${
+                pumping
+                  ? "rgba(34,211,238,.5)"
+                  : API_URL
+                  ? "rgba(34,197,94,.3)"
+                  : "rgba(245,158,11,.3)"
+              }`,
+              fontSize: 11,
+              color: pumping ? "#22d3ee" : API_URL ? "#22c55e" : "#f59e0b",
+              fontFamily: "monospace",
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              transition: "all .3s",
+            }}
           >
-            <Radio size={11} />{' '}
-            {pumping ? 'PUMPING' : API_URL ? 'ML LIVE' : 'محاكاة دون اتصال'} ·{' '}
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: pumping
+                  ? "#22d3ee"
+                  : API_URL
+                  ? "#22c55e"
+                  : "#f59e0b",
+                display: "inline-block",
+                animation: "pulse 1.4s infinite",
+              }}
+            />
+            {pumping ? "PUMPING" : API_URL ? "ML LIVE" : "OFFLINE"} ·{" "}
             {countdown}s
-          </SmallPill>
+          </div>
         </div>
       </div>
 
-      {actionToast && (
+      <div
+        style={{
+          padding: "14px 20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 14,
+        }}
+      >
+        {/* ── GOV SELECTOR + RESERVOIR SUMMARY ── */}
         <div
           style={{
-            position: 'fixed',
-            top: 76,
-            left: 22,
-            zIndex: 120,
-            minWidth: 280,
-            maxWidth: 420,
-            background:
-              'linear-gradient(135deg,rgba(34,197,94,.20),rgba(15,23,42,.96))',
-            border: '1px solid rgba(34,197,94,.45)',
-            color: '#f8fafc',
-            borderRadius: 14,
-            padding: '12px 14px',
-            boxShadow: '0 18px 54px rgba(0,0,0,.32)',
-            animation: 'slideIn .22s ease',
-          }}
-        >
-          <div style={{ color: '#22c55e', fontWeight: 950, fontSize: 13 }}>
-            تم اتخاذ الإجراء بنجاح
-          </div>
-          <div
-            style={{
-              color: '#cbd5e1',
-              fontSize: 12,
-              lineHeight: 1.55,
-              marginTop: 4,
-            }}
-          >
-            {actionToast.action}
-          </div>
-        </div>
-      )}
-
-      <div style={{ padding: 18, display: 'grid', gap: 16 }}>
-        <div
-          style={{
-            background:
-              'linear-gradient(135deg,rgba(56,189,248,.13),rgba(99,102,241,.08),rgba(15,23,42,.72))',
-            border: '1px solid rgba(56,189,248,.15)',
-            borderRadius: 18,
-            padding: 16,
-            display: 'grid',
-            gridTemplateColumns: '1.25fr .75fr',
-            gap: 16,
-          }}
-          className="aq-grid-2"
-        >
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                gap: 8,
-                flexWrap: 'wrap',
-                marginBottom: 10,
-              }}
-            >
-              <SmallPill color="#38bdf8">السيناريو الحالي</SmallPill>
-              <SmallPill color={getTypeColor(worstType)} filled>
-                {worstType.toUpperCase()}
-              </SmallPill>
-              {demoMode && (
-                <SmallPill color="#f59e0b" filled>
-                  خطوة العرض {demoStep + 1}/5
-                </SmallPill>
-              )}
-            </div>
-            <div
-              style={{
-                color: '#f8fafc',
-                fontSize: 24,
-                fontWeight: 950,
-                letterSpacing: -0.5,
-              }}
-            >
-              {worstType === 'normal'
-                ? 'الشبكة مستقرة، والمشغّل يواصل المراقبة.'
-                : `${ACTION_LIBRARY[worstType].title} في ${gov.label}: تحتاج الشبكة إلى إجراء تشغيلي واضح.`}
-            </div>
-            <div
-              style={{
-                color: '#94a3b8',
-                fontSize: 13,
-                lineHeight: 1.7,
-                marginTop: 8,
-                maxWidth: 900,
-              }}
-            >
-              تم ترتيب لوحة التحكم بما يناسب حكّام شركات التقنية: رحلة مستخدم
-              واضحة، تصور حي للشبكة، شرح مبسط للذكاء الاصطناعي، بحث مستخدمين،
-              وخطة تطبيق واقعية.
-            </div>
-          </div>
-          <div
-            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}
-          >
-            <MiniMetric
-              label="المحافظة"
-              value={gov.label}
-              color="#38bdf8"
-              sub={gov.source}
-            />
-            <MiniMetric
-              label="المخاطر"
-              value={getRiskLabel(worstType)}
-              color={getTypeColor(worstType)}
-              sub="الدورة الحالية"
-            />
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(6,1fr)',
+            display: "flex",
+            alignItems: "center",
             gap: 12,
+            flexWrap: "wrap",
           }}
-          className="aq-grid-4"
         >
-          <KpiCard
-            label="إنذارات نشطة"
-            value={alertSegs.length}
-            sub={`${allAlerts.length} إنذار مسجل`}
-            color="#ef4444"
-            icon={<Bell size={17} />}
-          />
-          <KpiCard
-            label="انفجار"
-            value={burstSegs.length}
-            sub="أعطال حرجة"
-            color="#ef4444"
-            icon={<AlertTriangle size={17} />}
-          />
-          <KpiCard
-            label="تسرب"
-            value={leakSegs.length}
-            sub="تسربات تدريجية"
-            color="#f59e0b"
-            icon={<Waves size={17} />}
-          />
-          <KpiCard
-            label="سرقة"
-            value={theftSegs.length}
-            sub="نمط استعمال غير مشروع"
-            color="#a855f7"
-            icon={<Eye size={17} />}
-          />
-          <KpiCard
-            label="MAX LOSS"
-            value={`${maxLoss.toFixed(1)}%`}
-            sub="فقد تدفق في المقطع"
-            color="#f59e0b"
-            icon={<TrendingDown size={17} />}
-          />
-          <KpiCard
-            label="أعلى انحراف ضغط"
-            value={maxDP.toFixed(2)}
-            sub="انحراف الضغط"
-            color="#38bdf8"
-            icon={<Gauge size={17} />}
-          />
-        </div>
-
-        <DemandVerificationCard
-          gov={gov}
-          mass={mass}
-          totalSystemLoss={totalSystemLoss}
-          isolationSavings={isolationSavings}
-        />
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0,1.8fr) minmax(330px,.72fr)',
-            gap: 16,
-          }}
-          className="aq-main-grid"
-        >
-          <div style={{ display: 'grid', gap: 16 }}>
-            <SectionCard
-              title="غرفة تحكم شبكة المياه"
-              icon={<MapPin size={16} color="#38bdf8" />}
-              right={
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div ref={menuRef} style={{ position: 'relative' }}>
-                    <button
-                      onClick={() => setShowGovMenu((v) => !v)}
-                      style={{
-                        ...secondaryButton(),
-                        padding: '8px 10px',
-                        minWidth: 158,
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      {gov.label} <ChevronDown size={13} />
-                    </button>
-                    {showGovMenu && (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          right: 0,
-                          top: 42,
-                          width: 245,
-                          background: '#0a1628',
-                          border: '1px solid rgba(56,189,248,.16)',
-                          borderRadius: 12,
-                          padding: 10,
-                          zIndex: 60,
-                          boxShadow: '0 22px 60px rgba(0,0,0,.34)',
-                        }}
-                      >
-                        <div style={{ position: 'relative', marginBottom: 8 }}>
-                          <Search
-                            size={13}
-                            style={{
-                              position: 'absolute',
-                              left: 9,
-                              top: 9,
-                              color: '#64748b',
-                            }}
-                          />
-                          <input
-                            value={govSearch}
-                            onChange={(e) => setGovSearch(e.target.value)}
-                            placeholder="ابحث عن محافظة..."
-                            style={{
-                              width: '100%',
-                              boxSizing: 'border-box',
-                              background: '#08111f',
-                              border: '1px solid rgba(148,163,184,.13)',
-                              color: '#e2e8f0',
-                              padding: '8px 9px 8px 30px',
-                              borderRadius: 9,
-                              outline: 'none',
-                              fontSize: 12,
-                            }}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            maxHeight: 280,
-                            overflowY: 'auto',
-                            display: 'grid',
-                            gap: 5,
-                          }}
-                        >
-                          {filteredGovs.map(([k, v]) => (
-                            <button
-                              key={k}
-                              onClick={() => {
-                                setGovKey(k);
-                                setShowGovMenu(false);
-                                setSelectedSeg(null);
-                                setCountdown(UPDATE_INTERVAL_SEC);
-                              }}
-                              style={{
-                                background:
-                                  k === govKey
-                                    ? 'rgba(56,189,248,.12)'
-                                    : 'transparent',
-                                border: '1px solid transparent',
-                                color: k === govKey ? '#38bdf8' : '#cbd5e1',
-                                borderRadius: 9,
-                                padding: '9px 10px',
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              <span>{v.label}</span>
-                              <span
-                                style={{
-                                  fontFamily: 'monospace',
-                                  color:
-                                    v.nrw > 0.5
-                                      ? '#ef4444'
-                                      : v.nrw > 0.4
-                                      ? '#f59e0b'
-                                      : '#22c55e',
-                                }}
-                              >
-                                {Math.round(v.nrw * 100)}%
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <SmallPill color="#22d3ee">
-                    {fmtNum(mass.totalOutflowM3PerHr, 0)} m³/h
-                  </SmallPill>
-                </div>
-              }
+          <div ref={menuRef} style={{ position: "relative" }}>
+            <button
+              onClick={() => setShowGovMenu((m) => !m)}
+              style={{
+                padding: "8px 14px",
+                borderRadius: 8,
+                background: "#0f1f3d",
+                border: "1px solid rgba(56,189,248,.25)",
+                color: "#e2e8f0",
+                fontSize: 13,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                minWidth: 200,
+              }}
             >
-              <div
+              <MapPin size={14} color={gov.color} />
+              <span style={{ flex: 1, textAlign: "right" }}>{gov.label}</span>
+              <span
                 style={{
-                  display: 'flex',
-                  gap: 8,
-                  flexWrap: 'wrap',
-                  marginBottom: 12,
+                  color: "#64748b",
+                  fontSize: 11,
+                  fontFamily: "monospace",
                 }}
               >
-                {[
-                  ['normal', 'طبيعي'],
-                  ['leak', 'تسرب'],
-                  ['burst', 'انفجار'],
-                  ['theft', 'سرقة'],
-                ].map(([t, l]) => (
-                  <SmallPill
-                    key={t}
-                    color={TYPE_DOT[t]}
-                    filled={worstType === t}
-                  >
-                    {l}
-                  </SmallPill>
-                ))}
-                <SmallPill color="#22d3ee">الأزرق المتحرك = تدفق نشط</SmallPill>
-              </div>
-
+                {govKey}
+              </span>
+              <ChevronDown size={14} color="#64748b" />
+            </button>
+            {showGovMenu && (
               <div
-                className="aq-tabs"
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: `repeat(${tabs.length},1fr)`,
-                  gap: 7,
-                  marginBottom: 14,
+                  position: "absolute",
+                  top: "calc(100% + 4px)",
+                  left: 0,
+                  width: 280,
+                  background: "#0f1f3d",
+                  border: "1px solid rgba(56,189,248,.2)",
+                  borderRadius: 10,
+                  zIndex: 100,
+                  overflow: "hidden",
+                  boxShadow: "0 20px 60px rgba(0,0,0,.6)",
                 }}
               >
-                {tabs.map(([key, label]) => (
-                  <button
-                    key={key}
-                    onClick={() => setActiveTab(key)}
-                    style={{
-                      padding: '9px 10px',
-                      borderRadius: 10,
-                      border: `1px solid ${
-                        activeTab === key
-                          ? 'rgba(56,189,248,.42)'
-                          : 'rgba(148,163,184,.12)'
-                      }`,
-                      background:
-                        activeTab === key
-                          ? 'rgba(56,189,248,.12)'
-                          : 'rgba(2,6,23,.18)',
-                      color: activeTab === key ? '#38bdf8' : '#94a3b8',
-                      fontSize: 11,
-                      fontWeight: 900,
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-
-              {activeTab === 'map' && (
                 <div
                   style={{
-                    background: 'rgba(2,6,23,.24)',
-                    borderRadius: 14,
-                    border: '1px solid rgba(148,163,184,.08)',
-                    overflow: 'hidden',
+                    padding: "8px 10px",
+                    borderBottom: "1px solid rgba(56,189,248,.1)",
                   }}
                 >
-                  <PipeNetworkMap
-                    govKey={govKey}
-                    segments={segments}
-                    onSegClick={setSelectedSeg}
-                    selectedSeg={selectedOrWorst}
-                    pumping={pumping}
-                    branchInflows={mass.branchInflows}
-                    totalOutflowM3PerHr={mass.totalOutflowM3PerHr}
+                  <input
+                    value={govSearch}
+                    onChange={(e) => setGovSearch(e.target.value)}
+                    placeholder="Search governorate..."
+                    style={{
+                      width: "100%",
+                      padding: "6px 10px",
+                      borderRadius: 6,
+                      background: "#060c18",
+                      border: "1px solid rgba(56,189,248,.2)",
+                      color: "#e2e8f0",
+                      fontSize: 12,
+                      outline: "none",
+                    }}
                   />
                 </div>
-              )}
-
-              {activeTab === 'scatter' && (
-                <div
-                  style={{
-                    height: 560,
-                    background: 'rgba(2,6,23,.24)',
-                    borderRadius: 14,
-                    padding: 12,
-                  }}
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <ScatterChart
-                      margin={{ top: 20, right: 24, bottom: 42, left: 24 }}
-                    >
-                      <CartesianGrid stroke="rgba(148,163,184,.12)" />
-                      <XAxis
-                        type="number"
-                        dataKey="x"
-                        name="نسبة فقد التدفق %"
-                        stroke="#64748b"
-                        tick={{ fontSize: 11, fill: '#94a3b8' }}
-                        label={{
-                          value: 'محور X: نسبة فقد التدفق (%)',
-                          position: 'insideBottom',
-                          offset: -10,
-                          fill: '#94a3b8',
-                          fontSize: 11,
+                <div style={{ maxHeight: 240, overflowY: "auto" }}>
+                  {filteredGovs.map(([k, v]) => {
+                    const pct =
+                      ((reservoirLevels[k] ?? v.reservoirCap) /
+                        v.reservoirCap) *
+                      100;
+                    return (
+                      <button
+                        key={k}
+                        onClick={() => {
+                          setGovKey(k);
+                          setShowGovMenu(false);
+                          setGovSearch("");
                         }}
-                      />
-                      <YAxis
-                        type="number"
-                        dataKey="y"
-                        name="انحراف الضغط"
-                        stroke="#64748b"
-                        tick={{ fontSize: 11, fill: '#94a3b8' }}
-                        label={{
-                          value: 'محور Y: انحراف الضغط',
-                          angle: -90,
-                          position: 'insideLeft',
-                          fill: '#94a3b8',
-                          fontSize: 11,
+                        style={{
+                          width: "100%",
+                          padding: "9px 14px",
+                          background:
+                            k === govKey
+                              ? "rgba(56,189,248,.08)"
+                              : "transparent",
+                          border: "none",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 10,
+                          color: "#e2e8f0",
+                          textAlign: "right",
                         }}
-                      />
-                      <RTooltip
-                        cursor={{ strokeDasharray: '3 3' }}
-                        contentStyle={{
-                          background: '#0a1628',
-                          border: '1px solid rgba(56,189,248,.16)',
-                          borderRadius: 10,
-                          color: '#f8fafc',
-                        }}
-                        itemStyle={{ color: '#f8fafc' }}
-                        labelStyle={{ color: '#f8fafc' }}
-                        wrapperStyle={{ color: '#f8fafc' }}
-                      />
-                      {['normal', 'leak', 'burst', 'theft'].map((t) => (
-                        <Scatter
-                          key={t}
-                          name={t}
-                          data={scatterData.filter((d) => d.type === t)}
-                          fill={TYPE_DOT[t]}
-                          onClick={(d) => {
-                            const seg = segments.find((s) => s.id === d?.id);
-                            if (seg) setSelectedSeg(seg);
+                      >
+                        <span
+                          style={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: "50%",
+                            background: v.color,
+                            flexShrink: 0,
                           }}
                         />
-                      ))}
-                    </ScatterChart>
-                  </ResponsiveContainer>
+                        <span
+                          style={{ flex: 1, textAlign: "right", fontSize: 14 }}
+                        >
+                          {v.label}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 10,
+                            color:
+                              pct > 60
+                                ? "#22c55e"
+                                : pct > 30
+                                ? "#f59e0b"
+                                : "#ef4444",
+                            fontFamily: "monospace",
+                            fontWeight: 700,
+                          }}
+                        >
+                          {pct.toFixed(0)}%
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
+              </div>
+            )}
+          </div>
 
-              {activeTab === 'telemetry' && (
+          <div
+            style={{ fontSize: 12, color: "#64748b", fontFamily: "monospace" }}
+          >
+            {gov.source}
+          </div>
+
+          {/* Reservoir capacity indicator */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "4px 12px",
+              background: "rgba(56,189,248,.06)",
+              borderRadius: 6,
+              border: "1px solid rgba(56,189,248,.15)",
+            }}
+          >
+            <Database size={12} color="#38bdf8" />
+            <span style={{ fontSize: 10, color: "#64748b" }}>Capacity:</span>
+            <span
+              style={{
+                fontSize: 11,
+                color: "#38bdf8",
+                fontFamily: "monospace",
+                fontWeight: 700,
+              }}
+            >
+              {(gov.reservoirCap / 1000).toFixed(0)}k m³
+            </span>
+          </div>
+
+          <button
+            onClick={refillReservoir}
+            style={{
+              padding: "4px 10px",
+              borderRadius: 6,
+              fontSize: 10,
+              cursor: "pointer",
+              fontWeight: 600,
+              background: "rgba(34,197,94,.08)",
+              border: "1px solid rgba(34,197,94,.4)",
+              color: "#22c55e",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            ↻ Refill
+          </button>
+
+          <div
+            style={{
+              marginLeft: "auto",
+              fontSize: 11,
+              color: "#475569",
+              fontFamily: "monospace",
+            }}
+          >
+            Tick #{tick}
+          </div>
+        </div>
+
+        {/* ── KPI ROW (now 9 cards incl. reservoir) ── */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(9,1fr)",
+            gap: 8,
+          }}
+        >
+          {[
+            {
+              l: "RESERVOIR",
+              v: `${reservoirPct.toFixed(1)}%`,
+              u: `${(currentReservoir / 1000).toFixed(1)}k m³`,
+              c:
+                reservoirPct > 60
+                  ? "#22c55e"
+                  : reservoirPct > 30
+                  ? "#f59e0b"
+                  : "#ef4444",
+            },
+            { l: "ALERTS", v: allAlerts.length, u: "total", c: "#ef4444" },
+            { l: "ACTIVE", v: alertSegs.length, u: "this cycle", c: "#f59e0b" },
+            { l: "BURST", v: burstSegs.length, u: "critical", c: "#ef4444" },
+            {
+              l: "NRW",
+              v: `${Math.round(gov.nrw * 100)}%`,
+              u: "non-revenue",
+              c:
+                gov.nrw > 0.5
+                  ? "#ef4444"
+                  : gov.nrw > 0.4
+                  ? "#f59e0b"
+                  : "#22c55e",
+            },
+            {
+              l: "OUTFLOW",
+              v: `${mass.totalOutflowM3PerHr?.toFixed?.(0) ?? 0}`,
+              u: "m³/hour",
+              c: "#22d3ee",
+            },
+            {
+              l: "MAX LOSS",
+              v: `${maxLoss.toFixed(1)}%`,
+              u: "flow loss",
+              c: "#f59e0b",
+            },
+            { l: "MAX DP", v: maxDP.toFixed(2), u: "PSI dev", c: "#a855f7" },
+            {
+              l: "SYS.LOSS",
+              v: `${totalSystemLoss.toFixed(1)}`,
+              u: "m³ lost total",
+              c: "#ef4444",
+            },
+          ].map((k, i) => (
+            <div
+              key={i}
+              style={{
+                background: "#0a1628",
+                border: "1px solid rgba(56,189,248,.08)",
+                borderRadius: 10,
+                padding: "10px 12px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 9,
+                  color: "#475569",
+                  fontFamily: "monospace",
+                  letterSpacing: 0.5,
+                  marginBottom: 4,
+                }}
+              >
+                {k.l}
+              </div>
+              <div
+                style={{
+                  fontSize: 18,
+                  fontWeight: 700,
+                  fontFamily: "monospace",
+                  color: k.c,
+                  lineHeight: 1,
+                }}
+              >
+                {k.v}
+              </div>
+              <div style={{ fontSize: 9, color: "#334155", marginTop: 3 }}>
+                {k.u}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── MAIN CONTENT GRID ── */}
+        <div
+          style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 14 }}
+        >
+          {/* LEFT: Map + tabs */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "flex", gap: 4 }}>
+              {[
+                ["map", "Map"],
+                ["scatter", "Scatter"],
+                ["telemetry", "Telemetry"],
+              ].map(([k, l]) => (
+                <button
+                  key={k}
+                  onClick={() => setActiveTab(k)}
+                  style={{
+                    padding: "6px 14px",
+                    borderRadius: 6,
+                    fontSize: 12,
+                    cursor: "pointer",
+                    fontWeight: 500,
+                    background:
+                      activeTab === k ? "rgba(56,189,248,.15)" : "transparent",
+                    border: `1px solid ${
+                      activeTab === k
+                        ? "rgba(56,189,248,.4)"
+                        : "rgba(56,189,248,.1)"
+                    }`,
+                    color: activeTab === k ? "#38bdf8" : "#64748b",
+                  }}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+
+            {/* MAP TAB */}
+            {activeTab === "map" && (
+              <div
+                style={{
+                  background: "#0a1628",
+                  border: "1px solid rgba(56,189,248,.1)",
+                  borderRadius: 12,
+                  padding: 16,
+                }}
+              >
                 <div
                   style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: 12,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 10,
                   }}
-                  className="aq-grid-2"
                 >
                   <div
                     style={{
-                      height: 260,
-                      background: 'rgba(2,6,23,.24)',
-                      borderRadius: 14,
-                      padding: 12,
+                      fontSize: 11,
+                      color: "#475569",
+                      fontFamily: "monospace",
+                      letterSpacing: 0.5,
                     }}
                   >
-                    <div
-                      style={{
-                        color: '#94a3b8',
-                        fontSize: 11,
-                        fontFamily: 'monospace',
-                        fontWeight: 900,
-                        marginBottom: 8,
-                      }}
-                    >
-                      سجل التدفق
-                    </div>
-                    <ResponsiveContainer width="100%" height="88%">
-                      <AreaChart
-                        data={flowHistData}
-                        margin={{ top: 10, right: 14, bottom: 30, left: 24 }}
-                      >
-                        <defs>
-                          <linearGradient
-                            id="flowGrad"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                          >
-                            <stop
-                              offset="5%"
-                              stopColor="#38bdf8"
-                              stopOpacity={0.55}
-                            />
-                            <stop
-                              offset="95%"
-                              stopColor="#38bdf8"
-                              stopOpacity={0.02}
-                            />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid stroke="rgba(148,163,184,.10)" />
-                        <XAxis
-                          dataKey="i"
-                          stroke="#64748b"
-                          tick={{ fontSize: 10, fill: '#94a3b8' }}
-                          label={{
-                            value: 'محور X: آخر القراءات الزمنية',
-                            position: 'insideBottom',
-                            offset: -18,
-                            fill: '#94a3b8',
-                            fontSize: 10,
-                          }}
-                        />
-                        <YAxis
-                          stroke="#64748b"
-                          tick={{ fontSize: 10, fill: '#94a3b8' }}
-                          label={{
-                            value: 'محور Y: التدفق (L/min)',
-                            angle: -90,
-                            position: 'insideLeft',
-                            fill: '#94a3b8',
-                            fontSize: 10,
-                          }}
-                        />
-                        <RTooltip
-                          contentStyle={{
-                            background: '#0a1628',
-                            border: '1px solid rgba(56,189,248,.16)',
-                            borderRadius: 10,
-                            color: '#f8fafc',
-                          }}
-                          itemStyle={{ color: '#f8fafc' }}
-                          labelStyle={{ color: '#f8fafc' }}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="v"
-                          stroke="#38bdf8"
-                          fill="url(#flowGrad)"
-                          strokeWidth={2}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
+                    LIVE PIPE NETWORK — {gov.label} · {gov.source}
                   </div>
-                  <div
-                    style={{
-                      height: 260,
-                      background: 'rgba(2,6,23,.24)',
-                      borderRadius: 14,
-                      padding: 12,
-                    }}
-                  >
+                  {pumping && (
                     <div
                       style={{
-                        color: '#94a3b8',
-                        fontSize: 11,
-                        fontFamily: 'monospace',
-                        fontWeight: 900,
-                        marginBottom: 8,
+                        fontSize: 10,
+                        color: "#22d3ee",
+                        fontFamily: "monospace",
+                        fontWeight: 700,
+                        padding: "2px 8px",
+                        borderRadius: 4,
+                        background: "rgba(34,211,238,.1)",
+                        border: "1px solid rgba(34,211,238,.3)",
                       }}
                     >
-                      سجل الضغط
-                    </div>
-                    <ResponsiveContainer width="100%" height="88%">
-                      <AreaChart
-                        data={pressHistData}
-                        margin={{ top: 10, right: 14, bottom: 30, left: 24 }}
-                      >
-                        <defs>
-                          <linearGradient
-                            id="pressGrad"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                          >
-                            <stop
-                              offset="5%"
-                              stopColor="#a855f7"
-                              stopOpacity={0.55}
-                            />
-                            <stop
-                              offset="95%"
-                              stopColor="#a855f7"
-                              stopOpacity={0.02}
-                            />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid stroke="rgba(148,163,184,.10)" />
-                        <XAxis
-                          dataKey="i"
-                          stroke="#64748b"
-                          tick={{ fontSize: 10, fill: '#94a3b8' }}
-                          label={{
-                            value: 'محور X: آخر القراءات الزمنية',
-                            position: 'insideBottom',
-                            offset: -18,
-                            fill: '#94a3b8',
-                            fontSize: 10,
-                          }}
-                        />
-                        <YAxis
-                          stroke="#64748b"
-                          tick={{ fontSize: 10, fill: '#94a3b8' }}
-                          label={{
-                            value: 'محور Y: الضغط (PSI)',
-                            angle: -90,
-                            position: 'insideLeft',
-                            fill: '#94a3b8',
-                            fontSize: 10,
-                          }}
-                        />
-                        <RTooltip
-                          contentStyle={{
-                            background: '#0a1628',
-                            border: '1px solid rgba(56,189,248,.16)',
-                            borderRadius: 10,
-                            color: '#f8fafc',
-                          }}
-                          itemStyle={{ color: '#f8fafc' }}
-                          labelStyle={{ color: '#f8fafc' }}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="v"
-                          stroke="#a855f7"
-                          fill="url(#pressGrad)"
-                          strokeWidth={2}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-
-                  {simMode && (
-                    <div
-                      style={{
-                        gridColumn: '1 / -1',
-                        border: '1px solid rgba(99,102,241,.18)',
-                        background: 'rgba(99,102,241,.08)',
-                        borderRadius: 14,
-                        padding: 14,
-                      }}
-                    >
-                      <div
-                        style={{
-                          color: '#f8fafc',
-                          fontWeight: 950,
-                          marginBottom: 10,
-                        }}
-                      >
-                        وضع المحاكاة التنبؤية
-                      </div>
-                      <div
-                        style={{
-                          display: 'grid',
-                          gridTemplateColumns: '1fr 1fr 130px',
-                          gap: 14,
-                          alignItems: 'center',
-                        }}
-                        className="aq-grid-3"
-                      >
-                        <label style={{ color: '#94a3b8', fontSize: 12 }}>
-                          ضغط الدخول:{' '}
-                          <b style={{ color: '#e2e8f0' }}>{simPressure} PSI</b>
-                          <input
-                            type="range"
-                            min="20"
-                            max="130"
-                            value={simPressure}
-                            onChange={(e) => setSimPressure(+e.target.value)}
-                          />
-                        </label>
-                        <label style={{ color: '#94a3b8', fontSize: 12 }}>
-                          تدفق الدخول:{' '}
-                          <b style={{ color: '#e2e8f0' }}>{simFlow} L/min</b>
-                          <input
-                            type="range"
-                            min="50"
-                            max="600"
-                            value={simFlow}
-                            onChange={(e) => setSimFlow(+e.target.value)}
-                          />
-                        </label>
-                        <MiniMetric
-                          label="المخاطر"
-                          value={`${simAnomalyProb}%`}
-                          color={
-                            simAnomalyProb > 65
-                              ? '#ef4444'
-                              : simAnomalyProb > 35
-                              ? '#f59e0b'
-                              : '#22c55e'
-                          }
-                          sub={
-                            simAnomalyProb > 65
-                              ? 'مرتفع'
-                              : simAnomalyProb > 35
-                              ? 'متوسط'
-                              : 'طبيعي'
-                          }
-                        />
-                      </div>
+                      ⚡ PUMP CYCLE ACTIVE
                     </div>
                   )}
                 </div>
-              )}
-
-              {activeTab === 'actions' && (
-                <SuggestedActionsPanel
-                  seg={selectedOrWorst}
-                  gov={gov}
-                  actionLog={actionLog}
-                  onApproveAction={approveAction}
-                />
-              )}
-              {activeTab === 'users' && <UserResearchPanel />}
-              {activeTab === 'pilot' && <PilotPlanPanel />}
-              {activeTab === 'technical' && (
-                <TechnicalPanel selectedSeg={selectedOrWorst} />
-              )}
-            </SectionCard>
-
-            <SectionCard
-              title="نظرة عامة على شبكة الأردن"
-              icon={<Database size={16} color="#22d3ee" />}
-            >
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit,minmax(74px,1fr))',
-                  gap: 8,
-                }}
-              >
-                {Object.entries(NETWORK).map(([k, v]) => {
-                  const nrwPct = Math.round(v.nrw * 100);
-                  const rPct =
-                    ((reservoirLevels[k] ?? v.reservoirCap) / v.reservoirCap) *
-                    100;
-                  const isActive = k === govKey;
-                  return (
+                <div
+                  style={{ display: "flex", gap: 16, alignItems: "stretch" }}
+                >
+                  {/* Reservoir tank on the left of map */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 6,
+                      paddingTop: 4,
+                    }}
+                  >
                     <div
-                      key={k}
-                      onClick={() => setGovKey(k)}
                       style={{
-                        cursor: 'pointer',
-                        textAlign: 'center',
-                        padding: '9px 5px',
-                        borderRadius: 10,
-                        background: isActive
-                          ? 'rgba(56,189,248,.10)'
-                          : 'rgba(2,6,23,.16)',
-                        border: `1px solid ${
-                          isActive
-                            ? 'rgba(56,189,248,.35)'
-                            : 'rgba(148,163,184,.08)'
-                        }`,
+                        fontSize: 9,
+                        color: "#475569",
+                        fontFamily: "monospace",
+                        letterSpacing: 0.3,
+                      }}
+                    >
+                      RESERVOIR
+                    </div>
+                    <ReservoirTank
+                      currentM3={currentReservoir}
+                      capacityM3={gov.reservoirCap}
+                      pulsing={pumping}
+                      govColor={gov.color}
+                    />
+                    <div
+                      style={{
+                        fontSize: 9,
+                        color: "#64748b",
+                        fontFamily: "monospace",
+                        textAlign: "center",
+                      }}
+                    >
+                      {(currentReservoir / 1000).toFixed(1)}k
+                      <br />
+                      <span style={{ color: "#334155" }}>
+                        / {(gov.reservoirCap / 1000).toFixed(0)}k m³
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 8,
+                        color: "#64748b",
+                        textAlign: "center",
+                        paddingTop: 4,
+                        borderTop: "1px solid rgba(56,189,248,.1)",
+                        marginTop: 2,
+                        width: "100%",
                       }}
                     >
                       <div
                         style={{
-                          width: 19,
-                          height: 42,
-                          margin: '0 auto 5px',
-                          position: 'relative',
-                          background: '#0f172a',
-                          borderRadius: 4,
-                          overflow: 'hidden',
-                          border: '1px solid #1e293b',
+                          color: "#ef4444",
+                          fontWeight: 600,
+                          fontFamily: "monospace",
                         }}
                       >
-                        <div
-                          style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            height: `${rPct}%`,
-                            background:
-                              rPct > 60
-                                ? '#22c55e'
-                                : rPct > 30
-                                ? '#f59e0b'
-                                : '#ef4444',
-                            transition: 'height .4s',
-                          }}
-                        />
+                        −{mass.systemLossM3?.toFixed(1) ?? 0}
                       </div>
-                      <div
-                        style={{
-                          fontSize: 9,
-                          color: isActive ? '#38bdf8' : '#94a3b8',
-                          fontWeight: 850,
-                        }}
-                      >
-                        {v.label}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 9,
-                          color:
-                            rPct > 60
-                              ? '#22c55e'
-                              : rPct > 30
-                              ? '#f59e0b'
-                              : '#ef4444',
-                          fontFamily: 'monospace',
-                          fontWeight: 900,
-                        }}
-                      >
-                        {rPct.toFixed(0)}%
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 8,
-                          color:
-                            v.nrw > 0.5
-                              ? '#ef4444'
-                              : v.nrw > 0.4
-                              ? '#f59e0b'
-                              : '#22c55e',
-                          fontFamily: 'monospace',
-                        }}
-                      >
-                        NRW {nrwPct}
-                      </div>
+                      <div>m³ this cycle</div>
                     </div>
-                  );
-                })}
-              </div>
-            </SectionCard>
-          </div>
-
-          <div style={{ display: 'grid', gap: 16, alignContent: 'start' }}>
-            <SectionCard
-              title="الخزان والفاقد NRW"
-              icon={<Droplets size={16} color={gov.color} />}
-              right={
-                <SmallPill color={gov.color}>
-                  الهدف {Math.round(gov.target_nrw * 100)}%
-                </SmallPill>
-              }
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <ReservoirTank
-                  currentM3={currentReservoir}
-                  capacityM3={gov.reservoirCap}
-                  pulsing={pumping}
-                  govColor={gov.color}
-                />
-                <div style={{ flex: 1 }}>
-                  <MiniMetric
-                    label="المستوى الحالي"
-                    value={`${reservoirPct.toFixed(1)}%`}
-                    color={
-                      reservoirPct > 60
-                        ? '#22c55e'
-                        : reservoirPct > 30
-                        ? '#f59e0b'
-                        : '#ef4444'
-                    }
-                    sub={`${fmtM3(currentReservoir, 0)} متبقي`}
-                  />
-                  <div style={{ marginTop: 10 }}>
-                    <NRWGauge nrw={gov.nrw} target={gov.target_nrw} />
                   </div>
-                  <button
-                    onClick={refillReservoir}
-                    style={{
-                      ...secondaryButton(),
-                      width: '100%',
-                      justifyContent: 'center',
-                      marginTop: 10,
-                    }}
-                  >
-                    تعبئة / إعادة ضبط المنطقة
-                  </button>
+                  {/* Pipe network */}
+                  <div style={{ flex: 1 }}>
+                    <PipeNetworkMap
+                      govKey={govKey}
+                      segments={segments}
+                      onSegClick={setSelectedSeg}
+                      selectedSeg={selectedSeg}
+                      pumping={pumping}
+                      branchInflows={mass.branchInflows}
+                      totalOutflowM3PerHr={mass.totalOutflowM3PerHr}
+                    />
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 16,
+                    marginTop: 10,
+                    fontSize: 11,
+                    fontFamily: "monospace",
+                  }}
+                >
+                  {Object.entries(TYPE_CONFIG).map(([k, v]) => (
+                    <span
+                      key={k}
+                      style={{
+                        color: v.color,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          background: v.color,
+                          display: "inline-block",
+                        }}
+                      />
+                      {v.label}
+                    </span>
+                  ))}
+                  <span style={{ marginLeft: "auto", color: "#475569" }}>
+                    Click segment for detail
+                  </span>
                 </div>
               </div>
-            </SectionCard>
+            )}
 
-            <DecisionCard
-              seg={selectedOrWorst}
-              gov={gov}
-              mass={mass}
-              onIsolate={simulateIsolation}
-            />
+            {/* SCATTER TAB */}
+            {activeTab === "scatter" && (
+              <div
+                style={{
+                  background: "#0a1628",
+                  border: "1px solid rgba(56,189,248,.1)",
+                  borderRadius: 12,
+                  padding: 16,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: "#475569",
+                    fontFamily: "monospace",
+                    letterSpacing: 0.5,
+                    marginBottom: 4,
+                  }}
+                >
+                  SPATIAL SIGNATURES — Flow Loss % vs DP Deviation (PSI)
+                </div>
+                <div
+                  style={{ fontSize: 10, color: "#334155", marginBottom: 12 }}
+                >
+                  Each dot = one pipe segment. Pattern reveals anomaly type.
+                </div>
+                <ResponsiveContainer width="100%" height={320}>
+                  <ScatterChart
+                    margin={{ top: 10, right: 20, bottom: 20, left: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <XAxis
+                      dataKey="x"
+                      name="Flow Loss %"
+                      label={{
+                        value: "Flow Loss %",
+                        position: "insideBottom",
+                        offset: -10,
+                        fill: "#475569",
+                        fontSize: 11,
+                      }}
+                      tick={{ fill: "#475569", fontSize: 10 }}
+                      stroke="#1e293b"
+                    />
+                    <YAxis
+                      dataKey="y"
+                      name="DP Dev"
+                      label={{
+                        value: "DP Deviation",
+                        angle: -90,
+                        position: "insideLeft",
+                        fill: "#475569",
+                        fontSize: 11,
+                      }}
+                      tick={{ fill: "#475569", fontSize: 10 }}
+                      stroke="#1e293b"
+                    />
+                    <RTooltip
+                      cursor={{ strokeDasharray: "3 3" }}
+                      content={({ payload }) => {
+                        if (!payload?.length) return null;
+                        const d = payload[0].payload;
+                        return (
+                          <div
+                            style={{
+                              background: "#0f1f3d",
+                              border: "1px solid rgba(56,189,248,.3)",
+                              borderRadius: 8,
+                              padding: "8px 12px",
+                              fontSize: 11,
+                            }}
+                          >
+                            <div
+                              style={{
+                                color: TYPE_DOT[d.type],
+                                fontWeight: 700,
+                              }}
+                            >
+                              {d.type.toUpperCase()}
+                            </div>
+                            <div style={{ color: "#94a3b8" }}>
+                              Flow Loss: {d.x}%
+                            </div>
+                            <div style={{ color: "#94a3b8" }}>
+                              DP Dev: {d.y} PSI
+                            </div>
+                          </div>
+                        );
+                      }}
+                    />
+                    {Object.keys(TYPE_DOT).map((t) => (
+                      <Scatter
+                        key={t}
+                        name={t}
+                        data={scatterData.filter((d) => d.type === t)}
+                        fill={TYPE_DOT[t]}
+                        fillOpacity={0.75}
+                        shape={(props) => {
+                          const { cx, cy } = props;
+                          return (
+                            <circle
+                              cx={cx}
+                              cy={cy}
+                              r={t === "burst" ? 7 : t === "leak" ? 5 : 4}
+                              fill={TYPE_DOT[t]}
+                              fillOpacity={0.8}
+                            />
+                          );
+                        }}
+                      />
+                    ))}
+                  </ScatterChart>
+                </ResponsiveContainer>
+              </div>
+            )}
 
-            <IncidentTimeline demoStep={demoStep} activeType={worstType} />
+            {/* TELEMETRY TAB */}
+            {activeTab === "telemetry" && (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 12,
+                }}
+              >
+                {[
+                  {
+                    title: "Flow In — L/min",
+                    data: flowHistData,
+                    color: "#38bdf8",
+                    key: "v",
+                  },
+                  {
+                    title: "Pressure In — PSI",
+                    data: pressHistData,
+                    color: "#a855f7",
+                    key: "v",
+                  },
+                ].map((ch, ci) => (
+                  <div
+                    key={ci}
+                    style={{
+                      background: "#0a1628",
+                      border: "1px solid rgba(56,189,248,.1)",
+                      borderRadius: 12,
+                      padding: 16,
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: "#475569",
+                        fontFamily: "monospace",
+                        marginBottom: 8,
+                      }}
+                    >
+                      {ch.title}
+                    </div>
+                    <ResponsiveContainer width="100%" height={160}>
+                      <AreaChart
+                        data={ch.data}
+                        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke="#0f172a" />
+                        <XAxis hide />
+                        <YAxis
+                          tick={{ fill: "#475569", fontSize: 9 }}
+                          stroke="#0f172a"
+                          width={36}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey={ch.key}
+                          stroke={ch.color}
+                          fill={`${ch.color}18`}
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginTop: 8,
+                        fontSize: 11,
+                      }}
+                    >
+                      <span style={{ color: "#475569" }}>Current</span>
+                      <span
+                        style={{
+                          color: ch.color,
+                          fontFamily: "monospace",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {ch.data[ch.data.length - 1]?.v.toFixed(1)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
 
-            <SectionCard
-              title="سجل الإنذارات"
-              icon={<Bell size={16} color="#ef4444" />}
-              right={
-                <SmallPill color="#ef4444">{allAlerts.length} مسجلة</SmallPill>
-              }
+                <div
+                  style={{
+                    background: "#0a1628",
+                    border: "1px solid rgba(56,189,248,.1)",
+                    borderRadius: 12,
+                    padding: 16,
+                    gridColumn: "1/-1",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 11,
+                      color: "#475569",
+                      fontFamily: "monospace",
+                      marginBottom: 12,
+                    }}
+                  >
+                    ENSEMBLE MODEL SCORES — Anomaly Probability per Segment
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 8,
+                      maxHeight: 280,
+                      overflowY: "auto",
+                    }}
+                  >
+                    {segments.slice(0, 12).map((seg) => {
+                      const tc = TYPE_DOT[seg.predType];
+                      return (
+                        <div
+                          key={seg.id}
+                          onClick={() => setSelectedSeg(seg)}
+                          style={{
+                            cursor: "pointer",
+                            padding: "8px 10px",
+                            background: "#0d1830",
+                            borderRadius: 8,
+                            border: `1px solid ${
+                              seg.alert ? tc + "50" : "rgba(56,189,248,.06)"
+                            }`,
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginBottom: 6,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: 11,
+                                color: "#94a3b8",
+                                fontFamily: "monospace",
+                              }}
+                            >
+                              {seg.from}→{seg.to}
+                            </span>
+                            <span
+                              style={{
+                                fontSize: 10,
+                                padding: "1px 7px",
+                                borderRadius: 4,
+                                background: `${tc}22`,
+                                color: tc,
+                                fontWeight: 600,
+                              }}
+                            >
+                              {seg.predType.toUpperCase()}
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                              gap: 6,
+                            }}
+                          >
+                            {[
+                              ["LGB", seg.models.lgb],
+                              ["XGB", seg.models.xgb],
+                              ["NN", seg.models.nn],
+                              ["LSTM", seg.models.lstm],
+                            ].map(([n, v]) => (
+                              <div key={n}>
+                                <div
+                                  style={{
+                                    fontSize: 9,
+                                    color: "#475569",
+                                    marginBottom: 2,
+                                  }}
+                                >
+                                  {n}
+                                </div>
+                                <div
+                                  style={{
+                                    height: 4,
+                                    background: "#1e293b",
+                                    borderRadius: 2,
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      height: 4,
+                                      width: `${Math.min(v, 100)}%`,
+                                      background: v > 50 ? tc : "#38bdf8",
+                                      borderRadius: 2,
+                                      transition: "width .5s",
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  style={{
+                                    fontSize: 9,
+                                    color: v > 50 ? tc : "#64748b",
+                                    fontFamily: "monospace",
+                                    marginTop: 2,
+                                  }}
+                                >
+                                  {v.toFixed(0)}%
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SIMULATION MODE */}
+            {simMode && (
+              <div
+                style={{
+                  background: "linear-gradient(135deg,#0f0d2e,#1a0a2e)",
+                  border: "1px solid rgba(99,102,241,.3)",
+                  borderRadius: 12,
+                  padding: 16,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    marginBottom: 14,
+                  }}
+                >
+                  <Cpu size={14} color="#818cf8" />
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: "#818cf8",
+                      fontFamily: "monospace",
+                      fontWeight: 600,
+                    }}
+                  >
+                    PREDICTIVE SIMULATION MODE — Adjust parameters to see AI
+                    response
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr 1fr",
+                    gap: 16,
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: "#6366f1",
+                        marginBottom: 6,
+                      }}
+                    >
+                      Inlet Pressure:{" "}
+                      <span
+                        style={{ color: "#c7d2fe", fontFamily: "monospace" }}
+                      >
+                        {simPressure} PSI
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={20}
+                      max={130}
+                      value={simPressure}
+                      onChange={(e) => setSimPressure(+e.target.value)}
+                      style={{ width: "100%", accentColor: "#6366f1" }}
+                    />
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: "#6366f1",
+                        marginBottom: 6,
+                      }}
+                    >
+                      Inlet Flow:{" "}
+                      <span
+                        style={{ color: "#c7d2fe", fontFamily: "monospace" }}
+                      >
+                        {simFlow} L/min
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={50}
+                      max={600}
+                      value={simFlow}
+                      onChange={(e) => setSimFlow(+e.target.value)}
+                      style={{ width: "100%", accentColor: "#6366f1" }}
+                    />
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: "#6366f1",
+                        marginBottom: 4,
+                      }}
+                    >
+                      Anomaly Probability
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 36,
+                        fontWeight: 700,
+                        fontFamily: "monospace",
+                        color:
+                          simAnomalyProb > 60
+                            ? "#ef4444"
+                            : simAnomalyProb > 30
+                            ? "#f59e0b"
+                            : "#22c55e",
+                      }}
+                    >
+                      {simAnomalyProb}%
+                    </div>
+                    <div
+                      style={{ fontSize: 11, color: "#4c1d95", marginTop: 2 }}
+                    >
+                      {simAnomalyProb > 60
+                        ? "HIGH RISK"
+                        : simAnomalyProb > 30
+                        ? "ELEVATED"
+                        : "NORMAL"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT PANEL */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {/* NRW + Reservoir combined */}
+            <div
+              style={{
+                background: "#0a1628",
+                border: "1px solid rgba(56,189,248,.1)",
+                borderRadius: 12,
+                padding: 14,
+              }}
             >
               <div
                 style={{
-                  display: 'grid',
-                  gap: 7,
-                  maxHeight: 330,
-                  overflowY: 'auto',
+                  fontSize: 10,
+                  color: "#475569",
+                  fontFamily: "monospace",
+                  letterSpacing: 0.5,
+                  marginBottom: 10,
+                }}
+              >
+                HYDRAULIC OVERVIEW
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <NRWGauge nrw={gov.nrw} target={gov.target_nrw} />
+                <div
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 5,
+                    fontSize: 11,
+                  }}
+                >
+                  {[
+                    {
+                      l: "Delivered",
+                      v: `${mass.deliveredM3?.toFixed(1) ?? 0} m³`,
+                      c: "#22c55e",
+                    },
+                    {
+                      l: "Lost (NRW)",
+                      v: `−${mass.systemLossM3?.toFixed(1) ?? 0} m³`,
+                      c: "#ef4444",
+                    },
+                    {
+                      l: "Cycle Total",
+                      v: `${mass.cycleOutflowM3?.toFixed(1) ?? 0} m³`,
+                      c: "#38bdf8",
+                    },
+                    {
+                      l: "Flow Rate",
+                      v: `${mass.totalOutflowM3PerHr?.toFixed(0) ?? 0} m³/h`,
+                      c: "#22d3ee",
+                    },
+                    { l: "Elevation", v: `${gov.elev}m`, c: "#94a3b8" },
+                  ].map(({ l, v, c }) => (
+                    <div
+                      key={l}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span style={{ color: "#475569" }}>{l}</span>
+                      <span
+                        style={{
+                          color: c,
+                          fontFamily: "monospace",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {v}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Solution box */}
+            <div
+              style={{
+                background: "#0a1628",
+                border: `1px solid ${TYPE_CONFIG[worstType].color}40`,
+                borderRight: `3px solid ${TYPE_CONFIG[worstType].color}`,
+                borderRadius: 12,
+                padding: 14,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: TYPE_CONFIG[worstType].color,
+                  marginBottom: 8,
+                }}
+              >
+                {worstType === "normal" && "النظام طبيعي — All Clear"}
+                {worstType === "leak" && "تسرب مكتشف — Leak Detected"}
+                {worstType === "burst" && "انفجار حرج — Critical Burst"}
+                {worstType === "theft" && "استهلاك غير مرخص — Theft"}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                {worstType === "normal" &&
+                  [
+                    "All readings within normal thresholds.",
+                    "No field intervention required.",
+                  ].map((s, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        fontSize: 11,
+                        color: "#475569",
+                        paddingBottom: 4,
+                        borderBottom: "1px solid rgba(56,189,248,.05)",
+                      }}
+                    >
+                      {s}
+                    </div>
+                  ))}
+                {worstType === "leak" &&
+                  [
+                    "Deploy acoustic field detection team.",
+                    "Reduce network pressure 15%.",
+                    "File repair ticket — Medium priority.",
+                  ].map((s, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        fontSize: 11,
+                        color: "#475569",
+                        paddingBottom: 4,
+                        borderBottom: "1px solid rgba(56,189,248,.05)",
+                      }}
+                    >
+                      {s}
+                    </div>
+                  ))}
+                {worstType === "burst" &&
+                  [
+                    "ISOLATE SECTION IMMEDIATELY.",
+                    "Alert emergency response team.",
+                    "Dispatch crew — ETA < 2 hours.",
+                    "Document losses for management.",
+                  ].map((s, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        fontSize: 11,
+                        color: "#475569",
+                        paddingBottom: 4,
+                        borderBottom: "1px solid rgba(56,189,248,.05)",
+                      }}
+                    >
+                      {s}
+                    </div>
+                  ))}
+                {worstType === "theft" &&
+                  [
+                    "Inspect lateral connections on site.",
+                    "Review consumption logs — 72h.",
+                    "Coordinate with Revenue Protection.",
+                  ].map((s, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        fontSize: 11,
+                        color: "#475569",
+                        paddingBottom: 4,
+                        borderBottom: "1px solid rgba(56,189,248,.05)",
+                      }}
+                    >
+                      {s}
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Selected segment detail */}
+            {selectedSeg && (
+              <div
+                style={{
+                  background: "#0a1628",
+                  border: "1px solid rgba(56,189,248,.15)",
+                  borderRadius: 12,
+                  padding: 14,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: "#38bdf8",
+                      fontFamily: "monospace",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {selectedSeg.from} → {selectedSeg.to}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      padding: "2px 8px",
+                      borderRadius: 4,
+                      background: `${TYPE_DOT[selectedSeg.predType]}22`,
+                      color: TYPE_DOT[selectedSeg.predType],
+                      fontWeight: 600,
+                    }}
+                  >
+                    {selectedSeg.predType.toUpperCase()}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "4px 12px",
+                  }}
+                >
+                  {[
+                    [
+                      "Flow In",
+                      `${selectedSeg.flowIn.toFixed(2)} L/m`,
+                      "#38bdf8",
+                    ],
+                    [
+                      "Flow Out",
+                      `${selectedSeg.flowOut.toFixed(2)} L/m`,
+                      "#22c55e",
+                    ],
+                    [
+                      "Flow Loss",
+                      `${selectedSeg.flowLoss.toFixed(2)}%`,
+                      TYPE_DOT[selectedSeg.predType],
+                    ],
+                    [
+                      "Excess Loss",
+                      `${selectedSeg.excessLoss.toFixed(2)}%`,
+                      TYPE_DOT[selectedSeg.predType],
+                    ],
+                    [
+                      "Press. In",
+                      `${selectedSeg.pressIn.toFixed(2)} PSI`,
+                      "#a855f7",
+                    ],
+                    [
+                      "Press. Out",
+                      `${selectedSeg.pressOut.toFixed(2)} PSI`,
+                      "#f59e0b",
+                    ],
+                    [
+                      "DP Predicted",
+                      `${selectedSeg.dpPred.toFixed(3)}`,
+                      "#64748b",
+                    ],
+                    [
+                      "DP Deviation",
+                      `${selectedSeg.dpDev.toFixed(3)}`,
+                      "#a855f7",
+                    ],
+                    ["Pipe Age", `${selectedSeg.age} yrs`, "#94a3b8"],
+                    ["Pipe Length", `${selectedSeg.len} m`, "#94a3b8"],
+                    ["HW Coeff.", `${selectedSeg.hw}`, "#94a3b8"],
+                    [
+                      "Confidence",
+                      `${(selectedSeg.confidence * 100).toFixed(0)}%`,
+                      TYPE_DOT[selectedSeg.predType],
+                    ],
+                  ].map(([l, v, c]) => (
+                    <div
+                      key={l}
+                      style={{
+                        padding: "3px 0",
+                        borderBottom: "1px solid rgba(56,189,248,.04)",
+                      }}
+                    >
+                      <div style={{ fontSize: 9, color: "#475569" }}>{l}</div>
+                      <div
+                        style={{
+                          fontSize: 12,
+                          color: c,
+                          fontFamily: "monospace",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {v}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div
+                  style={{
+                    marginTop: 10,
+                    paddingTop: 8,
+                    borderTop: "1px solid rgba(56,189,248,.06)",
+                  }}
+                >
+                  <div
+                    style={{ fontSize: 9, color: "#475569", marginBottom: 6 }}
+                  >
+                    MODEL CONSENSUS
+                  </div>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                      gap: 4,
+                    }}
+                  >
+                    {[
+                      ["LGB", selectedSeg.models.lgb],
+                      ["XGB", selectedSeg.models.xgb],
+                      ["NN", selectedSeg.models.nn],
+                      ["LSTM", selectedSeg.models.lstm],
+                    ].map(([n, v]) => (
+                      <div key={n} style={{ textAlign: "center" }}>
+                        <div
+                          style={{
+                            fontSize: 9,
+                            color: "#475569",
+                            marginBottom: 2,
+                          }}
+                        >
+                          {n}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 14,
+                            fontFamily: "monospace",
+                            fontWeight: 700,
+                            color:
+                              v > 50
+                                ? TYPE_DOT[selectedSeg.predType]
+                                : "#38bdf8",
+                          }}
+                        >
+                          {v.toFixed(0)}%
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Alert log */}
+            <div
+              style={{
+                background: "#0a1628",
+                border: "1px solid rgba(56,189,248,.1)",
+                borderRadius: 12,
+                padding: 14,
+                flex: 1,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 10,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 10,
+                    color: "#475569",
+                    fontFamily: "monospace",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  ALERT LOG
+                </span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    color: "#ef4444",
+                    fontFamily: "monospace",
+                  }}
+                >
+                  {allAlerts.length}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 5,
+                  maxHeight: 260,
+                  overflowY: "auto",
                 }}
               >
                 {allAlerts.length === 0 && (
                   <div
                     style={{
-                      color: '#475569',
-                      fontSize: 12,
-                      textAlign: 'center',
-                      padding: 20,
+                      color: "#334155",
+                      fontSize: 11,
+                      textAlign: "center",
+                      padding: 16,
                     }}
                   >
-                    لا توجد إنذارات بعد. ابدأ عرض التحكيم أو اختر تسرب / انفجار
-                    / سرقة.
+                    No alerts...
                   </div>
                 )}
-                {allAlerts.slice(0, 25).map((a, i) => {
-                  const tc = TYPE_DOT[a.predType] || '#22c55e';
+                {allAlerts.slice(0, 20).map((a, i) => {
+                  const tc = TYPE_DOT[a.predType];
                   return (
                     <div
-                      key={`${a.id}-${i}`}
+                      key={i}
                       onClick={() => setSelectedSeg(a)}
                       style={{
-                        background:
-                          selectedOrWorst?.id === a.id
-                            ? `${tc}16`
-                            : 'rgba(2,6,23,.25)',
-                        borderRadius: 10,
-                        padding: '9px 10px',
+                        background: "#0d1830",
+                        borderRadius: 7,
+                        padding: "8px 10px",
                         borderRight: `3px solid ${tc}`,
-                        border: `1px solid ${
-                          selectedOrWorst?.id === a.id
-                            ? `${tc}44`
-                            : 'rgba(148,163,184,.08)'
-                        }`,
-                        cursor: 'pointer',
-                        animation: 'slideIn .22s ease',
+                        cursor: "pointer",
+                        animation: "slideIn .2s ease",
                       }}
                     >
                       <div
                         style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          gap: 8,
-                          marginBottom: 4,
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginBottom: 3,
                         }}
                       >
                         <span
                           style={{
                             fontSize: 11,
-                            fontWeight: 900,
-                            color: '#e2e8f0',
-                            fontFamily: 'monospace',
+                            fontWeight: 600,
+                            color: "#e2e8f0",
+                            fontFamily: "monospace",
                           }}
                         >
                           {a.branch} · D{a.depth}
@@ -5498,44 +4167,174 @@ export default function AquaGuardDashboard() {
                         <span
                           style={{
                             fontSize: 9,
-                            color: '#64748b',
-                            fontFamily: 'monospace',
+                            color: "#475569",
+                            fontFamily: "monospace",
                           }}
                         >
                           {a.ts}
                         </span>
                       </div>
-                      <div style={{ fontSize: 10, color: '#94a3b8' }}>
+                      <div style={{ fontSize: 10, color: "#64748b" }}>
                         {a.from} → {a.to}
                       </div>
-                      <div
-                        style={{ fontSize: 10, color: '#64748b', marginTop: 2 }}
-                      >
-                        فقد التدفق {a.flowLoss?.toFixed?.(1)}% · انحراف الضغط{' '}
-                        {a.dpDev?.toFixed?.(3)}
+                      <div style={{ fontSize: 10, color: "#64748b" }}>
+                        ΔFlow: {a.flowLoss?.toFixed(1)}% · DP:{" "}
+                        {a.dpDev?.toFixed(3)}
                       </div>
                       <div
                         style={{
                           fontSize: 10,
                           color: tc,
-                          fontWeight: 900,
-                          marginTop: 4,
-                          fontFamily: 'monospace',
+                          fontWeight: 600,
+                          marginTop: 2,
+                          fontFamily: "monospace",
                         }}
                       >
-                        {getTypeLabelAr(a.predType)} ·{' '}
+                        {a.predType.toUpperCase()} ·{" "}
                         {(a.confidence * 100).toFixed(0)}%
                       </div>
                     </div>
                   );
                 })}
               </div>
-            </SectionCard>
+            </div>
+          </div>
+        </div>
+
+        {/* ── BOTTOM: All governorates NRW + reservoir overview ── */}
+        <div
+          style={{
+            background: "#0a1628",
+            border: "1px solid rgba(56,189,248,.08)",
+            borderRadius: 12,
+            padding: 14,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 10,
+              color: "#475569",
+              fontFamily: "monospace",
+              letterSpacing: 0.5,
+              marginBottom: 12,
+            }}
+          >
+            JORDAN NETWORK OVERVIEW — Reservoir Levels × NRW per Governorate
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(12,1fr)",
+              gap: 8,
+            }}
+          >
+            {Object.entries(NETWORK).map(([k, v]) => {
+              const nrwPct = Math.round(v.nrw * 100);
+              const rPct =
+                ((reservoirLevels[k] ?? v.reservoirCap) / v.reservoirCap) * 100;
+              const isActive = k === govKey;
+              return (
+                <div
+                  key={k}
+                  onClick={() => setGovKey(k)}
+                  style={{
+                    cursor: "pointer",
+                    textAlign: "center",
+                    padding: "8px 4px",
+                    borderRadius: 8,
+                    background: isActive
+                      ? "rgba(56,189,248,.08)"
+                      : "transparent",
+                    border: `1px solid ${
+                      isActive ? "rgba(56,189,248,.3)" : "transparent"
+                    }`,
+                    transition: "all .15s",
+                  }}
+                >
+                  {/* Mini tank */}
+                  <div
+                    style={{
+                      width: 18,
+                      height: 44,
+                      margin: "0 auto 4px",
+                      position: "relative",
+                      background: "#0f172a",
+                      borderRadius: 3,
+                      overflow: "hidden",
+                      border: "1px solid #1e293b",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: `${rPct}%`,
+                        background:
+                          rPct > 60
+                            ? "#22c55e"
+                            : rPct > 30
+                            ? "#f59e0b"
+                            : "#ef4444",
+                        transition: "height .4s",
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 9,
+                      color: isActive ? "#38bdf8" : "#64748b",
+                      fontWeight: isActive ? 700 : 400,
+                    }}
+                  >
+                    {v.label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 9,
+                      color:
+                        rPct > 60
+                          ? "#22c55e"
+                          : rPct > 30
+                          ? "#f59e0b"
+                          : "#ef4444",
+                      fontFamily: "monospace",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {rPct.toFixed(0)}%
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 8,
+                      color:
+                        v.nrw > 0.5
+                          ? "#ef4444"
+                          : v.nrw > 0.4
+                          ? "#f59e0b"
+                          : "#22c55e",
+                      fontFamily: "monospace",
+                    }}
+                  >
+                    NRW {nrwPct}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      <style>{responsiveCss()}</style>
+      <style>{`
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+        @keyframes slideIn { from{transform:translateX(-5px);opacity:0} to{transform:none;opacity:1} }
+        ::-webkit-scrollbar{width:3px;height:3px}
+        ::-webkit-scrollbar-track{background:#0a1628}
+        ::-webkit-scrollbar-thumb{background:rgba(56,189,248,.25);border-radius:2px}
+        input[type=range]{-webkit-appearance:none;height:4px;border-radius:2px;outline:none}
+        input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;cursor:pointer}
+      `}</style>
     </div>
   );
 }
